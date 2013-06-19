@@ -1,0 +1,91 @@
+\section{Warm-up}
+
+\begin{discussion}
+Central to the study of the theory of computation are the concepts of ``alphabet'' (a set of symbols), ``string'' (a list of symbols from an alphabet), and ``language'' (a set of strings from the same alphabet). In this section, we will work through some simple, intuitive definitions of these concepts. In the chapter that follows, we will review some formal mathematical notation (that should be familiar from a discrete structures course) and then provide more precise definitions of some concepts presented here.
+\end{discussion}
+
+\begin{defn}[Alphabet]
+An \defterm{alphabet} is a finite set of \defterm{symbols}. We'll often use $\Sigma$ (``uppercase sigma") for an alphabet.
+\end{defn}
+
+\begin{defn}[String]
+A \defterm{string over an alphabet} (sometimes called a \defterm{word}) is a finite sequence of symbols from the alphabet. We generally use $u, v, w, x, y, z$, and lowercase Greek letters to denote strings. 
+\end{defn}
+
+\begin{defn}[Empty string]
+The string with no symbols at all, called the \defterm{empty string}, is denoted by $\bm\emptystring$.
+\end{defn}
+
+\begin{defn}[$\Sigma^*$]
+The set of all strings, including the empty string, over an alphabet $\Sigma$ is denoted by $\bm{\Sigma^*}$.
+\end{defn}
+
+\begin{exer}
+List at least 10 strings that are in the set $\setstar{\setdef{0, 1}}$. 
+\end{exer}
+
+\begin{defn}[String length]
+The \defterm{length} of a string is the number of symbols it contains. We denote the length of a string $w$ by $|w|$. If $w$ has length $n$, we can write $w = w_1 w_2 \,\cdots\, w_n$ where each symbol $w_i \in \Sigma$. 
+\end{defn}
+
+\begin{exer}
+What is $|\emptystring|$?
+\end{exer}
+
+\begin{defn}[String concatenation]
+The \defterm{concatenation} of two strings $x$ and $y$, written $xy$, is the string $x$ followed by the string $y$. To concatenate a string with itself many times, we use the superscript notation $x^k$ to mean:
+\[\overbrace{x\,x\,\cdots\,x}^k\]
+\end{defn}
+
+\begin{defn}[String reverse]
+The \defterm{reverse} of a string $w$, written $\stringrev{w}$, is the string obtained by writing the symbols of $w$ in the opposite order.
+\end{defn}
+
+\begin{exer}
+Let $w$ be a string over some alphabet $\Sigma$. What is $w\emptystring$? What is $\emptystring w$?
+\end{exer}
+
+\begin{exer}
+Suppose $x$ and $y$ are strings over an alphabet $\Sigma$. Under what circumstances is it possible to satisfy the condition $xy = yx$? 
+% (Be sure to consider more than just the trivial situation when either $x$ or $y$ is empty.)
+\end{exer}
+
+\begin{defn}[Language]
+A \defterm{language} is any set of strings over an alphabet $\Sigma$, that is, chosen from $\setstar\Sigma$.
+\end{defn}
+
+\begin{exer}
+Let $\Sigma = \setdef{a, b}.$ Give some examples of strings in, and not in, the following languages over $\Sigma$.
+\begin{enumerate}[label=(\alph*)]
+\item $L_1 = \setdef{ \emptystring, a, aa, aab }$
+\item $L_2 = \setbuild{w}{|w| \leq 5}$
+\item $L_3 = \setbuild{w}{|w|~\textrm{is odd}}$
+\item $L_4 = \setbuild{w}{ww = www}$
+\item $L_5 = \setbuild{w}{|w| \geq 2 ~\textrm{and $w$ begins and ends with $b$}}$
+\item $L_6 = \setbuild{w}{w = a^m b^n ~\textrm{where}~ m \in \setdef{0, 2, 4, 6, \ldots}, n \in \setdef{1, 3, 5, 7, \ldots}}$
+\end{enumerate}
+\end{exer}
+
+%\begin{exer}
+%List at least 5 members of the language of all strings over $\setdef{0, 1}$ consisting of $n$ 0's followed by $n$ 1's, for some $n \geq 0$. 
+%\end{exer}
+
+\begin{discussion}
+Why are these concepts so central to our study of computation? It turns out that anything we colloquially call a ``problem,'' for which we might be interested in developing a method of solution, can be expressed as membership in a language. In other words, if $\Sigma$ is an alphabet, and $L$ is a language over $\Sigma$, then the \emph{problem} $L$ is:
+\begin{itemize}
+\item Given a string $w$ in $\setstar\Sigma$, decide whether or not $w$ is in $L$.
+\end{itemize}
+As a concrete example, let $\Sigma = \setdef{0, 1, 2, \ldots, 9}$ and $L_\textrm{primes}$ be the language that contains all strings over $\Sigma$ that are prime numbers. Then the ability to decide if a word (a string of digits) is in the language $L_\textrm{primes}$ is equivalent to performing a computational task - in this case, determining whether a number is prime or not.
+
+% some more concrete examples in EAR pg 23-25 -- time permitting
+% also issue of decision vs. computation EAR pg 26-28
+
+% talk about theoretical considerations
+% also about practical ramifications and fact that many techniques, tools, constructions from this study have very practical applications and used widely in all areas of C.S. - these won't be a direct concern of ours in this course, but I will point them out from time to time, and maybe sometimes delve more deeply into details
+
+\end{discussion}
+
+\begin{progexer}\happymac
+Choose at least one of the languages defined in Statement~\ref{stmt:dfas}. Write a program that reads in a string and decides if the string is in the language. 
+\end{progexer}
+

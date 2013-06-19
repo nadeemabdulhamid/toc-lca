@@ -1,0 +1,65 @@
+\documentclass[10pt]{article}
+
+%\textwidth=7in
+%\textheight=9.5in
+%\topmargin=-1in
+%\headheight=0in
+%\headsep=.5in
+%\hoffset=-1in
+
+\input{common.tex}
+
+\title{Written Work - Introduction Exercise} 	% TITLE OF THESE EXERCISES/PROOFS
+\author{Nadeem Abdul Hamid}      			% YOUR NAME HERE
+\date{\today}							% CHANGE IF YOU WANT
+
+\begin{document}
+
+\maketitle
+
+\begin{exersoln}{5}   % 5 is the number of the exercise
+	List at least 10 strings that are in the set $\setstar{\setdef{0, 1}}$.
+	
+	\answer    % precede your answers with \answer, proofs with \proof
+	Give your answer here.
+	\qed		% for coolness
+\end{exersoln}
+
+\begin{exersoln}{7}
+	What is $|\emptystring|$?
+	
+	\answer
+\end{exersoln}
+
+\begin{exersoln}{10}
+	Let $w$ be a string over some alphabet $\Sigma$. What is $w\emptystring$? What is $\emptystring w$?
+	
+	\answer
+\end{exersoln}
+
+\begin{exersoln}{11}
+	Suppose $x$ and $y$ are strings over an alphabet $\Sigma$. Under what circumstances is it possible to satisfy the condition $xy = yx$? 
+	
+	\answer
+\end{exersoln}
+
+\begin{exersoln}{13}
+	Let $\Sigma = \setdef{a, b}.$ Give some examples of strings in, and not in, the following languages over $\Sigma$.
+	\begin{enumerate}[label=(\alph*)]
+	\item $L_1 = \setdef{ \emptystring, a, aa, aab }$
+		\answer
+	\item $L_2 = \setbuild{w}{|w| \leq 5}$
+		\answer
+	\item $L_3 = \setbuild{w}{|w|~\textrm{is odd}}$
+		\answer
+	\item $L_4 = \setbuild{w}{ww = www}$
+		\answer
+	\item $L_5 = \setbuild{w}{|w| \geq 2 ~\textrm{and $w$ begins and ends with $b$}}$
+		\answer
+	\item $L_6 = \setbuild{w}{w = a^m b^n ~\textrm{where}~ m \in \setdef{0, 2, 4, 6, \ldots}, n \in \setdef{1, 3, 5, 7, \ldots}}$
+		\answer
+	\end{enumerate}
+\end{exersoln}
+
+
+\end{document}

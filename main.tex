@@ -1,0 +1,804 @@
+\documentclass[twoside,letterpaper,openany]{book}
+
+%\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+%\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+%\usepackage{graphicx}
+%\usepackage{epstopdf}
+%\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+%\usepackage{amsthm}
+
+\input{common.tex}
+
+\title{Theory of Computation \\ \vspace{2mm} {\large Course Notes}}
+\author{Nadeem Abdul Hamid}
+\date{\today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{Preface}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setcounter{secnumdepth}{0}
+\tableofcontents
+
+\newpage
+\section{List of axioms, definitions, and proved theorems}
+\listtheorems{axiom,defn,thmex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setcounter{chapter}{-1}
+\chapter{Introduction}\label{chapter:intro}
+	\input{intro-warmup.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Mathematical Preliminaries}
+	\input{math-sets.tex}
+	\input{math-seqs.tex}
+	\input{math-relations.tex}
+	\clearpage 
+	\input{math-proofs.tex}
+	\clearpage
+	\input{math-strings.tex}
+	\clearpage
+	\input{math-structinduc.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Regular Languages}
+\section{Deterministic Finite Automata}
+\begin{defn}[Deterministic Finite Automaton]
+A \defterm{deterministic finite automaton} (\defterm{DFA}) is a 5-tuple\footnote{Definition~\ref{defn:tuple}} $(Q, \Sigma, \delta, q_0, F)$, where
+\begin{enumerate}
+\item $Q$ is a finite set of \defterm{states},
+\item $\Sigma$ is a finite alphabet,
+\item $\delta : \setproduct{Q}{\Sigma} \to Q$ is the \defterm{transition function},
+\item $q_0 \in Q$ is the \defterm{start state}, and
+\item $F \subseteq Q$ is the set of \defterm{accept states}.
+\end{enumerate}
+\end{defn}
+
+\begin{discussion}
+Finite automata can often be presented in an intuitive manner as follows. 
+\begin{itemize}
+\item Draw and label a node for each state $q \in Q$.
+\item For every $\delta(q_a, a) = q_b$, where $q_a, q_b \in Q; a \in \Sigma$, draw an arrow from $q_a$ to $q_b$ and label it $a$.
+\item Draw an incoming arrow to the start state.
+\item Draw a double-circle around the accept state nodes.
+\end{itemize}
+\end{discussion}
+
+\begin{example}\label{example:fa1}
+Here is an state diagram\footnote{Designed using \texttt{http://madebyevan.com/fsm/}.} of a finite automaton on the alphabet $\setdef{a, b}$.
+\begin{center}
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (6,-7.8) circle (3);
+\draw (6,-7.8) node {$q_0$};
+\draw [black] (33.4,-7.8) circle (3);
+\draw (33.4,-7.8) node {$q_1$};
+\draw [black] (33.4,-7.8) circle (2.4);
+\draw [black] (18.8,-14.3) circle (3);
+\draw (18.8,-14.3) node {$q_2$};
+\draw [black] (8.733,-6.567) arc (111.42324:68.57676:30.025);
+\fill [black] (30.67,-6.57) -- (30.1,-5.81) -- (29.74,-6.74);
+\draw (19.7,-3.99) node [above] {$a$};
+\draw [black] (34.3,-10.65) arc (45.25384:-242.74616:2.25);
+\draw (31.71,-15.13) node [below] {$a,b$};
+\fill [black] (31.69,-10.25) -- (30.77,-10.46) -- (31.48,-11.17);
+\draw [black] (8.67,-9.16) -- (16.13,-12.94);
+\fill [black] (16.13,-12.94) -- (15.64,-12.13) -- (15.19,-13.03);
+\draw (11.41,-11.55) node [below] {$b$};
+\draw [black] (20.123,-16.98) arc (54:-234:2.25);
+\draw (18.8,-21.55) node [below] {$b$};
+\fill [black] (17.48,-16.98) -- (16.6,-17.33) -- (17.41,-17.92);
+\draw [black] (21.54,-13.08) -- (30.66,-9.02);
+\fill [black] (30.66,-9.02) -- (29.73,-8.89) -- (30.13,-9.8);
+\draw (27.03,-11.56) node [below] {$a$};
+\draw [black] (0.4,-7.8) -- (3,-7.8);
+\fill [black] (3,-7.8) -- (2.2,-7.3) -- (2.2,-8.3);
+\end{tikzpicture}
+\end{center}
+\end{example}
+
+\begin{exer}
+Write out a 5-tuple giving a formal definition for the DFA of Example~\ref{example:fa1}.
+\end{exer}
+
+\begin{defn}[DFA Computation]
+Let $M = (Q, \Sigma, \delta, q_0, F)$ be a finite automaton and let $w = a_1a_2\cdots a_n$ be a string where each $a_i$ is a member of the alphabet $\Sigma$. Then $M$ \defterm{accepts} $w$ if a sequence of states $r_0, r_1, \ldots, r_n \in Q$ exists with three conditions:
+\begin{itemize}
+\item $r_0 = q_0$,
+\item $\delta(r_i, w_{i+1}) = r_{i+1}$, for $i = 0, \ldots, n-1$, and
+\item $r_n \in F$.
+\end{itemize}
+
+Informally, an DFA $M$ computes by starting in the start state and then going from state to state, according to its transition function, as it processes symbols from the input string. The machine accepts its input if it ends up in an accept state when it has processed all the symbols in the string.
+
+If $M$ does not accept a string $w$, then we say $M$ \defterm{rejects} $w$.
+\end{defn}
+
+\begin{discussion}
+When we refer to the finite automata  defined above as being \defterm{deterministic}, we mean that for any state, there is \emph{exactly} one transition that can be taken for each symbol of the alphabet.
+\end{discussion}
+
+~
+
+\begin{defn}[Recognizing a language]
+We say that $M$ \defterm{recognizes} a language $A$ if $A = \setbuild{w}{M \ \textrm{accepts}\ w}$.
+\end{defn}
+
+\begin{exer}
+Describe the language recognized by the DFA of Example~\ref{example:fa1}.
+\end{exer}
+
+\begin{exer}
+Consider the DFA, $M = (\setdef{q_1, q_2}, \setdef{\textrm{0, 1}}, \delta, q_1, \setdef{q_2})$ with transition function $\delta$ given by
+\[\begin{array}{c|cc}
+ & \textrm{0} & \textrm{1} \\ \hline
+ q_1 & q_1 & q_2 \\
+ q_2 & q_1 & q_2
+\end{array}\]
+
+Draw a state diagram corresponding to the given DFA and describe in a single, concise English sentence the language that it recognizes.
+\end{exer}
+
+\begin{defn}[Regular language]
+A language is called a \defterm{regular language} if some finite automaton recognizes it.
+\end{defn}
+
+\begin{stmt}\label{stmt:dfas}
+All of the following languages over the alphabet $\Sigma_{\ref{stmt:dfas}} = \setdef{\texttt{a}, \texttt{b}}$ are regular.
+\begin{itemize}
+\item $L_1 = \setbuild{w}{\textrm{every \texttt{a} is immediately followed by a \texttt{b}}}$
+\item $L_2 = \setbuild{w}{w~\textrm{contains an even number of \texttt{a}'s and an odd number of \texttt{b}'s}}$
+\item $L_3 = \setbuild{w}{w~\textrm{contains the substring \texttt{baa}}}$
+\item $L_4 = \setbuild{w}{w~\textrm{does not contain the substring \texttt{aab}}}$
+\item $L_5 = \setbuild{w}{w~\textrm{has length at least 3 and its third symbol is a}~\texttt{b}}$
+\item $L_6 = \setbuild{w}{w~\textrm{starts with \texttt{a} and has odd length, or starts with \texttt{b} and has even length}}$
+\item $L_7 = \setbuild{w}{\textrm{every odd position of}~w~\textrm{is an}~\texttt{a}}$
+\item $L_8 = \setdef{\emptystring, \texttt{a}}$
+\item $L_9 = \emptyset$
+\item $L_{10} = $ the set of all strings over $\Sigma_{\ref{stmt:dfas}}$ except the empty string
+\end{itemize}
+\end{stmt}
+
+\begin{discussion}
+Many DFAs contain what is called a \defterm{dead state} or \defterm{error state} -- a non-final state that, once entered, is never exited, no matter what comes later in the input. 
+\end{discussion}
+
+\begin{exer}[Vowels in alphabetical order]~\\
+Let \[L_\alpha = \setbuild{w \in \setstar{\setdef{\texttt{a} - \texttt{z}}}}{\textrm{all five vowels}\ \texttt{a}, \texttt{e},
+			\texttt{i}, \texttt{o}, \texttt{u}, \textrm{occur in alphabetical order in}~w}\]
+So $L_\alpha$ contains words like \texttt{abstemious} and \texttt{facetious} but not \texttt{tenacious} or \texttt{tame}. Show that $L_\alpha$ is a regular language.
+\end{exer}
+
+\begin{exer}[Floating point numbers]\label{exer:floatingpoint}
+~\\Let 
+\[L_{\mathrm{float}} = \setbuild{w}{w~\textrm{is the string representation of a floating point number}}\]
+Assume the following syntax for floating point numbers:
+\begin{itemize}
+\item A floating point number is an optional sign, followed by a decimal number, followed by an optional exponent.
+\item A decimal number may be of the form $x$ or $x.y$, where $x$ and $y$ are nonempty strings of decimal digits.
+\item An exponent beings with \texttt{E} and is followed by an optional sign and then an integer.
+\item An integer is a nonempty string of decimal digits.
+\end{itemize}
+The following strings are examples of floating point numbers:
+\[\mathrm{+3.0, 3.0, 0.3E1, 0.3E+1, -0.3E+1, -3E8, 7}\]
+Show that $L_{\mathrm{float}}$ is regular.
+\end{exer}
+
+% URI language (EAR p61), communication protocol (EAR p62), dispenser (p 55)
+
+\begin{progexer}\happymac
+Develop a program that reads in a description of a DFA and then simulates its operation on an input string.
+\end{progexer}
+
+
+\clearpage
+\section{Regular Operations}
+
+\begin{discussion}
+Since languages are sets, any set operation (union, intersection, difference, complement,\footnote{} etc.) is well-defined on languages. Because languages are sets of strings, there are also some useful operations that we can define on them in terms of those we defined on strings.
+\end{discussion}
+\footnotetext{For complement, the universal set is considered to be $\setstar\Sigma$ unless otherwise stated.}
+
+\begin{defn}[Regular operations]\label{def:regops}
+Let $A$ and $B$ be languages. We define the three \defterm{regular operations} as follows:
+\begin{itemize}
+\item \defterm{Union}: $\setunion A B = \setbuild{x}{x \in A~\textrm{or}~x \in B}$
+\item \defterm{Concatenation}: $\setconcat A B = \setbuild{xy}{x \in A~\textrm{or}~y \in B}$
+\item \defterm{Star}: $\setstar A = \setbuild{x_1 x_2 \ldots x_k}{k \geq 0 ~\textrm{and each}~x_i \in A}$
+\end{itemize}
+\end{defn}
+
+\begin{defn}[Closure]
+A set is said to be \defterm{closed} under some operation if applying that operation to any members of the set always produces an object still in the set.
+\end{defn}
+
+\begin{thm}
+The set of even numbers is \emph{closed under multiplication}.
+\end{thm}
+
+\begin{thm}
+The set of even numbers is \emph{not closed under division}.
+\end{thm}
+
+\begin{exer}
+Consider the following languages over the alphabet $\Sigma = \setdef{a, b}$:
+\[\begin{array}{l}
+L_1 = \setbuild{w}{w~\textrm{contains at least three a's}} \\
+L_2 = \setbuild{w}{w~\textrm{contains at least two b's}}
+\end{array}\]
+Show that each of $L_1$ and $L_2$ is regular and then show that their union, $\setunion{L_1}{L_2}$ is regular.
+\end{exer}
+
+\begin{thm}
+The set of regular languages is closed under the union operation.
+\end{thm}
+
+\begin{exer}
+Contemplate whether the set of regular languages is closed under the concatenation operation.
+\end{exer}
+
+
+
+\clearpage 
+
+\section{Nondeterministic Finite Automata}
+
+\begin{discussion}
+Nondeterminism is a concept that is central to the theory of computation. In a deterministic computation, there is always exactly one, unique, way for computation to proceed. In a nondeterministic computation, choices may exist for the next state at any point of the computation. There are a couple of ways to conceptualize nondeterminism. One is to think of all possibilities being explored independently, in parallel. Another is to think of being able to know somehow, as if told by an oracle, which one of the possibilities, if any, will ``work'' when followed and choosing that one.
+\end{discussion}
+
+\newcommand\exernfaOne{
+\begin{center}
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (9.7,-7.5) circle (3);
+\draw (9.7,-7.5) node {$q_0$};
+\draw [black] (23.5,-7.5) circle (3);
+\draw (23.5,-7.5) node {$q_1$};
+\draw [black] (37.7,-7.5) circle (3);
+\draw (37.7,-7.5) node {$q_2$};
+\draw [black] (37.7,-7.5) circle (2.4);
+\draw [black] (3,-7.5) -- (6.7,-7.5);
+\fill [black] (6.7,-7.5) -- (5.9,-7) -- (5.9,-8);
+\draw [black] (12.7,-7.5) -- (20.5,-7.5);
+\fill [black] (20.5,-7.5) -- (19.7,-7) -- (19.7,-8);
+\draw (16.6,-8) node [below] {$a$};
+\draw [black] (26.5,-7.5) -- (34.7,-7.5);
+\fill [black] (34.7,-7.5) -- (33.9,-7) -- (33.9,-8);
+\draw (30.6,-8) node [below] {$a,b$};
+\draw [black] (11.023,-10.18) arc (54:-234:2.25);
+\draw (9.7,-14.75) node [below] {$a,b$};
+\fill [black] (8.38,-10.18) -- (7.5,-10.53) -- (8.31,-11.12);
+\end{tikzpicture}
+\end{center}}
+
+\begin{exer}\label{exer:nfa1}
+The following is a state diagram of a nondeterministic finite automaton (NFA). Identify at least two ways in which it differs from a deterministic finite automaton. Describe the language that it recognizes.
+\exernfaOne
+\end{exer}
+
+\begin{discussion}
+Nondeterministic finite automata may also have arrows labeled $\emptystring$. These allow computation to proceed nondeterministically choosing to either stay at the current state or follow the arrow, without consuming any input. 
+\end{discussion}
+
+\begin{exer}
+The alphabet of the following nondeterministic finite automaton is simply $\setdef{a}$. Describe the language that is recognized by the NFA.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (9.6,-18.5) circle (3);
+\draw (9.6,-18.5) node {$q_0$};
+\draw [black] (20.5,-10.3) circle (3);
+\draw (20.5,-10.3) node {$q_1$};
+\draw [black] (20.5,-10.3) circle (2.4);
+\draw [black] (33.9,-10.3) circle (3);
+\draw (33.9,-10.3) node {$q_2$};
+\draw [black] (20.5,-23.3) circle (3);
+\draw (20.5,-23.3) node {$q_3$};
+\draw [black] (20.5,-23.3) circle (2.4);
+\draw [black] (37.2,-23.3) circle (3);
+\draw (37.2,-23.3) node {$q_4$};
+\draw [black] (29.4,-34.2) circle (3);
+\draw (29.4,-34.2) node {$q_5$};
+\draw [black] (2.6,-18.5) -- (6.6,-18.5);
+\fill [black] (6.6,-18.5) -- (5.8,-18) -- (5.8,-19);
+\draw [black] (12,-16.7) -- (18.1,-12.1);
+\fill [black] (18.1,-12.1) -- (17.16,-12.18) -- (17.76,-12.98);
+\draw (16,-14.9) node [below] {$\epsilon$};
+\draw [black] (31.347,-11.856) arc (-66.79808:-113.20192:10.526);
+\fill [black] (31.35,-11.86) -- (30.41,-11.71) -- (30.81,-12.63);
+\draw (27.2,-13.21) node [below] {$a$};
+\draw [black] (22.984,-8.639) arc (115.11324:64.88676:9.933);
+\fill [black] (22.98,-8.64) -- (23.92,-8.75) -- (23.5,-7.85);
+\draw (27.2,-7.2) node [above] {$a$};
+\draw [black] (12.35,-19.71) -- (17.75,-22.09);
+\fill [black] (17.75,-22.09) -- (17.22,-21.31) -- (16.82,-22.23);
+\draw (14.12,-21.41) node [below] {$\epsilon$};
+\draw [black] (23.5,-23.3) -- (34.2,-23.3);
+\fill [black] (34.2,-23.3) -- (33.4,-22.8) -- (33.4,-23.8);
+\draw (28.85,-23.8) node [below] {$a$};
+\draw [black] (35.45,-25.74) -- (31.15,-31.76);
+\fill [black] (31.15,-31.76) -- (32.02,-31.4) -- (31.2,-30.82);
+\draw (32.71,-27.38) node [left] {$a$};
+\draw [black] (27.5,-31.88) -- (22.4,-25.62);
+\fill [black] (22.4,-25.62) -- (22.52,-26.56) -- (23.29,-25.93);
+\draw (25.51,-27.32) node [right] {$a$};
+\end{tikzpicture}
+\end{center}
+
+\end{exer}
+
+\begin{defn}[$\epsilon$ extension]
+For any alphabet $\Sigma$, we write $\Sigma_\epsilon$ to denote $\setunion\Sigma{\setdef{\epsilon}}$.
+\end{defn}
+
+\begin{defn}[Nondeterministic finite automaton]
+A \defterm{nondeterministic finite automaton} (\defterm{NFA}) is a 5-tuple $(Q, \Sigma, \delta, q_0, F)$ where:
+\begin{enumerate}
+\item $Q$ is a finite set of states,
+\item $\Sigma$ is a finite alphabet,
+\item $\delta : \setproduct{Q}{\Sigma_\epsilon} \to \powerset{Q}$ is the transition function,
+\item $q_0 \in Q$ is the start state, and
+\item $F \subseteq Q$ is the set of accept states.
+\end{enumerate}
+
+\end{defn}
+
+\begin{exer}
+Describe the domain and range of the transition function of an NFA.
+\end{exer}
+
+\begin{exer}
+Provide a formal specification for the NFA of Exercise~\ref{exer:nfa1}.
+\end{exer}
+
+\begin{defn}[NFA computation]
+Let $N = (Q, \Sigma, \delta, q_0, F)$ be an NFA and $w$ be a string over the alphabet $\Sigma$. Then, we say that $N$ \defterm{accepts} $w$ if we can write $w$ as $w = x_1 x_2 \cdots x_n$, where each $x_i \in \Sigma_\epsilon$ and there exists a sequence of states, $r_0, r_1, \ldots, r_n \in Q$ such that:
+\begin{enumerate}
+\item $r_0 = q_0$,
+\item $r_{i+1} \in \delta(r_i, y_{i+1})$,\footnote{Note that $\delta(r_i, y_{i+1})$ is a \emph{set} of possible next states. Contrast the definitions of DFA and NFA.} for $i = 0, \ldots, n-1$, and
+\item $r_n \in F$.
+\end{enumerate}
+
+As with DFAs, we say that an NFA $N$ \defterm{recognizes} a language $A$ if $A = \setbuild{w}{N~\textrm{accepts}~w}$.
+\end{defn}
+
+\begin{exer}
+Consider again the language accepted by the following NFA:
+\exernfaOne
+Determine if it is possible to define a DFA that recognizes the same language.
+\end{exer}
+
+\begin{exer}
+Describe the language accepted by the following NFA. Then, determine if it is possible to define a DFA that recognizes the same language.
+\begin{center}
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (9.3,-10.5) circle (3);
+\draw (9.3,-10.5) node {$q_0$};
+\draw [black] (22.6,-10.5) circle (3);
+\draw (22.6,-10.5) node {$q_1$};
+\draw [black] (37,-10.5) circle (3);
+\draw (37,-10.5) node {$q_2$};
+\draw [black] (2.8,-10.5) -- (6.3,-10.5);
+\fill [black] (6.3,-10.5) -- (5.5,-10) -- (5.5,-11);
+\draw [black] (12.3,-10.5) -- (19.6,-10.5);
+\fill [black] (19.6,-10.5) -- (18.8,-10) -- (18.8,-11);
+\draw (15.95,-11) node [below] {$\epsilon$};
+\draw [black] (25.6,-10.5) -- (34,-10.5);
+\fill [black] (34,-10.5) -- (33.2,-10) -- (33.2,-11);
+\draw (29.8,-11) node [below] {$a$};
+\draw [black] (7.977,-7.82) arc (234:-54:2.25);
+\draw (9.3,-3.25) node [above] {$a$};
+\fill [black] (10.62,-7.82) -- (11.5,-7.47) -- (10.69,-6.88);
+\draw [black] (21.277,-7.82) arc (234:-54:2.25);
+\draw (22.6,-3.25) node [above] {$b$};
+\fill [black] (23.92,-7.82) -- (24.8,-7.47) -- (23.99,-6.88);
+\draw [black] (35.677,-7.82) arc (234:-54:2.25);
+\draw (37,-3.25) node [above] {$a$};
+\fill [black] (38.32,-7.82) -- (39.2,-7.47) -- (38.39,-6.88);
+\end{tikzpicture}
+\end{center}
+\end{exer}
+
+\begin{progexer}\happymac
+Develop a program that reads in a description of an NFA and produces a description of an equivalent DFA.
+\end{progexer}
+
+\begin{progexer}\happymac
+Develop a program that reads in a description of an NFA and then simulates its operation on an input string.
+\end{progexer}
+
+
+\begin{thm}
+Every nondeterministic finite automaton has an equivalent deterministic finite automaton.\footnote{}
+\end{thm}\footnotetext{For the purposes of this course, it will be sufficient for you to show a construction that is reasonably convincing and intuitively correct. Time permitting, we go over a proof of its correctness together in class.}
+
+\begin{corol}
+A language is regular if and only if some nondeterministic finite automaton recognizes it.
+\end{corol}
+
+\begin{exer}
+Convert the following NFAs to equivalent DFAs.
+
+\begin{tabular}{c@{\ \ \ \ \ \ \ \ \ \ \ \ \ }c}
+\\
+(a) & (b) \\
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (8.5,-10.6) circle (3);
+\draw (8.5,-10.6) node {$q_0$};
+\draw [black] (23.5,-10.6) circle (3);
+\draw (23.5,-10.6) node {$q_1$};
+\draw [black] (2.3,-10.6) -- (5.5,-10.6);
+\fill [black] (5.5,-10.6) -- (4.7,-10.1) -- (4.7,-11.1);
+\draw [black] (7.177,-7.92) arc (234:-54:2.25);
+\draw (8.5,-3.35) node [above] {$a$};
+\fill [black] (9.82,-7.92) -- (10.7,-7.57) -- (9.89,-6.98);
+\draw [black] (11.156,-9.218) arc (111.0991:68.9009:13.457);
+\fill [black] (20.84,-9.22) -- (20.28,-8.46) -- (19.92,-9.4);
+\draw (16,-7.82) node [above] {$a,b$};
+\draw [black] (20.718,-11.712) arc (-73.41019:-106.58981:16.525);
+\fill [black] (11.28,-11.71) -- (11.91,-12.42) -- (12.19,-11.46);
+\draw (16,-12.9) node [below] {$b$};
+\end{tikzpicture}
+
+&
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (9.9,-9.8) circle (3);
+\draw (9.9,-9.8) node {$q_0$};
+\draw [black] (28.1,-9.8) circle (3);
+\draw (28.1,-9.8) node {$q_1$};
+\draw [black] (19.3,-23.2) circle (3);
+\draw (19.3,-23.2) node {$q_2$};
+\draw [black] (4,-9.8) -- (6.9,-9.8);
+\fill [black] (6.9,-9.8) -- (6.1,-9.3) -- (6.1,-10.3);
+\draw [black] (12.537,-8.378) arc (113.11693:66.88307:16.462);
+\fill [black] (25.46,-8.38) -- (24.92,-7.6) -- (24.53,-8.52);
+\draw (19,-6.56) node [above] {$\epsilon$};
+\draw [black] (25.385,-11.068) arc (-69.64162:-110.35838:18.353);
+\fill [black] (12.61,-11.07) -- (13.19,-11.82) -- (13.54,-10.88);
+\draw (19,-12.71) node [below] {$a$};
+\draw [black] (11.62,-12.26) -- (17.58,-20.74);
+\fill [black] (17.58,-20.74) -- (17.53,-19.8) -- (16.71,-20.38);
+\draw (14,-17.86) node [left] {$a$};
+\draw [black] (21.98,-21.877) arc (144:-144:2.25);
+\draw (26.55,-23.2) node [right] {$b$};
+\fill [black] (21.98,-24.52) -- (22.33,-25.4) -- (22.92,-24.59);
+\draw [black] (20.95,-20.69) -- (26.45,-12.31);
+\fill [black] (26.45,-12.31) -- (25.6,-12.7) -- (26.43,-13.25);
+\draw (24.31,-17.83) node [right] {$a,b$};
+\end{tikzpicture}
+\end{tabular}
+
+\end{exer}
+
+\begin{discussion}
+You may have already proved the following theorem. Try proving it again, using the notion of an NFA that we have now defined. 
+\end{discussion}
+
+\begin{thm}
+The set of regular languages is closed under the union operation.
+\end{thm}
+
+\begin{thm}
+The set of regular languages is closed under the concatenation operation.
+\end{thm}
+
+\begin{thm}
+The set of regular languages is closed under the star operation.
+\end{thm}
+
+\begin{corol}
+The set of regular languages is closed under the regular operations (Definition~\ref{def:regops}).
+\end{corol}
+
+\newcommand\charA{{\texttt{a}}}
+\newcommand\charB{{\texttt{b}}}
+
+\begin{stmt}\label{stmt:nfas}
+All of the following languages are regular.
+\begin{itemize}
+\item $L_1 = \setbuild{\charA^n\charB\charA^m}{n, m \geq 0, n \equiv_3 m}$
+\item $L_2 = \setbuild{w\in\setstar{\setdef{0-9}}}{
+\parbox{4in}{$w$~corresponds to the decimal encoding of a natural number whose encoding contains, as a substring,
+			the encoding of a natural number that is divisible by 3}
+			}$
+\item $L_3 = \setbuild{w\in\setstar{\setdef{\charA, \charB, \texttt{c}}}}{|w| \geq 2\ \textrm{and}\ w\ \textrm{begins and ends with the same symbol}}$
+
+
+%\item $L_1 = \setbuild{w}{\textrm{every \texttt{a} is immediately followed by a \texttt{b}}}$
+%\item $L_2 = \setbuild{w}{w~\textrm{contains an even number of \texttt{a}'s and an odd number of \texttt{b}'s}}$
+%\item $L_3 = \setbuild{w}{w~\textrm{contains the substring \texttt{baa}}}$
+%\item $L_4 = \setbuild{w}{w~\textrm{does not contain the substring \texttt{aab}}}$
+%\item $L_5 = \setbuild{w}{w~\textrm{has length at least 3 and its third symbol is a}~\texttt{b}}$
+%\item $L_6 = \setbuild{w}{w~\textrm{starts with \texttt{a} and has odd length, or starts with \texttt{b} and has even length}}$
+%\item $L_7 = \setbuild{w}{\textrm{every odd position of}~w~\textrm{is an}~\texttt{a}}$
+%\item $L_8 = \setdef{\emptystring, \texttt{a}}$
+%\item $L_9 = \emptyset$
+%\item $L_{10} = $ the set of all strings over $\Sigma_{\ref{stmt:dfas}}$ except the empty string
+\end{itemize}
+\end{stmt}
+
+
+
+
+\section{Regular Expressions}\label{sec:regexp}
+
+
+\begin{defn}[Regular expression]
+Given an alphabet $\Sigma$, a \defterm{regular expression}, $R$, is defined as one of:
+\begin{enumerate}
+\item $\emptyset$,
+\item $\emptystring$,
+\item $a$ for some $a \in \Sigma$,
+\item $(R_1 + R_2)$, where $R_1$ and $R_2$ are regular expressions,
+\item $(R_1 \cdot R_2)$, where $R_1$ and $R_2$ are regular expressions,
+\item ${R_1}^*$, where $R_1$ is a regular expression.
+\end{enumerate}
+
+For convenience, we may omit parentheses in an expression, in which case the order of precedence of the latter three operators is: $*$, then $\cdot$, then $+$.\footnote{i.e. $(R_1 + {R_2}^* \cdot R_3) = (R_1 + (({R_2}^*) \cdot R_3))$ } Also, for convenience, we write $R^+$ for $R^*$, $R^k$ for the concatenation of $k$ $R$'s with each other, and $R_1 R_2$ (omitting the dot) for $R_1 \cdot R_2$.
+\end{defn}
+
+\begin{discussion}
+The purpose of regular expressions is to describe a language exclusively by means of single symbols from the alphabet, the special symbols $\emptyset, \emptystring, \union, \circ, *$, and parentheses.
+\end{discussion}
+
+\begin{defn}[Language of a regular expression]
+The language represented by a regular expression, $R$, written as $\langof R$, is defined as:
+\begin{enumerate}
+\item $\langof\emptyset = \emptyset$.
+\item $\langof\emptystring = \setdef\emptystring$.
+\item $\langof{a} = \setdef{a}$ for any $a \in \Sigma$.
+\item $\langof{R_1 + R_2} = \setunion{\langof{R_1}}{\langof{R_2}}$
+\item $\langof{R_1 \cdot R_2} = {\langof{R_1}}\circ{\langof{R_2}}$
+\item $\langof{R^*} = \left(\langof{R}\right)^*$
+\end{enumerate}
+Note, the latter three map regular expressions, on the left, to regular operations on languages, on the right.
+\end{defn}
+
+\begin{exer}
+For each regular expression that follows, describe the language it represents as concisely as possible. Assume the language is $\Sigma = \setdef{0, 1}$. Note that we use the shorthand of $\Sigma$ inside a regular expression to represent $(0 + 1)$.
+\begin{enumerate}
+\item $0^*10^*$
+\item $\Sigma^*1\Sigma^*$
+\item $\Sigma^*001\Sigma^*$
+\item $1^*(01^+)^*$
+\item $(\Sigma\Sigma\Sigma)^*$
+\item $01 + 10$
+\item $0 + 1 + 0\Sigma^*0 + 1\Sigma^*1$
+\item $(0 + \emptystring)(1 + \emptystring)$
+\item $1^*\emptyset$
+\item $\emptyset^*$
+\end{enumerate}
+\end{exer}
+
+\begin{exer}
+Write a regular expression that represents the language 
+\[\setbuild{w\in\setstar{\setdef{a, b}}}{w~\textrm{contains an odd number of $a$'s}}.\]
+\end{exer}
+
+\begin{exer}
+~\\Let $L_{\mathrm{float}}$ be defined as in Exercise~\ref{exer:floatingpoint}:
+\[L_{\mathrm{float}} = \setbuild{w}{w~\textrm{is the string representation of a floating point number}}\]
+Let $D = \setdef{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}$. Write a regular expression, $R$, such that $\langof R = L_{\mathrm{float}}$.
+\end{exer}
+
+\begin{lemma}
+If a language is described by a regular expression, then there exists an NFA that recognizes the same language.
+\end{lemma}
+
+\begin{discussion}
+For the next lemma that you prove, consider introducing a generalized type of nondeterministic finite automaton (GNFA) in which the arrows are labeled with regular expressions (instead of single symbols). Given a DFA, it should be straightforward to convert it to such a GNFA with the additional properties that it has one single start state that has no incoming arrows, one single accept state that has no outgoing arrows, and one arrow going from every state to every other state including the state itself. Then, show how such a GNFA with $n$ number of states can be shrunk down to an equivalent GNFA with only two states (the start and accept states) and a single arrow between them, labeled with a regular expression.
+
+\noindent For example, the following portion of such an automaton:
+\begin{center}
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (9.9,-9.8) circle (3);
+\draw [black] (23.6,-9.8) circle (3);
+\draw [black] (38.2,-9.8) circle (3);
+\draw (42,-9.8) node [right] {$...$};
+\draw [black] (4,-9.8) -- (6.9,-9.8);
+\draw (3.5,-9.8) node [left] {$...$};
+\fill [black] (6.9,-9.8) -- (6.1,-9.3) -- (6.1,-10.3);
+\draw [black] (12.9,-9.8) -- (20.6,-9.8);
+\fill [black] (20.6,-9.8) -- (19.8,-9.3) -- (19.8,-10.3);
+\draw (16.75,-10.3) node [below] {$a$};
+\draw [black] (22.277,-7.12) arc (234:-54:2.25);
+\draw (23.6,-2.55) node [above] {$b$};
+\fill [black] (24.92,-7.12) -- (25.8,-6.77) -- (24.99,-6.18);
+\draw [black] (26.6,-9.8) -- (35.2,-9.8);
+\fill [black] (35.2,-9.8) -- (34.4,-9.3) -- (34.4,-10.3);
+\draw (30.9,-10.3) node [below] {$c$};
+\end{tikzpicture}
+\end{center}
+might be simplified in one step to:
+\begin{center}
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (9.9,-9.8) circle (3);
+\draw [black] (38.2,-9.8) circle (3);
+\draw (42,-9.8) node [right] {$...$};
+\draw [black] (4,-9.8) -- (6.9,-9.8);
+\draw (3.5,-9.8) node [left] {$...$};
+\fill [black] (6.9,-9.8) -- (6.1,-9.3) -- (6.1,-10.3);
+\draw [black] (12.9,-9.8) -- (35.2,-9.8);
+\fill [black] (35.2,-9.8) -- (34.4,-9.3) -- (34.4,-10.3);
+\draw (24.05,-10.3) node [below] {$ab^*c$};
+\end{tikzpicture}
+\end{center}
+
+\end{discussion}
+
+\begin{lemma}
+If a language is recognized by a DFA, then there exists a regular expression that represents the same language.
+\end{lemma}
+
+\begin{thm}
+A language is regular if and only if some regular expression describes it.
+\end{thm}
+
+\clearpage
+
+\section{Regular and Non-regular Languages}
+
+\begin{discussion}
+Are there languages that are not regular?
+\end{discussion}
+
+% can talk about countably infinite # of reg languages, but uncountably infinite number of languages on non-empty alphabet - so more languages than regular languages
+
+\begin{thm}
+Every finite language is regular.
+\end{thm}
+
+\begin{defn}[Reverse of a language]
+For any language $A$, let $\stringrev{A} = \setbuild{\stringrev{w}}{w \in A}$. 
+\end{defn}
+
+\begin{thm}
+If $A$ is a regular language, so is $\stringrev{A}$.
+\end{thm}
+
+\begin{exer}
+Let
+\[
+\Sigma_3 = \left\{ \left[\begin{array}{c}0\\0\\0\end{array}\right],
+			   \left[\begin{array}{c}0\\0\\1\end{array}\right],
+			  \left[\begin{array}{c}0\\1\\0\end{array}\right],
+		          \cdots,
+		          \left[\begin{array}{c}1\\1\\1\end{array}\right]
+		  \right\}
+\]
+$\Sigma_3$ contains all size 3 columns of 0s and 1s. A string of symbols in $\Sigma_3$ may be read as three rows of 0s and 1s. Consider each row to be a binary number and let
+\[
+B = \setbuild{w\in\setstar{\Sigma_3}}{\textrm{the bottom row of $w$ is the sum of the top two rows}}.
+\]
+
+For example,
+\[
+\left[\begin{array}{c}0\\0\\1\end{array}\right]
+\left[\begin{array}{c}1\\0\\0\end{array}\right]
+\left[\begin{array}{c}1\\1\\0\end{array}\right]
+\in B, \quad \quad \textrm{but} \quad \quad
+\left[\begin{array}{c}0\\0\\1\end{array}\right]
+\left[\begin{array}{c}1\\0\\1\end{array}\right]
+\notin B.
+\]
+Show that $B$ is regular. 
+\hint Working with $\stringrev B$ is easier.
+\end{exer}
+
+\begin{discussion}
+The preceding exercise shows that DFAs are powerful enough to recognize (i.e. \emph{compute}) binary addition.
+\end{discussion}
+
+\begin{thm}
+Let $B_n = \setbuild{\charA^k}{k~\textrm{is a multiple of}~n}$. For every $n \geq 1$, the language $B_n$ is regular.
+\end{thm}
+
+\begin{exer}
+Let $D = \setbuild{\charA^n \charB^n}{n \geq 0}$. Formulate a statement regarding the regularity of the language $D$ and prove it.
+\end{exer}
+
+\begin{discussion}
+We now prove a general theorem that is true for every regular language. This theorem will not be particularly useful if we already know a language is regular, and it won't help us show that a particular language \emph{is} regular if we don't already know. However, it can be very useful for constructing proofs by contradiction to show that a particular language \emph{is not} regular.
+\end{discussion}
+
+\begin{lemma}
+Let $M = (Q, \Sigma, \delta, q_0, F)$ be a DFA. If $M$ accepts any string of length $|Q|$ or greater, then that string must force $M$ to visit some state in $Q$ more than once (thus traversing at least one loop).
+\end{lemma}
+
+\begin{thm}[Pumping lemma for regular languages]
+If $A$ is a regular language, then there exists a number $p$ (called the \defterm{pumping length}) such that if $s$ is any string in $A$ of length at least $p$, then $s$ can be divided into three pieces, $s = xyz$, satisfying the following conditions:
+\begin{enumerate}
+\item $xy^iz \in A$ for all $i \geq 0$,
+\item $|y| > 0$,\footnote{} and
+\item $|xy| \leq p$.
+\end{enumerate}
+\end{thm}\footnotetext{i.e. $y \neq \emptystring$.}
+
+\begin{discussion}
+Use the pumping lemma to prove the following by contradiction.
+\end{discussion}
+
+\begin{thm}
+Let $D = \setbuild{\charA^n \charB^n}{n \geq 0}$. $D$ is not regular.
+\end{thm}
+
+\begin{thm}
+Let $E = \setbuild{w \in \setstar{\setdef{\charA, \charB}}}{w~\textrm{has an equal number of \charA{s} and \charB{s}}}$. $E$ is not regular.
+\end{thm}
+
+\begin{thm}
+Let $G = \setbuild{\charA^n \charB^m}{n > m}$. $G$ is not regular.
+\end{thm}
+
+\begin{thm}
+Let $BP = \setbuild{w \in \setstar{\setdef{), (}}}{\textrm{the parentheses are balanced}}$. $BP$ is not regular.
+\end{thm}
+
+
+\begin{thm}
+Let $P = \setbuild{w\stringrev{w}}{w \in \setstar{\setdef{\charA, \charB}}}$. $P$ is not regular.
+\end{thm}
+
+\begin{thm}
+Let $O = \setbuild{\charA^{n^2}}{n \geq 0}$. $O$ is not regular.
+\end{thm}
+
+
+\vspace{.3in}
+\hrule 
+\vspace{.3in}
+
+\begin{discussion}
+After completing a body of work, it is satisfying and helpful to put together the ideas in your mind -- to see the forest beyond the trees. Take some time to do that by considering the following questions.
+\end{discussion}
+
+\begin{exer}
+So far, we have explored several formalisms used to describe languages. How are they related? How are they different? Are there aspects that are somewhat surprising? What are their computational abilities and limitations? Type up a page with your \emph{thoughtful} reflections.
+\end{exer}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Context-Free Languages}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\part{Computability}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\part{Complexity}
+
+
+
+% TODO
+% cardinality of sets - lewis pg 20 (sec 1.4)
+
+
+%\part{}
+%\chapter{}
+%\section{}
+%\subsection{}
+%\subsubsection{}
+%\paragraph{}
+%\subparagraph{}
+
+
+
+\end{document}  

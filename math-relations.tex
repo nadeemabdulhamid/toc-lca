@@ -1,0 +1,85 @@
+\section{Relations and Functions}
+
+\begin{defn}[Relations]
+A \defterm{relation} on sets $A_1, \ldots, A_n$ is a subset of $\setproduct{A_1}{\setproduct{\ldots}{A_n}}$. A relation on 1, 2, or 3 sets is called a \defterm{unary}, \defterm{binary}, or \defterm{ternary} relation, respectively. For a particular relation $R$, we  write $R(a_i, \ldots, a_n)$ to indicate $(a_i, \ldots, a_n) \in R$. When $R$ is binary, \defterm{infix} notation is often used, $a_1\,R\,a_2$, to indicate $(a_1, a_2) \in R$.
+
+We may define a relation $R$ in several different ways. One is to list the elements of $R$, since $R$ is a set. Another is to describe a computational procedure that defines $R$. For binary relations, we may also build a table (called an \defterm{adjacency matrix}) or draw a directed graph to represent it.
+\end{defn}
+
+\begin{discussion}
+For example, given a set of people, $N = \setdef{\textrm{Alice}, \textrm{Bob}, \textrm{Charlie}, \textrm{Dee}}$, and a set of desserts, $D = \setdef{\textrm{cake}, \textrm{ice cream}, \textrm{pie}}$, we can define a binary relation, \textit{Likes}, that tells us what dessert(s) a person likes: 
+\[
+	\textit{Likes} = \setdef{ (\textrm{Alice}, \textrm{ice cream}), 
+					   (\textrm{Dee}, \textrm{cake}),
+					   (\textrm{Charlie}, \textrm{cake}),
+					   (\textrm{Dee}, \textrm{pie}) } \]
+Note that $\textit{Likes} \subseteq \setproduct N D$.
+\end{discussion}
+
+\begin{exer}
+Write out an adjacency matrix corresponding to the \textit{Likes} relation defined above. Also draw a directed graph that represents the same relation.
+\end{exer}
+
+\begin{discussion}
+Relations are very general. They allow an object to be related to any number of other objects at the same time, or none at all. (See the \textit{Likes} example above.) Sometimes we want a more restricted notion, in which each object is related uniquely to a single other object.
+\end{discussion}
+
+\begin{defn}[Functions]
+A \defterm{function} $f$ from a set $A$ to a set $B$ is a binary relation that is a subset of $\setproduct A B$ with the additional constraint that for each $a \in A$, there is exactly one ordered pair in $f$ with first component $a$.
+
+When $(a, b) \in f$, we write $f(a) = b$. A function is also sometimes called a \defterm{mapping} and we say that $f$ maps $a$ to $b$.
+
+We use the notation $f : A \to B$ to mean that $f$ is a function from the set $A$ to the set $B$. Additionally:
+\begin{itemize}
+\item $A$ is called the \defterm{domain} of $f$.
+\item $B$ is called the \defterm{range} of $f$.
+\item If $f(a) = b$, we say that $b$ is the \defterm{image} of $a$ under the function $f$.
+\end{itemize}
+\end{defn}
+
+\begin{exer}
+Which of the following logical statements correspond(s) to the additional constraint that must hold on a function?
+\begin{enumerate}[label=(\alph*)]
+\item $\forall x \in A\ \left(
+		(\forall y, z \in B\ ((x, y) \in f \implies (x, z) \notin f) 
+		\ \land\ (\exists y \in B\ (x, y) \in f )
+		\right)$
+\item $\forall x \in A\  \left(
+		(\forall y, z \in B\ ((x, y) \in f \wedge (x, z) \in f \implies y = z) 
+		\ \land\ (\exists y \in B\ (x, y) \in f )
+		\right)$
+\item $\forall x \in A\ \exists y \in B\ 
+		((x, y) \in f) \ \land\  (\forall z \in B\ (x, z) \in f \ \land\ y = z )  $
+\item $\forall x \in A\ \exists y \in B\ 
+		((x, y) \in f) \ \land\  (\forall z \in B\  (x, z) \in f \implies y = z )  $
+\end{enumerate}
+\end{exer}
+
+\begin{defn}[Function properties]
+A function $f : A \to B$ is said to be:
+\begin{itemize}
+\item \defterm{one-to-one} iff no two elements of $A$ map to the same element of $B$. That is, iff $f(x) = f(y)$ implies that $x = y$ for all $x$ and $y$ in $A$.
+\item \defterm{onto} iff every element of $B$ is the value of some element of $A$. That is, if all the elements of $B$ are ``covered'' by the function. 
+\item a \defterm{bijection} if it is both one-to-one and onto.
+\end{itemize}
+\end{defn}
+
+\begin{defn}[Composition of relations]
+If $Q$ and $R$ are binary relations, then their \defterm{composition}, $\bm{Q \circ R}$, is the relation $\setbuild{(a, b)}{\exists c\ (a, c) \in Q \land (c, b) \in R}$.
+
+The composition of two functions, $f : A \to B$ and $g : B \to C$, is a function $h : A \to C$ such that $h(a) = g(f(a))$ for each $a \in A$.
+\end{defn}
+
+\begin{exer}
+Let $R = \setdef{(a, b), (a, c), (c, d), (a, a), (b, a)}$. What is $R \circ R$, the composition of $R$ with itself? Is either $R$ or $R \circ R$ a function?
+\end{exer}
+
+\begin{exer}
+Let $f : A \to B$ and $g : B \to C$. Let $h = f \circ g$ be their composition. (So, $h : A \to C$.) In each of the following cases state necessary and sufficient conditions on $f$ and $g$ for $h$ to be as specified.
+\begin{enumerate}[label=(\alph*)]
+\item Onto.
+\item One-to-one.
+\item A bijection.
+\end{enumerate}
+\end{exer}
+

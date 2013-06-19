@@ -1,0 +1,50 @@
+\section{String Operations}
+
+\begin{discussion}
+We have previously defined the concepts of strings and languages in the \nameref{chapter:intro}. Here, we provide some more formal definitions of string operations and prove a few properties.
+\end{discussion}
+
+\begin{defn}[String prefix, suffix, substring]
+A string $v$ is a \defterm{substring} of $w$ if and only if there are strings $x$ and $y$ such that $w = xvy$. If $w = xv$ for some $x$, then $v$ is a \defterm{suffix} of $w$. If $w = vy$ for some $y$, then $v$ is a \defterm{prefix} of $w$.
+\end{defn}
+
+\begin{defn}[String repeated concatenation - inductive definition]
+For any string $x$ on an alphabet $\Sigma$ and natural number $k$, the string $x^k$ is defined as:
+\begin{itemize}
+\item $x^0 = \emptystring$ \quad (the empty string)
+\item $x^{k+1} = x^k \circ x$ \quad for $i \geq 0$
+\end{itemize}
+\end{defn}
+
+\begin{defn}[String reversal - inductive definition]
+The \defterm{reversal} of a string $w$, denoted $\stringrev{w}$, is defined as:
+\begin{itemize}
+\item If $w$ is a string of length $0$, then $\stringrev{w} = w = \emptystring$.
+\item If $w$ is a string of length $n+1 > 0$, then $w = au$ for some $a \in \Sigma$ and $u$ suffix of $w$, and $\stringrev{w} = \stringrev{u}a$.
+\end{itemize}
+Based on this definition, you may use the fact that, for any $a \in \Sigma$ and $u \in \setstar\Sigma$,
+\begin{itemize}
+\item $\stringrev{(ua)} = a\stringrev{u}$
+\item $\stringrev{(au)} = \stringrev{u}a$
+\end{itemize}
+\end{defn}
+
+\begin{exer}
+Provide an inductive definition for the concatenation of two strings $x$ and $y$.
+\end{exer}
+
+\begin{stmt}
+For any strings $x$ and $y$ over an alphabet $\Sigma$, $\stringrev{(xy)} = \stringrev{y}\stringrev{x}$.
+\end{stmt}
+
+\begin{stmt}
+For any string $x$ over an alphabet $\Sigma$, $\stringrev{(\stringrev{x})} = x$.
+\end{stmt}
+
+\begin{stmt}
+For any strings $v$ and $w$ over an alphabet $\Sigma$, if $v$ is a substring of $w$, then $\stringrev v$ is a substring of $\stringrev w$.
+\end{stmt}
+
+\begin{stmt}
+For any string $w$ and $i \geq 0$,\ \ $\stringrev{(w^i)} = (\stringrev w)^i$.
+\end{stmt}

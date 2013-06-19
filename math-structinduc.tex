@@ -1,0 +1,43 @@
+\section{Structural Induction}
+
+\begin{discussion}
+This section may be skipped until you are ready to begin the section on~\nameref{sec:regexp} (page~\pageref{sec:regexp}).
+\end{discussion}
+
+
+We have previously mentioned \emph{inductive definitions} of a set. An inductive, or recursive, definition allows you to use the principle of structural induction to show some property is true of every item in the set. (Mathematical induction is simply a very specialized form of structural induction, based on the recursive definition of the set of natural numbers.)
+
+\begin{defn}[Simple algebraic expressions]
+We provide a simple, recursive, definition of algebraic expressions. To keep things simple, we restrict ourselves to only two binary operators, $+$ and $*$, and parentheses. 
+
+The set of \defterm{algebraic expressions}, denoted $Expr$, is defined by:
+\begin{enumerate}
+\item $\underline{a} \in Expr$ for any single-letter $a$.
+\item For any $x, y \in Expr$, \underline{$x + y$} and \underline{$x * y$} are also in $Expr$.
+\item For any $x \in Expr$, \underline{$(x)$} is also in $Expr$.
+\end{enumerate}
+\end{defn}
+
+\begin{discussion}
+Based on the definition of $Expr$ above, we can prove properties using a corresponding principle of structure induction:
+\\~
+\end{discussion}
+
+\begin{axiom}[Structural Induction on Algebraic Expressions]
+Given a property or statement that depends on an algebraic expression, $P(x)$, in order to show that $P(x)$ is true for all $x \in Expr$, it is sufficient to show (3 cases, corresponding to the three cases of the definition):
+
+\begin{enumerate}
+\item $P(\underline{a})$ is true for any single-letter $a$.
+\item For any $x, y \in Expr$, if $P(x)$ and $P(y)$ are true, then $P(\,\underline{x + y}\,)$ and $P(\,\underline{x * y}\,)$ are true.\footnote{The assumptions $P(x)$ and $P(y)$ in this case are the \emph{two} inductive hypotheses.}
+\item For every $x \in Expr$, if $P(x)$ is true, then $P(\,\underline{(x)}\,)$ is true.
+\end{enumerate}
+
+\end{axiom}
+
+\begin{thm}
+For any algebraic expression $x \in Expr$, $x$ has equal numbers of left and right parentheses.
+\end{thm}
+
+\begin{thm}
+For any algebraic expression $x \in Expr$, $x$ is made up of an odd number of symbols.
+\end{thm}

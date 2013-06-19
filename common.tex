@@ -1,0 +1,112 @@
+\usepackage[top=1in,left=1in,right=1in,bindingoffset=5mm,twoside]{geometry}
+
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{framed}
+\usepackage[framed]{ntheorem}
+\usepackage{dsfont}
+\usepackage{bm}
+\usepackage{quoting}
+\usepackage{setspace}
+\usepackage{xifthen}
+\usepackage{textcomp}
+\usepackage{nameref}
+\usepackage{tikz}
+\usepackage{graphicx}
+
+\setlength{\parskip}{.5ex}
+
+\theoremstyle{margin}
+\theorembodyfont{\normalfont}
+\theoremseparator{.}
+\theorempreskipamount=\baselineskip
+\theorempostskipamount=-1.5em
+
+\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
+\newtheorem{defn}{Definition}  %[chapter]
+
+\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
+\newtheorem{example}[defn]{Example}
+
+\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
+\newtheorem{axiom}[defn]{Axiom}
+
+\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
+\newtheorem{corol}[defn]{Corollary}
+
+\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
+\newtheorem{thmex}[defn]{Example Theorem}
+
+\theoremheaderfont{\scshape}
+\theoremindent\parindent
+\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
+\newtheorem*{proofex}[defn]{Example Proof}
+\theoremheaderfont{\normalfont\bfseries}
+\theoremindent0cm
+
+\theoremstyle{plain}
+\theorembodyfont{\normalfont}
+%\theoremindent=\parindent
+%\theoremseparator{.}
+
+\theorempreskipamount=-2em
+\theorempostskipamount=-.75em
+
+\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
+\newframedtheorem{thm}[defn]{Theorem}
+%\newtheorem{thm}[defn]{Theorem}
+
+\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
+\newframedtheorem{lemma}[defn]{Lemma}
+
+\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
+\newframedtheorem{stmt}[defn]{Statement}
+
+\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
+\newframedtheorem{exer}[defn]{Exercise}
+
+\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
+\newframedtheorem{progexer}[defn]{Programming Exercise}
+
+
+\newenvironment{exersoln}[1]{\textbf{Exercise #1 Solution.}\begin{quote}}{\end{quote}}
+\newenvironment{stmtsoln}[1]{\textbf{Statement #1 Proof.}\begin{quote}}{\end{quote}}
+\newenvironment{thmsoln}[1]{\textbf{Theorem #1 Proof.}\begin{quote}}{\end{quote}}
+\newcommand\answer{\par\textbf{\emph{Answer}.\ }}
+\newcommand\proof{\par\textbf{\emph{Proof}.\ }}
+
+\newenvironment{exenumerate}{\begin{enumerate}[label=(\alph*),leftmargin=3em]}{\end{enumerate}}
+%\newenvironment{discussion}{\begin{quoting}[vskip=0pt]}{\end{quoting}}
+\newenvironment{discussion}{\begin{leftbar}\noindent}{\end{leftbar}}
+%\newenvironment{discussion}{}{}
+
+\newcommand\defterm[1]{\emph{\textbf{#1}}}  % a term being defined
+\newcommand\hint{\\ \emph{Hint:}\ }
+\newcommand*{\happymac}{\hfill\includegraphics[height=2em]{happymac.png}\\}
+
+\newcommand\emptystring\epsilon
+\newcommand\definedas{\ \equiv\ }
+\newcommand\implies\to
+\newcommand*{\qed}{\hfill\ensuremath{\square}}
+
+\newcommand\naturals{\mathds{N}}
+
+\newcommand\setbuildsepname{colon}
+\newcommand\setbuildsep{:}
+\newcommand\setdef[1]{\left\lbrace #1 \right\rbrace}
+\newcommand\setbuild[2]{\left\lbrace #1\ \setbuildsep\ #2 \right\rbrace}
+\newcommand\union\cup
+\newcommand\intersection\cap
+\newcommand\setunion[2]{#1\,\union\,#2}
+\newcommand\setintersection[2]{#1\,\intersection\,#2}
+\newcommand\setconcat[2]{#1\,\circ\,#2}
+\newcommand\setcomplement[1]{\overline{#1}}
+\newcommand\setstar[1]{#1^{*}}
+\newcommand\powerset[1]{\mathcal{P}(#1)}
+\newcommand\setproduct[2]{#1 \times #2}
+
+\newcommand\langof[1]{\mathcal{L}(#1)}
+
+\newcommand\stringrev[1]{#1^{\mathcal{R}}}
+
+

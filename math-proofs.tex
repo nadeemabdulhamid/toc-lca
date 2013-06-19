@@ -1,0 +1,142 @@
+\section{The ``P'' Word: Proofs}
+
+\begin{discussion}
+The only way to determine the truth or falsity of a mathematical statement is with a mathematical proof. A \defterm{proof} is a convincing logical argument that a statement is true. In mathematics, the argument must be airtight; that is, convincing in an absolute sense.
+
+A \defterm{theorem} is a mathematical statement that has been proven true. Generally we use the word theorem for statements of particular interest. In some cases, we prove statements only to assist us in the proof of another, more significant statement. Such statements are called \defterm{lemmas}. Sometimes, having proved a theorem, we are able to easily conclude some other related statements are true. These are called \defterm{corollaries} of the theorem.
+
+Proving theorems isn't always easy. Every proof is difference, since every proof is designed to establish a different result. However, with practice, you will realize that there are patterns, rules of thumb, and tricks of the trade that can be exploited in course of writing proofs. In giving proofs, rely on the definitions of terms and symbols, and feel free to use results that you have previously proved. When you have found a proof, you must write it up properly. A well-written proof is a sequence of complete statements, where each one follows by simple reasoning from previous statements in the sequence.
+
+In this section, you will practice writing a few proofs using certain techniques and patterns of argument that occur in proofs related to the theory of computation.
+\end{discussion}
+
+\subsection{Proof by construction}
+
+\begin{discussion}
+Many theorems state that a particular type of object exists. One way to prove such a theorem is to demonstrate how to \emph{construct} the object. In doing so, we show not only that a certain thing exists, we show something more - how to construct or find it. While we have proven something stronger than what we really needed to, it is often the case that stronger claims are easier to prove.
+\end{discussion}
+
+\begin{stmt}
+Assume that for any strings $x$ and $y$ over an alphabet $\Sigma$, $\stringrev{(\stringrev{x})} = x$ and $\stringrev{(xy)} = \stringrev{y}\stringrev{x}$.
+
+Then, given an alphabet $\Sigma$ and any string $w \in \setstar\Sigma$, there exists a string $v \in \setstar\Sigma$ such that $wv = \stringrev{(wv)}$.
+\end{stmt}
+
+\begin{discussion}
+A related use of this technique is disproof by counterexample. Prove that the following statement is \emph{false}.
+\end{discussion}
+
+\begin{stmt}
+Given sets $A$ and $B$, $\powerset{\setunion{A}{B}} \subseteq \setunion{\powerset{A}}{\powerset{B}}$.
+%For all integers $a, b,$ and $d$, if $ab$ is divisible by $d$, then either $a$ is divisible by $d$ or $b$ is divisible by $d$.
+\end{stmt}
+
+\subsection{Proof by contradiction}
+
+\begin{discussion}
+One common form of argument for proving a statement $P$ is to assume $\lnot P$ (the negation of $P$) and then show that this assumption leads to a contradiction. The logical axiom of excluded middle says that $(P \lor \lnot P)$. If we accept it, and we shall, then, since $\lnot P$ is not true, $P$ must be.
+\end{discussion}
+
+\begin{defn}[Rational numbers]
+A \defterm{rational number} can always be expressed as the fraction $\frac p q$ of two integers $p$ and $q$ where $q \neq 0$ and $p$ and $q$ have no common factor besides $1$ and $-1$. A number is \defterm{irrational} if it is not rational.
+\end{defn}
+
+\begin{stmt}
+$\sqrt 2$ is irrational.
+\hint The square of the square root of a number is the number itself.
+\hint If the square  of an integer $k^2$ is even, then the integer $k$ itself must be even.
+\hint An even number is one that can be written as $2m$ for some integer $m$.
+\end{stmt}
+
+\subsection{Proof by cases}
+
+\begin{stmt}
+Suppose that the postage required to mail a letter is always at least 6\textcent. 
+Then it is possible to apply any required postage to a letter given using only 2\textcent\ and 7\textcent\ stamps.
+\end{stmt}
+
+\subsection{Proof by mathematical induction}
+
+\begin{axiom}[Mathematical Induction]
+Given a property or statement that depends on a natural number, $P(n)$, if
+\begin{itemize}
+\item $P(b)$ is true for some integer $b$, called the base case (often $b = 0$), and
+\item for all natural numbers $n \geq b, P(n) \implies P(n+1)$
+\end{itemize}
+then
+\begin{itemize}
+\item $P(n)$ holds for all natural numbers $n \geq b$.
+\end{itemize}
+\end{axiom}
+
+\begin{discussion}
+The format for writing down a proof by induction (where $b = 0$) is as follows:
+
+\noindent\textsc{Proof}
+\\\defterm{Base case}: \emph{Prove that $P(0)$ is true.}
+
+\hskip5em \vdots
+
+\noindent\defterm{Inductive step}: Assume $P(n)$ for some $n \geq 0$. Call this the \defterm{inductive hypothesis (IH)}. Prove that under this assumption $P(n+1)$ is true.
+
+\hskip5em \vdots
+
+\noindent\emph{\textbf{Conclude}}, by the axiom of mathematical induction, that $P(n)$ holds for all $n \geq 0$.
+\end{discussion}
+
+\begin{stmt}
+For any $n \geq 0, \ 0 + 1 + 2 + \cdots + n = \frac{n^2 + n}{2}$.
+\end{stmt}
+
+\begin{discussion}
+Proofs by induction often conveniently follow the shape of an \defterm{inductive definition} of a function or set. An inductive definition of a set is one that defines the set in terms of other elements of the set. For such a definition to be useful, it must also include a base case. For example, an inductive definition of the set of natural numbers may be given as follows:
+\end{discussion}
+
+\begin{defn}[Natural numbers]
+The set of \defterm{natural numbers}, $\naturals$, is defined by the following:
+\begin{enumerate}
+\item $0 \in \naturals$
+\item If $n \in \naturals$, then $n+1 \in \naturals$.
+\item $\naturals$ is the smallest set satisfying (1) and (2).\footnote{This third condition is a technical constraint that is often left implicit in inductive definitions. In this case, if it were not there, the set $\setdef{0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, ...}$ would satisfy the definition according to (1) and (2).}
+\end{enumerate}
+\end{defn}
+
+\begin{discussion}
+For the next statement you prove, consider this inductive definition of the power set of a finite set.
+\end{discussion}
+
+\begin{defn}[Power set of a finite set]
+The \defterm{power set} of a finite set $A$, written $\powerset{A}$, is defined as:
+\begin{itemize}
+\item $\powerset{\emptyset} = \setdef{\emptyset}$
+\item $\powerset{\setunion{A}{\setdef x}} = \setunion{\powerset{A}}{ \setbuild{\setunion{Y}{\setdef{x}}}{Y \in \powerset{A}}  }$
+\end{itemize}
+\end{defn}
+
+\begin{stmt}
+For any finite set $A$, $|\powerset{A}| = 2^{|A|}$. 
+\hint Prove by induction on $n = |A|$.
+\end{stmt}
+
+\begin{discussion}
+We next use induction to establish another technique useful for proving relationships between sets.
+\end{discussion}
+
+\subsection{The Pigeonhole Principle}
+
+\begin{thm}[The Pigeonhole Principle]
+If $A$ and $B$ are finite setes and $|A| > |B|$, then there is no one-to-one function from $A$ to $B$.
+\end{thm}
+
+\begin{discussion}
+This is called the pigeonhole principle because it can be stated informally  as: Suppose we have $n$ pigeons and $k$ holes. Each pigeon flies into a hole. If $n > k$, then there must be at least one hole containing two or more pigeons.
+\end{discussion}
+
+\begin{defn}[Path in a binary relation]
+A \defterm{path} in a binary relation $R$ is a sequence $(a_1, \ldots, a_n)$ for some $n \geq 1$ such that $(a_i, a_{i+1}) \in R$ for $i = 1,\ldots,n-1$. The path is said to be from $a_1$ to $a_n$. The \defterm{length of a path} is the number of terms in the sequence. A \defterm{cycle} is a path $(a_1, \ldots, a_n)$ where all the $a_i$'s are distinct and also $(a_n, a_1) \in R$.
+\end{defn}
+
+\begin{stmt}
+Let $R$ be a binary relation on a finite set $A$, and let $a, b \in A$. If there is a path from $a$ to $b$ in $R$, then there is a path of length at most $|A|$.
+\end{stmt}
+

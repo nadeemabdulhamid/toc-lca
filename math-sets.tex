@@ -1,0 +1,147 @@
+\section{Sets}
+
+\begin{defn}[Sets]
+A \defterm{set} is a collection of objects. The objects in a set are called its \defterm{elements} or \defterm{members}. If $S$ is a set, we write $\bm{x \in S}$ to indicate ``$x$ is an element of $S$" (also pronounced as ``$S$ contains $x$" or ``$x$ is in $S$"). We write $\bm{x \notin S}$ to indicate $x$ is not in $S$.
+
+If there are exactly $n$ distinct elements in a set $S$, we say that $S$ is a \defterm{finite} set and that $n$ is the \defterm{cardinality} of $S$, denoted by $\bm{|S|}$. If a set is not finite, then it is \defterm{infinite}.
+\end{defn}
+
+\begin{discussion}
+A set has no structure other than membership. The order in which elements of a set are described does not matter, nor does repetition of its members. We specify a set by listing its element in curly braces, for example, $\setdef{a, b, c}$. 
+
+We'll use ellipses to describe sets with many elements when the meaning is clear, such as, $\setdef{a, b, c, \ldots, z}$ or $\setdef{0, 1, 2, 3, \ldots}$. 
+
+We'll also often use \defterm{set-builder notation} to specify a set by a rule or property of all elements in the set, for example, $\bm{\setbuild{x}{x > 10}}$  is ``the set of all $x$'s such that $x$ is greater than 10." Note that the \setbuildsepname, $\setbuildsep$, stands for ``such that", and the letter $x$ is arbitrary - you could just as well specify the same set as $\setbuild{q}{q > 10}$. When appropriate, we specify the set from which the $x$'s are drawn more explicitly, as in, $\bm{\setbuild{x}{x \in \naturals~\textrm{and}~x > 10}}$ - ``the set of all natural numbers $x$ such that $x$ is greater than 10."
+\end{discussion}
+
+\begin{exer}
+If $I = \setdef{1, 3, 9, 12}$ and $G = \setbuild{x \in I}{x~\textrm{is greater than 6}}$, what specifically are the elements of $G$?
+\end{exer}
+
+\begin{defn}[Special sets]
+A set with only one element in it is called a \defterm{singleton set}. The set with no members at all is called the \defterm{empty set}, written as $\bm{\emptyset}$. We refer to the set of all possible elements as the \defterm{universal set}, often denoted as $\bm U$.
+\end{defn}
+
+\begin{defn}[Subsets]
+A set $A$ is a \defterm{subset} of another set $B$ (denoted as $\bm{A \subseteq B}$) if every element of $A$ is also an element of $B$. In logical notation, \[A \subseteq B \definedas \forall x (x \in A \implies x \in B).\]
+If $A$ is a subset of $B$ but $A$ is not the same as $B$, we say that $A$ is a \defterm{proper subset} of $B$, written $A \subset B$.
+
+Note: One way to prove two sets are equal is to prove that each is a subset of the other. (See the sample proof of Theorem~\ref{theorem:absorption}.)
+\end{defn}
+
+
+\begin{exer}  % lewis pg 8
+Determine whether each of the following is true or false.
+\begin{exenumerate}
+\item $\emptyset \in \emptyset$
+\item $\emptyset \subseteq \emptyset$ 
+\item $\emptyset \in \setdef{\emptyset}$
+\item $\emptyset \subseteq \setdef{\emptyset}$
+\item $\setdef{a, b} \in \setdef{a, b, c, \setdef{a, b}}$
+\item $\setdef{a, b} \subseteq \setdef{a, b, c, \setdef{a, b}}$
+\end{exenumerate}
+\end{exer}
+
+\begin{defn}[Set operations]\label{definition:setops}
+Sets can be formed from existing ones using various set operations (assuming a universal set, $U$):
+\[
+\begin{array}{r@{\ \ \ }c@{\ \definedas\ }l}
+\textrm{the \defterm{union} of two sets, denoted by}~\union: & \setunion{A}{B} & \setbuild{x \in U}{x \in A \lor x \in B} \\
+\textrm{the \defterm{intersection} of two sets, denoted by}~\intersection: & \setintersection{A}{B} &
+					 \setbuild{x \in U}{x \in A \land x \in B} \\
+\textrm{the \defterm{difference} of two sets}: & A - B & \setbuild{x \in U}{x \in A \land x \notin B} \\
+\textrm{the \defterm{complement} of a set, denoted by an overbar:} & \setcomplement{A} &
+					 \setbuild{x \in U}{x \notin A}
+\end{array}
+\]
+
+\end{defn}
+
+\begin{exer}
+For each of the operations in Definition~\ref{definition:setops}, give a description in simple English of the resulting set, e.g. ``$\setunion{A}{B}$ contains \ldots"
+\end{exer}
+
+\begin{exer}
+What is another way to define the complement of a set, in terms of set difference?
+\end{exer}
+
+\begin{discussion}
+Certain properties of the set operations follow easily from their definitions. As a review, we restate several of them here and leave a couple as exercises for proof. 
+\end{discussion}
+
+\begin{axiom}[Properties of set operations]\label{axiom:setups}
+If $A$, $B$, and $C$ are sets, 
+\[\begin{array}{rl}
+\textit{(Union with empty)}	& \setunion{A}{\emptyset} = A \\
+\textit{(Intersection with empty)}	& \setintersection{A}{\emptyset} = \emptyset \\
+\textit{(Idempotency)} 	& \setunion{A}{A} = A \\
+					& \setintersection{A}{A} = A \\
+\textit{(Commutativity)} 	& \setunion{A}{B} = \setunion{B}{A} \\
+					&  \setintersection{A}{B} = \setintersection{B}{A} \\
+\textit{(Associativity)}		& \setunion{(\setunion{A}{B})}{C} = \setunion{A}{(\setunion{B}{C})} \\
+					& \setintersection{(\setintersection{A}{B})}{C} = \setintersection{A}{(\setintersection{B}{C})} \\
+\textit{(Distributivity)}		& \setintersection{(\setunion{A}{B})}{C} = \setunion{(\setintersection{A}{C})}
+															{(\setintersection{B}{C})} \\
+					& \setunion{(\setintersection{A}{B})}{C} = \setintersection{(\setunion{A}{C})}
+															{(\setunion{B}{C})} \\
+\end{array}\]
+\end{axiom}
+
+\begin{discussion}
+Here are some additional properties, proved as an example. For the purpose of illustration, we'll use a different approach to prove each of the two parts of this theorem. The proof of the first will proceed by showing that each set is a subset of the other. The proof of the second will use properties of the set operations from Axiom~\ref{axiom:setups}. As you will notice, for this course, we will take the liberty of using ``obvious'' properties of set operations without having to explicitly prove them first.
+\end{discussion}
+
+\begin{thmex}[Absorption properties of sets]\label{theorem:absorption}
+If $A$ and $B$ are sets,
+\[\begin{array}{ll}
+\textrm{(a)} & \setintersection{(\setunion{A}{B})}{A}= A \\
+\textrm{(b)} & \setunion{(\setintersection{A}{B})}{A} = A.
+\end{array}\]
+\begin{proofex}
+
+(a) Let $A$ and $B$ be sets. To prove $\setintersection{(\setunion{A}{B})}{A}= A$, we will proceed by showing (i) $\setintersection{(\setunion{A}{B})}{A} \subseteq A$ and (ii) $A \subseteq \setintersection{(\setunion{A}{B})}{A}$. 
+
+(i) Pick an element $x \in \setintersection{(\setunion{A}{B})}{A}$. By the definition of intersection, $x \in \setunion A B$ \emph{and} $x \in A$. Thus $\setintersection{(\setunion{A}{B})}{A} \subseteq A$.
+
+(ii) Pick an element $x \in A$. By definition of union, then, $x \in \setunion{A}{B}$. Then, by the definition of intersection, $x \in \setintersection{(\setunion{A}{B})}{A}$. Thus, $A \subseteq \setintersection{(\setunion{A}{B})}{A}$, and we have established that $\setintersection{(\setunion{A}{B})}{A}= A$.
+
+~
+
+\noindent (b) Let $A$ and $B$ be sets (and $U$ the universal set). Then, we have:
+\[\begin{array}{r@{\ =\ }lr}
+\setunion{(\setintersection{A}{B})}{A} & \setunion{(\setintersection{A}{B})}{(\setintersection{A}{U)}} 
+		& \textit{(intersection with universal set)} \\
+		& \setintersection{A}{(\setunion{B}{U})} & \textit{(distributivity)} \\
+		& \setintersection{A}{U}	& \textit{(union with universal set)} \\
+		& A & \textit{(intersection with universal set)} 
+\end{array}\]
+Thus, $\setunion{(\setintersection{A}{B})}{A} = A$.
+
+\qed
+\end{proofex}
+\end{thmex}
+
+\begin{thm}[DeMorgan's Laws]\label{theorem:demorgans}
+If $A$ and $B$ are sets,
+\[\begin{array}{ll} 
+\textrm{(a)} &  \setcomplement{\setunion{A}{B}} = \setintersection{\setcomplement{A}}{\setcomplement{B}}
+\\
+\textrm{(b)} & \setcomplement{\setintersection{A}{B}} = \setunion{\setcomplement{A}}{\setcomplement{B}}
+\end{array}\]
+\end{thm}
+
+Prove or disprove the following:
+
+\begin{stmt}\label{theorem:diffdistr}
+If $A$, $B$, and $C$ are sets,
+\[\begin{array}{ll} 
+\textrm{(a)} &  A - (\setunion{B}{C}) = \setunion{(A-B)}{(A-C)}
+\\
+\textrm{(b)} & A - (\setintersection{B}{C}) = \setintersection{(A-B)}{(A-C)}
+\end{array}\]
+\end{stmt}
+
+\begin{exer}
+How does Theorem~\ref{theorem:diffdistr} relate to Theorem~\ref{theorem:demorgans}?
+\end{exer}
+
