@@ -1,0 +1,86 @@
+\documentclass[10pt]{article}
+
+%\textwidth=7in
+%\textheight=9.5in
+%\topmargin=-1in
+%\headheight=0in
+%\headsep=.5in
+%\hoffset=-1in
+
+\input{common.tex}
+
+\title{Written Work - Mathematical Preliminaries: Sets} 	% TITLE OF THESE EXERCISES/PROOFS
+\author{Nadeem Abdul Hamid}      			% YOUR NAME HERE
+\date{\today}							% CHANGE IF YOU WANT
+
+\begin{document}
+
+\maketitle
+
+\begin{exersoln}{16}   % 5 is the number of the exercise
+	If $I = \setdef{1, 3, 9, 12}$ and $G = \setbuild{x \in I}{x~\textrm{is greater than 6}}$, what specifically 
+	are the elements of $G$?
+	
+	\answer    % precede your answers with \answer, proofs with \proof
+	Give your answer here.
+	\qed		% for coolness
+\end{exersoln}
+
+\begin{exersoln}{19}
+	Determine whether each of the following is true or false.
+\begin{exenumerate}
+\item $\emptyset \in \emptyset$
+\item $\emptyset \subseteq \emptyset$ 
+\item $\emptyset \in \setdef{\emptyset}$
+\item $\emptyset \subseteq \setdef{\emptyset}$
+\item $\setdef{a, b} \in \setdef{a, b, c, \setdef{a, b}}$
+\item $\setdef{a, b} \subseteq \setdef{a, b, c, \setdef{a, b}}$
+\end{exenumerate}
+
+	\answer
+	Give your answer here.
+\end{exersoln}
+
+\begin{exersoln}{21}
+	For each of the operations in Definition 20, give a description in simple English of the resulting set, e.g. ``$\setunion{A}{B}$ contains \ldots"
+
+	\answer
+	Give your answer here.
+\end{exersoln}
+
+\begin{thmsoln}{26 (DeMorgan's Laws)}
+	If $A$ and $B$ are sets,
+\[\begin{array}{ll} 
+\textrm{(a)} &  \setcomplement{\setunion{A}{B}} = \setintersection{\setcomplement{A}}{\setcomplement{B}}
+\\
+\textrm{(b)} & \setcomplement{\setintersection{A}{B}} = \setunion{\setcomplement{A}}{\setcomplement{B}}
+\end{array}\]
+
+	\answer
+	Give your answer here.
+\end{thmsoln}
+
+\begin{stmtsoln}{27}
+	If $A$, $B$, and $C$ are sets,
+\[\begin{array}{ll} 
+\textrm{(a)} &  A - (\setunion{B}{C}) = \setunion{(A-B)}{(A-C)}
+\\
+\textrm{(b)} & A - (\setintersection{B}{C}) = \setintersection{(A-B)}{(A-C)}
+\end{array}\]
+
+	\answer
+	Give your answer here.
+\end{stmtsoln}
+
+
+
+
+%\begin{exersoln}{#}
+%	
+%	\answer
+%	Give your answer here.
+%\end{exersoln}
+
+
+
+\end{document}

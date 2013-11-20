@@ -114,7 +114,7 @@ Write out a 5-tuple giving a formal definition for the DFA of Example~\ref{examp
 Let $M = (Q, \Sigma, \delta, q_0, F)$ be a finite automaton and let $w = a_1a_2\cdots a_n$ be a string where each $a_i$ is a member of the alphabet $\Sigma$. Then $M$ \defterm{accepts} $w$ if a sequence of states $r_0, r_1, \ldots, r_n \in Q$ exists with three conditions:
 \begin{itemize}
 \item $r_0 = q_0$,
-\item $\delta(r_i, w_{i+1}) = r_{i+1}$, for $i = 0, \ldots, n-1$, and
+\item $\delta(r_i, a_{i+1}) = r_{i+1}$, for $i = 0, \ldots, n-1$, and
 \item $r_n \in F$.
 \end{itemize}
 
@@ -168,6 +168,10 @@ All of the following languages over the alphabet $\Sigma_{\ref{stmt:dfas}} = \se
 \end{itemize}
 \end{stmt}
 
+\begin{exer}\label{stmt:dfas}
+Which languages of Exercise~\ref{exer:strslang} are regular?
+\end{exer}
+
 \begin{discussion}
 Many DFAs contain what is called a \defterm{dead state} or \defterm{error state} -- a non-final state that, once entered, is never exited, no matter what comes later in the input. 
 \end{discussion}
@@ -199,6 +203,15 @@ Show that $L_{\mathrm{float}}$ is regular.
 Develop a program that reads in a description of a DFA and then simulates its operation on an input string.
 \end{progexer}
 
+% talk about minimization
+% Talk about proving machine is "correct" - (program verification; formal specs)
+
+% Extra propositions to contemplate:
+%   About flipping accept/non-accept states & nature of recognized languages
+%   About finite languages being regular
+%   Are minimal (in sense of # of states) DFAs unique for every language?
+
+
 
 \clearpage
 \section{Regular Operations}
@@ -212,7 +225,7 @@ Since languages are sets, any set operation (union, intersection, difference, co
 Let $A$ and $B$ be languages. We define the three \defterm{regular operations} as follows:
 \begin{itemize}
 \item \defterm{Union}: $\setunion A B = \setbuild{x}{x \in A~\textrm{or}~x \in B}$
-\item \defterm{Concatenation}: $\setconcat A B = \setbuild{xy}{x \in A~\textrm{or}~y \in B}$
+\item \defterm{Concatenation}: $\setconcat A B = \setbuild{xy}{x \in A~\textrm{and}~y \in B}$
 \item \defterm{Star}: $\setstar A = \setbuild{x_1 x_2 \ldots x_k}{k \geq 0 ~\textrm{and each}~x_i \in A}$
 \end{itemize}
 \end{defn}
@@ -243,7 +256,14 @@ The set of regular languages is closed under the union operation.
 \end{thm}
 
 \begin{exer}
-Contemplate whether the set of regular languages is closed under the concatenation operation.
+Contemplate whether the set of regular languages is closed under the concatenation operation. 
+
+As a concrete example, consider:
+\[\begin{array}{l}
+L_1 = \setbuild{w}{w~\textrm{contains an odd number of a's}} \\
+L_2 = \setbuild{w}{w~\textrm{contains an odd number of b's}}
+\end{array}\]
+What does $\setconcat{L_1}{L_2}$ contain? Is $\setconcat{L_1}{L_2}$ regular?
 \end{exer}
 
 
@@ -366,7 +386,7 @@ Provide a formal specification for the NFA of Exercise~\ref{exer:nfa1}.
 Let $N = (Q, \Sigma, \delta, q_0, F)$ be an NFA and $w$ be a string over the alphabet $\Sigma$. Then, we say that $N$ \defterm{accepts} $w$ if we can write $w$ as $w = x_1 x_2 \cdots x_n$, where each $x_i \in \Sigma_\epsilon$ and there exists a sequence of states, $r_0, r_1, \ldots, r_n \in Q$ such that:
 \begin{enumerate}
 \item $r_0 = q_0$,
-\item $r_{i+1} \in \delta(r_i, y_{i+1})$,\footnote{Note that $\delta(r_i, y_{i+1})$ is a \emph{set} of possible next states. Contrast the definitions of DFA and NFA.} for $i = 0, \ldots, n-1$, and
+\item $r_{i+1} \in \delta(r_i, x_{i+1})$,\footnote{Note that $\delta(r_i, x_{i+1})$ is a \emph{set} of possible next states. Contrast the definitions of DFA and NFA.} for $i = 0, \ldots, n-1$, and
 \item $r_n \in F$.
 \end{enumerate}
 
@@ -389,6 +409,7 @@ Describe the language accepted by the following NFA. Then, determine if it is po
 \draw [black] (22.6,-10.5) circle (3);
 \draw (22.6,-10.5) node {$q_1$};
 \draw [black] (37,-10.5) circle (3);
+\draw [black] (37,-10.5) circle (2.4);
 \draw (37,-10.5) node {$q_2$};
 \draw [black] (2.8,-10.5) -- (6.3,-10.5);
 \fill [black] (6.3,-10.5) -- (5.5,-10) -- (5.5,-11);
@@ -777,13 +798,802 @@ So far, we have explored several formalisms used to describe languages. How are 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Context-Free Languages}
 
+\begin{discussion}
+In the preceding chapter, we have studied several equivalent methods of describing languages: DFAs, NFAs, and regular expressions. We have also seen that there are some simple languages that cannot be described using these methods. In this chapter, we explore some a more powerful way to describe a language. \emph{Context-free grammars} were first used to organize and understand relationships in spoken human languages. They also have important applications in the specification and compilation of programming languages. Most programming languages have a syntax that can be defined using a context-free grammar, or one augmented with a few additional features. There are a number of algorithms that can be used to construct a parser from a context-free grammar to enable analysis and compilation of source code. 
+\end{discussion}
+
+\section{Context-Free Grammars}
+
+\begin{defn}[Context-Free Grammar]
+A \defterm{context-free grammar} (\defterm{CFG}) is a quadruple $(V, \Sigma, R, S)$, where
+\begin{enumerate}
+\item $V$ is a finite set called the \defterm{rule alphabet}, containing nonterminals (symbols that are used in grammar rules but do not actually appear in strings in the language) and terminals,
+\item $\Sigma$ is a finite set, called the \defterm{terminals},
+\item $R \subseteq \setproduct{(V-\Sigma)}{\setstar{V}}$ is a finite set of \defterm{rules}, and
+\item $S \in (V-\Sigma)$ is the start variable.
+\end{enumerate}
+
+Note that the \defterm{non-terminals} of the grammar are given by the set $N = V - \Sigma$. We will use the notation $A \to u$ to describe a rule $(A, u) \in R$. Also, when $(A, u) \in R$ and $(A, v) \in R$, we write $A \to u~|~v$.
+\end{defn}
+
+\begin{defn}[Derivation in a CFG]
+For a given grammar, if $u, v, w \in \setstar{V}$ and $A \to w$, we say that $uAv$ \defterm{yields} (or \defterm{derives in one step}) $uwv$, written $uAv \yields uwv$. We say that $u$ \defterm{derives} $v$, written $u \derives v$, iff $u = v$ or if a sequence $u_1, u_2, \ldots, u_k$ exists for $k \geq 0$ where 
+$ u \yields u_1 \yields u_2 \yields \ldots \yields u_k \yields v$. Such a sequence is called a \defterm{derivation}. 
+\end{defn}
+
+\begin{defn}[Context-free language]
+The language \defterm{generated by} a context-free grammar is the set of all terminal strings that can be derived from the start variable,  $\setbuild{w \in \setstar\Sigma}{S \derives w}$. A language is a \defterm{context-free language} iff it is generated by some context-free grammar.
+\end{defn}
+
+\begin{exer}\label{exer:cfglangs}
+Give the language generated by each of the following grammars:
+\begin{enumerate}
+\item $G_1 = (\setdef{S, a, b}, \setdef{a, b}, R, S)$ where $R = \setdef{S \to aSb~|~\emptystring}$.
+\item $G_2 = (\setdef{S, a, b}, \setdef{a, b}, R, S)$ where $R = \setdef{S \to aS ~|~ Sb ~|~\emptystring}$.
+\item $G_3 = (\setdef{S, a, b}, \setdef{a, b}, R, S)$ where $R = \setdef{S \to aSa ~|~ bSb ~|~\emptystring}$.
+%% \item $G_4 = (\setdef{S, (, )}, \setdef{(, )}, R, S)$ where $R = \setdef{S \to (S) ~|~ SS ~|~ \emptystring}$.
+\end{enumerate}
+\end{exer}
+
+\begin{thm}
+Let $L = \setbuild{\charA^n \charB^m}{n > m}$. $L$ is a context-free language.
+\end{thm}
+
+\begin{thm}
+Let $BP = \setbuild{w \in \setstar{\setdef{), (}}}{\textrm{the parentheses are balanced}}$. $BP$ is a context-free language.
+\end{thm}
+
+\begin{exer}
+Consider Let $E = \setbuild{w \in \setstar{\setdef{\charA, \charB}}}{w~\textrm{has an equal number of \charA{s} and \charB{s}}}$. Do you think $E$ is context-free?
+\end{exer}
+
+\begin{stmt}
+Consider the language accepted by the DFA $M = (Q, \Sigma, \delta, q_0, F)$. Now construct a CFG, $G = (V, \Sigma, R, S)$ where $V = \setunion{Q}{\Sigma}$, $S = q_0$, and 
+\[ R = \setunion{\setbuild{p \to \sigma q}{\delta(p, \sigma) = q}}{\setbuild{f \to \emptystring}{f \in F}}. \]
+What language is generated by $G$? (Explain.) Formulate a conjecture regarding the relationship between regular languages and context-free languages and prove it.
+\end{stmt}
+
+\begin{exer}
+Pick a DFA that you have previously seen and construct a CFG that generates the same language as that accepted by the DFA.
+\end{exer}
+
+\begin{discussion}
+As with regular languages, we will gloss over the issue of rigorously proving that that a grammar is correct, i.e. given a language $L$ and a grammar $G$, does $G$ actually generate exactly the strings in $L$. However, it may be instructive to attempt such a proof at least once. To prove correctness of a grammar, you need to prove two things:
+\begin{enumerate}
+\item $G$ generates only strings in $L$, and
+\item Every string in $L$ is generated by $G$.
+\end{enumerate}
+The latter is usually done by induction on the length of the generated strings.
+To establish the former property, one way would be to imagine the process by which $G$ generates a string as a loop:
+\begin{enumerate}
+\item $w = S$.
+\item As long as $w$ contains some nonterminal symbol: apply some rule in $R$ to $w$.
+\item Output $w$.
+\end{enumerate}
+Then construct a loop invariant $I$ and show that:
+\begin{itemize}
+\item $I$ is true when the loop begins;
+\item $I$ is maintained at each step through the loop (i.e. by each rule application), and
+\item $I \wedge (w~\textrm{contains only terminal symbols}) \rightarrow w \in L$.
+\end{itemize}
+\end{discussion}
+
+\begin{thm}[OPTIONAL]
+Consider the language $D = \setbuild{\charA^n \charB^n}{n \geq 0}$. Prove that the following grammar correctly generates the language $D$: 
+\[G_1 = (\setdef{S, a, b}, \setdef{a, b}, R, S) ~\textrm{where}~ R = \setdef{S \to aSb~|~\emptystring}.\]
+\hint For the first part of the proof, use the invariant:
+\[
+ \#_a(w) = \#_b(w) ~~ \wedge ~~ w \in (\setstar{a}(\setunion{S}{\emptystring})\setstar{b})
+\]
+where $\#_a(w)$ represents the number of $a$s in $w$. 
+\end{thm}
+
+\clearpage
+
+\section{Parsing and Ambiguity}
+
+\begin{discussion}
+CFGs are useful for more than just describing the set of strings in a language. They also enable analyzing the structure of strings that they derive. This is useful because we often need to assign meaning based on the structure of a particular string that a such a grammar produces -- whether the strings are sentences in a human language, or source code in a programming language.
+\end{discussion}
+
+\begin{defn}[Parse tree]
+One way to capture the grammatical structure of a string is using a \defterm{parse tree}, which records the nonterminals and rules used in the derivation of the string. A parse tree based on a grammar $G$ is a rooted, ordered tree in which
+\begin{itemize}
+\item Every leaf node is labeled with an element of $\Sigma$ (terminal symbols) or $\emptystring$.
+\item The root node is labeled with the start variable.
+\item All other nodes are labeled with some nonterminal symbol.
+\item If $A$ is a node with children $A_1, A_2, \ldots, A_n$, then $A \to A_1 A_2 \cdots A_n$ must be a rule in the grammar.
+\end{itemize}
+The concatenation of all the leaf node symbols (in order from left to right) forms the string obtained by some derivation represented by the parse tree.
+\end{defn}
+
+\begin{exer}\label{exer:cfgenglish}
+Consider the following CFG for a small fragment of the English language:
+
+\[\begin{array}{r@{\ \to\ }l}
+\textit{S} & \textit{NP} \ \textit{VP} \ |\  \textit{NP} \ \textit{VP}\ \textit{PP} \\
+\textit{VP} & \textit{V}\ \textit{NP} \\
+\textit{NP} & \textit{Det}\ \textit{Nominal} \ |\ \textit{Nominal} \ |\ \textit{NP}\ \textit{PP}\\
+\textit{Nominal} &  \textit{N}  \ |\ \textit{AdjP}\ \textit{N} \\
+\textit{PP} & \textit{Prep}\ \textit{NP} \\
+\textit{AdjP} & \textit{Adj} \ |\ \textit{Adv}\ \textit{AdvP} \\
+\textit{N} & \textrm{boy} \ |\ \textrm{girl} \ |\ \textrm{binoculars}\\
+\textit{V} & \textrm{sees} \ |\ \textrm{likes} \\
+\textit{Adj} & \textrm{big} \ |\ \textrm{small} \ |\ \textrm{blue}\\
+\textit{Adv} & \textrm{very} \\
+\textit{Det} & \textrm{a} \ |\ \textrm{the} \\
+\textit{Prep} & \textrm{with}
+\end{array}\]
+
+Draw parse trees for the following strings:
+\begin{itemize}
+\item ``the very small boy likes a girl''
+\item ``the boy sees a girl with binoculars''
+\end{itemize}
+
+Also answer these questions:
+\begin{itemize}
+\item Is it possible to have more than one derivation for each of the strings? 
+\item Is it possible to have more than one parse tree for each of the strings? 
+\item Why are parse trees more useful than derivations for understanding the structure of a string?
+\end{itemize}
+\end{exer}
+
+\begin{defn}[Ambiguous grammar]
+A grammar $G$ is called \defterm{ambiguous} if there is at least one string in the language $G$ generates for which more than one parse tree is possible.
+\end{defn}
+
+\begin{exer}
+Which of the grammars in Exercise~\ref{exer:cfglangs} are ambiguous?
+\end{exer}
+
+\begin{exer}
+The ``dangling else problem" is a well-known problem in computer programming. Many programming languages provide some form of an ``if-then-else'' conditional structure.  Consider the statement:
+\begin{verbatim}
+if a then if b then s1 else s2
+\end{verbatim}
+Explain the problem in terms of grammars and ambiguity. Present a snippet of rules from a grammar that would lead to a dangling else problem for this statement. Think about a programming language that you are familiar with: how is the dangling else problem resolved or handled?
+\end{exer}
+
+\begin{exer}
+% from EAR, page 247
+~\\Let  $L = \setbuild{w \in \setstar{\setdef{\texttt{A} - \texttt{Z}, \neg, \wedge, \vee, \implies, \left(, \right)}}}{w~\textrm{is a syntactically legal Boolean expression}}$.
+\begin{enumerate}
+\item Show an unambiguous CFG that generates $L$ and that creates parse trees that:
+\begin{itemize}
+\item Associate left given operators of equal precedence, and
+\item Correspond to assigning the following precedence levels to the operators (from highest to lowest): $\neg, \wedge, \vee, \implies$.
+\end{itemize}
+\item Show the parse tree that your grammar will produce for the string:
+\[ \neg\texttt{P}\vee\texttt{R}\implies\texttt{Q}\implies\texttt{S} \]
+\end{enumerate}
+\end{exer}
+
+
+
+\clearpage
+
+\section{Pushdown Automata}
+
+\begin{discussion}
+In this section, we introduce a new type of computational model called a \emph{pushdown automaton} (PDA). A PDA is like a nondeterministic finite automaton augmented with some extra memory in the form of a \emph{stack}. PDAs are powerful enough to be able to accept any context-free language.
+\end{discussion}
+
+% diagram like sipser pg 112
+
+\begin{defn}[Pushdown Automaton]
+A (nondeterministic) \defterm{pushdown automaton} (\defterm{PDA}) is a 6-tuple $(Q, \Sigma, \Gamma, \delta, q_0, F)$, where $Q, \Sigma, \Gamma$, and $F$ are all finite sets, and
+\begin{enumerate}
+\item $Q$ is the set of states,
+\item $\Sigma$ is the input alphabet,
+\item $\Gamma$ is the stack alphabet,
+\item $\delta: Q \times \Sigma_\emptystring \times \Gamma_\emptystring \rightarrow \powerset{Q \times \Gamma_\emptystring}$ is the transition function,
+\item $q_0 \in Q$ is the start state, and
+\item $F \subseteq Q$ is the set of accept states.
+\end{enumerate}
+
+For the transition function, the current state, next input symbol, and top symbol of the stack determine the next move of the machine. (Either of the symbols may be $\emptystring$, allowing the machine to move to a new state without reading any input or removing anything from the stack.) Since a PDA is nondeterministic, in each step of its operation it may enter one of any number of new states and possibly write a symbol on top of the stack.
+
+Formally, a PDA $M = (Q, \Sigma, \Gamma, \delta, q_0, F)$ computes and accepts an input string $w = w_1w_2\cdots w_3$, where $w_i \in \Sigma_\emptystring$, if there exist a sequence of states $r_0, r_1, \ldots, r_m \in Q$ and a sequence of strings $s_0, s_1, \ldots, s_m \in \setstar\Gamma$ (representing the sequence of stack contents with each step of $M$'s computation) that satisfy the following three conditions:
+\begin{enumerate}
+\item $r_0 = q_0$ and $s_0 = \emptystring$. ($M$ starts in the start state with an empty stack.)
+\item For $i = 0, \ldots, m-1$, we have $(r_{i+1}, b) \in \delta(r_i, w_{i+1}, a)$, where $s_i = at$ and $s_{i+1} = bt$ for some $a, b \in \Gamma_\emptystring$ and $t \in \setstar\Gamma$. 
+\item $r_m \in F$.
+\end{enumerate}
+
+The language accepted (or recognized) by a pushdown automaton, denoted $L(M)$, is the set of all strings accepted by $M$.
+
+\end{defn}
+
+\begin{discussion}
+We can draw PDAs as diagrams just like NFAs, with slightly different labels on the edges. For every $(q_2, t) \in \delta(q_1, \alpha, s)$,   draw an arrow like this: 
+
+\begin{center}
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (15.5,-9.7) circle (3);
+\draw (15.5,-9.7) node {$q_1$};
+\draw [black] (36.4,-9.7) circle (3);
+\draw (36.4,-9.7) node {$q_2$};
+\draw [black] (18.5,-9.7) -- (33.4,-9.7);
+\fill [black] (33.4,-9.7) -- (32.6,-9.2) -- (32.6,-10.2);
+\draw (25.95,-10.2) node [below] {$\alpha,\mbox{ }s\mbox{ }\rightarrow\mbox{ }t$};
+\end{tikzpicture}
+\end{center}
+
+This indicates that the PDA can move from state $q_1$ to $q_2$ by reading input $\alpha$, popping $s$ off the top of the stack, and pushing $t$ onto the top of the stack. Note again that any of $\alpha, s$, and $t$ may be $\emptystring$.
+\end{discussion}
+
+\begin{exer}
+Let $M_1 = (\setdef{s, p, f}, \setdef{a, b}, \setdef{a}, \delta, s, \setdef{s, f})$ where 
+\[\begin{array}{r@{\ =\ }l}
+\delta(s, a, \emptystring)  &  \setdef{(p, a)}  \\
+\delta(p, a, \emptystring) & \setdef{(p, a)} \\
+\delta(p, b, a)  & \setdef{(f, \emptystring}) \\
+\delta(f, b, a) & \setdef{(f, \emptystring}), \textrm{and} \\
+\delta(\alpha, \sigma, \tau) & \emptyset \ \textrm{otherwise}.
+\end{array}\]
+
+Draw a diagram of this PDA and describe the language it accepts.
+\end{exer}
+
+\begin{discussion}
+To reduce the complexity of a PDA diagram, we  use some shorthand to indicate when the machine pushes multiple things onto the top of the stack:
+
+\begin{center}
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (15.5,-9.7) circle (3);
+\draw (15.5,-9.7) node {$q_1$};
+\draw [black] (36.4,-9.7) circle (3);
+\draw (36.4,-9.7) node {$q_2$};
+\draw [black] (18.5,-9.7) -- (33.4,-9.7);
+\fill [black] (33.4,-9.7) -- (32.6,-9.2) -- (32.6,-10.2);
+\draw (25.95,-10.2) node [below] {$\alpha,\mbox{ }s\mbox{ }\rightarrow\mbox{ }w_1w_2$};
+\end{tikzpicture}
+\end{center}
+
+represents the expanded transitions
+
+\begin{center}
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (15.5,-9.7) circle (3);
+\draw (15.5,-9.7) node {$q_1$};
+\draw [black] (55.4,-9.7) circle (3);
+\draw (55.4,-9.7) node {$q_2$};
+\draw [black] (35.2,-9.7) circle (3);
+\draw (35.2,-9.7) node {$q_{1.5}$};
+\draw [black] (18.5,-9.7) -- (32.2,-9.7);
+\fill [black] (32.2,-9.7) -- (31.4,-9.2) -- (31.4,-10.2);
+\draw (25.35,-10.2) node [below] {$\alpha,\mbox{ }s\mbox{ }\rightarrow\mbox{ }w_2$};
+\draw [black] (38.2,-9.7) -- (52.4,-9.7);
+\fill [black] (52.4,-9.7) -- (51.6,-9.2) -- (51.6,-10.2);
+\draw (45.3,-10.2) node [below] {$\epsilon,\mbox{ }\epsilon\mbox{ }\rightarrow\mbox{ }w_1$};
+\end{tikzpicture}
+\end{center}
+
+\end{discussion}
+
+\begin{exer}
+Let $M_2 = (\setdef{s, p, f}, \setdef{a, b}, \setdef{a, b, c}, \delta, s, \setdef{f})$ where 
+\[\begin{array}{r@{\ =\ }l}
+\delta(s, \emptystring, \emptystring)  &  \setdef{(p, c)}  \\
+\delta(p, a, c)  &  \setdef{( p , ac )} \\
+\delta(p, a, a)  &  \setdef{( p , aa )} \\
+\delta(p, a, b)  &  \setdef{( p , \emptystring )} \\
+\delta(p, b, c)  &  \setdef{( p , bc )} \\
+\delta(p, b, b)  &  \setdef{( p , bb )} \\
+\delta(p, b, a)  &  \setdef{( p , \emptystring )} \\
+\delta(p, \emptystring, c)  &  \setdef{( f , \emptystring )} , \textrm{and} \\
+\delta(\alpha, \sigma, \tau) & \emptyset \ \textrm{otherwise}.
+\end{array}\]
+
+Draw a diagram of this PDA and describe the language it accepts.
+\end{exer}
+
+\begin{exer}
+Construct PDAs for the following languages, if possible:
+\begin{enumerate}
+\item $\setbuild{w\texttt{c}\stringrev{w}}{ w \in \setstar{\setdef{\texttt{a}, \texttt{b}}} }$
+\item $\setbuild{w\stringrev{w}}{ w \in \setstar{\setdef{\texttt{a}, \texttt{b}}} }$
+\item $\setbuild{w{w}}{ w \in \setstar{\setdef{\texttt{a}, \texttt{b}}} }$
+\item $\setbuild{w \in \setstar{\setdef{\charA, \charB}}}{w~\textrm{has an equal number of \charA{s} and \charB{s}}}$
+\item $\setbuild{\texttt{a}^n \texttt{b}^n \texttt{c}^n}{ n \geq 0 }$
+\end{enumerate}
+\end{exer}
+
+\begin{discussion}
+We will state but not prove, for this course, the following theorem. Its proof consists of two directions, as usual for "if and only if" statements, both of which are proven by construction: building a CFG from a PDA and vice versa.
+\end{discussion}
+
+~
+
+\begin{axiom}[PDA $\leftrightarrow$ CFL]
+A language is context-free if and only if some pushdown automaton recognizes it.
+\end{axiom}
+
+\begin{discussion}
+Recall that we used a ``pumping lemma'' for regular languages to help us prove that certain languages are not regular. Here we present the statement of a similar lemma for context-free languages, though we leave out its proof for this course.
+\end{discussion}
+
+~
+
+\begin{axiom}[Pumping lemma for context-free languages]
+If $A$ is a context-free language, then there exists a number $p$ (called the \defterm{pumping length}) such that if $s$ is any string in $A$ of length at least $p$, then $s$ can be divided into five pieces, $s = uvxyz$, satisfying the following conditions:
+\begin{enumerate}
+\item for each $i \geq 0$, $uv^ixy^iz \in A$
+\item $|vy| > 0$, and
+\item $|vxy| \leq p$.
+\end{enumerate}
+The second condition essentially says that either $v$ or $y$ is not empty.
+\end{axiom}
+
+~
+
+\begin{thm}
+The language $\setbuild{\texttt{a}^n \texttt{b}^n \texttt{c}^n}{ n \geq 0 }$ is \emph{not} a context-free language.
+\end{thm}
+
+\begin{progexer}\happymac
+Develop a program that reads in a description of a CFG and generates random strings in the corresponding language. Apply it to the grammar of Exercise~\ref{exer:cfgenglish}. (Make sure your program will work for any CFG in general, though, not just that one.)
+\end{progexer}
+
+\begin{progexer}\happymac
+Develop a parsing program that reads in a description of a CFG and an input string and displays a parse tree (in a format you choose) of the string, if it is in the corresponding language. For this exercise, you may look up the ``recursive descent parser'' and ``top-down parsing'' articles in Wikipedia. Other than that, write the code on your own.
+\end{progexer}
+
+
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\part{Computability}
+\chapter{Turing Machines}
+
+So far, we have studied several models of computational devices. Finite automata are good models for devices with a small, fixed amount of memory. Pushdown automata model devices that have a lot more (i.e. unlimited) memory that is accessible only in a last-in-first-out manner. However, there are still some simple tasks (i.e. languages) that are beyond what these theoretical devices can handle. We now explore a more powerful kind of automaton that:
+
+\begin{itemize}
+\item can do anything a real computer can do -- in fact, is powerful enough to describe and carry out any computation possible;
+\item is simple enough that we can still reason formally about it.
+\end{itemize}
+
+~
+
+\newcommand\qaccept{q_\textrm{\small accept}}
+\newcommand\qreject{q_\textrm{\small reject}}
+\newcommand\blanksymbol\sqcup
+\newcommand\tmL{\textrm{L}}
+\newcommand\tmR{\textrm{R}}
+
+
+\begin{defn}[Turing machine]
+A \defterm{Turing machine} (\defterm{TM}) is a 7-tuple $(Q, \Sigma, \Gamma, \delta, q_0, \qaccept,\qreject )$, where $Q, \Sigma, \Gamma$, and $F$ are all finite sets, and
+\begin{enumerate}
+\item $Q$ is the set of states,
+\item $\Sigma$ is the input alphabet, which does not contain the \defterm{blank symbol} $\blanksymbol$,
+\item $\Gamma$ is the tape alphabet, where $\blanksymbol \in \Gamma$ and $\Sigma \subset \Gamma$,
+\item $\delta: Q \times \Gamma \rightarrow Q \times \Gamma \times \setdef{\tmL, \tmR}$ is the transition function,
+\item $q_0 \in Q$ is the start state,
+\item $\qaccept \in Q$ is the accept state, and
+\item $\qreject \in Q$ is the reject state; $\qaccept \neq \qreject$.
+\end{enumerate}
+\end{defn}
+
+\begin{discussion}
+Conceptually, a Turing machine is a finite automaton with a read/write head positioned over an infinite (in one direction) tape. Initially, the machine receives its input $w = w_1 w_2 \ldots w_n$ on the first $n$ spaces of its tape. The rest of the tape is filled with blank symbols ($\blanksymbol$). On each step of its execution, from a particular state, the TM reads the symbol on the tape under its read/write head and uses the transition function to decide the next state along with the symbol to be written on the tape and whether the read/write head should be moved left or right. Note that a TM, as defined here, is \emph{deterministic}. 
+\end{discussion}
+
+\begin{defn}[Turing machine configuration]
+A \defterm{configuration} of a Turing machine is a triple, $u~q~v$, of a state $q \in Q$ and two strings $u, v \in \setstar\Gamma$. The configuration $uqv$ indicates that the current state of the TM is $q$, the contents of the tape is $uv$, and the read/write head is positioned on top of the first symbol of $v$. For example, $\texttt{1101}q_5\texttt{11011}$ represents a configuration where the current state is $q_5$, the tape contents are $\texttt{110111011}$ and the read/write head is positioned on top of the fourth \texttt{1}.
+\end{defn}
+
+\begin{defn}[Turing machine computation]
+A Turing machine computes as follows: given $a, b, c \in \Gamma$, along with $u, v \in \setstar\Gamma$, and states $q_i$ and $q_j$, we say that 
+\[ ua~q_i~bv  ~~~\textrm{yields}~~~ u~q_j~acv \]
+if in the machine's transition function $\delta(q_i, b) = (q_j, c, \tmL)$. On the other hand (for a rightward move), 
+\[ ua~q_i~bv  ~~~\textrm{yields}~~~ uac~q_j~v \]
+if $\delta(q_i, b) = (q_j, c, \tmR)$.
+
+In the case when the head is at the leftmost end of the tape, the configuration $q_i~bv$  yields $q_j~cv$ if the transition function indicates a move left. We don't worry about the righthand end of the tape because the configuration $ua~q_i$ is equivalent to $ua~q_i~\blanksymbol$, since blanks follow the part of the tape described explicitly in the configuration, and the rules above apply.
+
+The start configuration of a machine on input $w$ is $q_0~w$. In an \defterm{accepting configuration} the state is $\qaccept$ and in a \defterm{rejecting configuation} the state is $\qreject$. These two states result in halting configurations which do not yield any further configurations.
+
+A Turing machine accepts input $w$ if a sequence of configurations exists from the start configuration where each one yields the next, ending in an accepting configuration.
+\end{defn}
+
+\begin{discussion}
+As with other types of machines we've studied, we can represent the transition function of a Turing machine using a diagram. If $\delta(q_i, a) = (q_j, b, \tmR)$, then label an arrow betweeen the two states as:
+\begin{center}
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (18,-16.2) circle (3);
+\draw (18,-16.2) node {$q_i$};
+\draw [black] (46.2,-15.9) circle (3);
+\draw (46.2,-15.9) node {$q_j$};
+\draw [black] (20.838,-15.23) arc (106.75239:74.46663:40.472);
+\fill [black] (43.34,-14.99) -- (42.71,-14.29) -- (42.44,-15.26);
+\draw (32.06,-12.97) node [above] {$a\mbox{ }\rightarrow\mbox{ }b,\mbox{ }\tmR$};
+\end{tikzpicture}
+\end{center}
+\end{discussion}
+
+
+\begin{defn}[Language of a Turing machine]
+The language of a Turing machine $M$ is the collection of strings that $M$ accepts, denoted by $L(M)$. This is also referred to as the language recognized by $M$.
+\end{defn}
+
+\begin{defn}[Turing-recognizable]
+A language is \defterm{Turing-recognizable} if some Turing machine recognizes it.
+\end{defn}
+
+\begin{exer}
+Consider the Turing machine whose transition function is described by the following state diagram. (Any transitions not explicitly drawn are understood to lead to the $\qreject$ state.)
+\begin{center}
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (21.6,-15.9) circle (3);
+\draw (21.6,-15.9) node {$q_0$};
+\draw [black] (46.2,-15.9) circle (3);
+\draw (46.2,-15.9) node {$q_\textrm{acc}$};
+\draw [black] (46.2,-15.9) circle (2.4);
+\draw [black] (21.6,-34.8) circle (3);
+\draw (21.6,-34.8) node {$q_1$};
+\draw [black] (46.2,-34.8) circle (3);
+\draw (46.2,-34.8) node {$q_\textrm{rej}$};
+\draw [black] (46.2,-34.8) circle (2.4);
+\draw [black] (13.8,-15.9) -- (18.6,-15.9);
+\fill [black] (18.6,-15.9) -- (17.8,-15.4) -- (17.8,-16.4);
+\draw [black] (20.277,-13.22) arc (234:-54:2.25);
+\draw (21.6,-8.65) node [above] {$1\to1,\tmR$};
+\fill [black] (22.92,-13.22) -- (23.8,-12.87) -- (22.99,-12.28);
+\draw [black] (24.6,-15.9) -- (43.2,-15.9);
+\fill [black] (43.2,-15.9) -- (42.4,-15.4) -- (42.4,-16.4);
+\draw (33.9,-16.4) node [below] {$\blanksymbol\to\blanksymbol,\tmL$};
+\draw [black] (22.924,-18.588) arc (21.55621:-21.55621:18.404);
+\fill [black] (22.92,-32.11) -- (23.68,-31.55) -- (22.75,-31.18);
+\draw (24.71,-25.35) node [right] {$0\to0,\tmR$};
+\draw [black] (20.405,-32.051) arc (-160.73291:-199.26709:20.309);
+\fill [black] (20.4,-18.65) -- (19.67,-19.24) -- (20.61,-19.57);
+\draw (18.77,-25.35) node [left] {$1\to1,\tmL$};
+\draw [black] (22.923,-37.48) arc (54:-234:2.25);
+\draw (21.6,-42.05) node [below] {$0\to0,\tmR$};
+\fill [black] (20.28,-37.48) -- (19.4,-37.83) -- (20.21,-38.42);
+\draw [black] (24.6,-34.8) -- (43.2,-34.8);
+\fill [black] (43.2,-34.8) -- (42.4,-34.3) -- (42.4,-35.3);
+\draw (33.9,-35.3) node [below] {$\blanksymbol\to\blanksymbol,\tmL$};
+\end{tikzpicture}
+\end{center}
+
+\begin{itemize}
+\item What language is recognized by this machine?
+\item In what way(s) might this machine not accept a particular input?
+\end{itemize}
+
+\end{exer}
+
+
+\begin{defn}[Decider]
+A Turing machine may fail to accept an input for two reasons: either by entering the $\qreject$ state, or by going into an infinite loop. A machine that never loops - i.e. halts on every possible input - is known as a \defterm{decider}. 
+\end{defn}
+
+\begin{defn}[Turing-decidable]
+A language is \defterm{Turing-decidable} or simply \defterm{decidable} if some Turing machine decides it.
+
+Note that every Turing-decidable language is Turing-recognizable.
+\end{defn}
+
+\begin{stmt}
+The language $\setbuild{w\texttt{\#}w}{w \in \setstar{\setdef{\texttt{a}, \texttt{b}}}}$ is Turing-decidable.
+\end{stmt}
+
+\begin{stmt}
+The language $\setbuild{\texttt{a}^n \texttt{b}^n \texttt{c}^n}{ n \geq 0 }$ is Turing-decidable.
+\end{stmt}
+
+\begin{discussion}
+At this point, you have worked with a few low-level diagrams of Turing machines -- effectively specifying states, transition functions, etc. However, our goal is not to spend time ``programming'' such machines, but to understand their use as a most general model for computation. Thus, once the capabilities of TMs are understood, it is much easier to simply give an informal prose description of how a machine works for a particular problem: how it moves it head, the ways it reads and writes data on its tape, etc. We do not have to give exact details of every state and the transition function.
+\end{discussion}
+
+\begin{stmt}
+The language $\setbuild{x_1\texttt{\#}x_2\texttt{\#}\ldots\texttt{\#}x_n}{\textrm{each}~x_i \in \setstar{\setdef{\texttt{a}, \texttt{b}}}
+	~\textrm{and when}~ i \neq j, x_i \neq x_j}$ is Turing-decidable. (A TM for this language would be solving what is called the \emph{element distinctness problem}.)
+\hint An occasionally useful technique with TMs is to include marked versions of tape symbols in the tape alphabet. For instance \texttt{a} and $\overset{\bullet}{\texttt{a}}$, \texttt{\#} and $\overset{\bullet}{\texttt{\#}}$, etc.
+\end{stmt}
+
+\section{Turing machine variants}
+
+\begin{defn}[Multitape Turing machine]
+A \defterm{multitape Turing machine} is like a normal Turing machine with more than one tape, each with its own read/write head. The first tape still contains the initial input; the rest of the tapes are initially blank. The transition function, for a machine with $k$ tapes, looks like:
+\[ \delta : Q \times \Gamma^k \longrightarrow Q \times \Gamma^k \times \setdef{\tmL, \tmR}^k \]
+\end{defn}
+
+\begin{stmt}
+Every multitape Turing machine can be simulated as an equivalent single-tape Turing machine.
+\end{stmt}
+
+\begin{defn}[Nondeterministic Turing machine]
+A \defterm{nondeterministic Turing machine} can be defined in the same way as we did with NFAs and PDAs. The transition function becomes:
+\[ \delta : Q \times \Gamma \longrightarrow \powerset{Q \times \Gamma \times \setdef{\tmL, \tmR}} \]
+\end{defn}
+
+\begin{stmt}
+Every nondeterministic Turing machine can be simulated as an equivalent single-tape Turing machine.
+\end{stmt}
+
+\begin{exer}
+Define ``algorithm.''
+\end{exer}
+
+\begin{conjecture}[Church-Turing thesis]
+Every \emph{effectively\footnote{or, \emph{algorithm}ically, mechanically.} calculable} function can be computed by a Turing machine.
+\end{conjecture}
+ 
+ \clearpage
+ 
+\newcommand\repof[1]{{\langle{#1}\rangle}}
+
+\begin{discussion}
+Being comfortable enough with Turing machines to believe that they capture any algorithm that can be mechanically computed, we become even less interested in describing all the details of the implementation of such machines. We previously mentioned that instead of a formal description, we could provide a prose description of a machine's implementation. In fact, at this point, we can go further and use informal prose to describe how a TM realizes an algorithm: a high-level description of steps, ignoring even implementation details of how the machine moves its read/write head, manages the tape, and so on.
+
+To facilitate describing Turing machines in this high-level manner, we also introduce the notion of encoding, or representing, objects as strings. We use the notation $\repof O$ to indicate the representation of an object $O$ as a string.
+\end{discussion}
+
+\begin{exer}
+Give a string representation, $\repof G$, of the following undirected graph, $G$:
+
+\begin{center}
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (30.6,-12.6) circle (3);
+\draw (30.6,-12.6) node {$A$};
+\draw [black] (23,-25) circle (3);
+\draw (23,-25) node {$B$};
+\draw [black] (40.1,-24.2) circle (3);
+\draw (40.1,-24.2) node {$C$};
+\draw [black] (49,-12.6) circle (3);
+\draw (49,-12.6) node {$D$};
+\draw [black] (33.6,-12.6) -- (46,-12.6);
+\draw [black] (32.5,-14.92) -- (38.2,-21.88);
+\draw [black] (37.1,-24.34) -- (26,-24.86);
+\draw [black] (24.57,-22.44) -- (29.03,-15.16);
+\end{tikzpicture}
+\end{center}
+\end{exer}
+
+\begin{exer}  %sipser pg 185
+Let $A$ be the language consisting of all strings representing connected undirected graphs. A graph is \defterm{connected} if every node can be reached from every other node. Provide a high-level description of a Turing machine algorithm to decide the language
+\[ A = \setbuild{\repof G}{G~\textrm{is a connected undirected graph}} \]
+\end{exer}
+
+\begin{exer}
+% sipser pg 190
+Let $T$ be the language containing only a single string $s$, where
+\[ s = \bigg\{
+\begin{array}{ll}
+\texttt{0} &  \textrm{if it will be sunny tomorrow.} \\
+\texttt{1} & \textrm{if it will not be sunny tomorrow.}
+\end{array}
+\]
+Is $T$ decidable? Explain. 
+\end{exer}
+
+\clearpage
+
+\section{Undecidability}
+
+\begin{exer}
+For each of the following, (1) is it possible to construct a machine as described, (2) what language does the machine \emph{recognize}, and (3) does the machine \emph{decide} that language?
+
+\begin{itemize}
+\item $M_{A}$  rejects every input.
+\item $M_{B}$  accepts every input.
+\item $M_{C}$ accepts if the length of its input string is less than 10; goes into an infinite loop otherwise.
+\item $M_{D}$ accepts if the length of its input string is even; rejects otherwise.
+\end{itemize}
+
+For any of the machines that recognize but do not decide a language, is there another machine that would \emph{decide} the same language?
+
+\end{exer}
+
+\begin{exer}
+Consider the language
+\[ \textsc{CanLoop} = \setbuild{\repof M}{M~\parbox[t]{4in}{\textrm{is a TM for which there exists at least one input string that causes it to infinitely loop}}} \]
+
+ Suppose you had a machine $M_{CL}$ that decides the language \textsc{CanLoop}. Fill in the following table with the machine's behavior on the indicated inputs:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}[c]{c|c}
+input & result (\textsc{accept}/\textsc{reject}) \\\hline
+\texttt{aabb} & \\
+$\texttt{a}^{10}\texttt{b}^{10}\texttt{c}^{10}$ & \\
+$\repof{M_{A}}$ & \\
+$\repof{M_{B}}$ & \\
+$\repof{M_{C}}$ & \\
+$\repof{M_{D}}$ & \\
+$\repof{M_{CL}}$ & \\
+\end{tabular}
+\end{center}
+
+(The last one is asking you to think about $M_{CL}$'s behavior when applied to its own representation.)
+
+\end{exer}
+
+\begin{stmt}
+The language \textsc{CanLoop} is decidable.
+\end{stmt}
+
+\begin{discussion}
+So $M_{CL}$ would be a pretty useful machine to help us identify machines like $M_C$ with potentially ``bad'' behavior (infinite loops).
+\end{discussion}
+
+
+\begin{exer}
+Now, imagine a machine $M_{L}$ which behaves as follows:
+\[ M_L(w) = \bigg\{
+\begin{array}{ll}
+\textsc{accept} &  \textrm{if $w = \repof{M', w'}$ and $M'(w')$ loops.} \\
+\textsc{reject} & \textrm{otherwise.}
+\end{array}
+\]
+
+\begin{itemize}
+\item What language does $M_L$ recognize?
+\item Fill in the following table with the machine's behavior on the indicated inputs:
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}[c]{c|c}
+input & result (\textsc{accept}/\textsc{reject}/\textit{loop}) \\\hline
+\texttt{aabbcc} & \\
+$\repof{M_{A}, \texttt{abc}}$ & \\
+$\repof{M_{C}, \texttt{aabbcc}}$ & \\
+$\repof{M_{C}, \texttt{a}^{10}\texttt{b}^{10}\texttt{c}^{10}}$ & \\
+$\repof{M_{CL}, M_{C}}$ & \\
+$\repof{M_{CL}, M_{D}}$ & \\
+\end{tabular}
+\end{center}
+
+\item Could it conceivably be that the machine $M_{CL}$ exists, but $M_L$ doesn't? 
+\end{itemize}
+\end{exer}
+
+\begin{stmt}
+The  machine $M_L$ described above can be constructed using $M_{CL}$. (That is, assuming the machine $M_{CL}$ exists, it can be  used as a ``black box'' to build the machine $M_L$.)
+\begin{itemize}
+\item Does your constructed $M_L$ ever loop?
+\end{itemize}
+
+\end{stmt}
+
+\begin{exer}
+Consider the language
+\[ \textsc{LoopOnSelf} = \setbuild{\repof M}{M~\textrm{loops when applied to itself, i.e. $M_L(\repof{M, M}) = \textsc{accept}$}} \]
+\begin{itemize}
+\item Can you construct a machine $M_{LOS}$ that recognizes \textsc{LoopOnSelf}? 
+\item Fill in the following table with the machine's behavior on the indicated inputs:
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}[c]{c|c}
+input & result (\textsc{accept}/\textsc{reject}/\textit{loop}) \\\hline
+\texttt{aabb} & \\
+$\texttt{a}^{10}\texttt{b}^{10}\texttt{c}^{10}$ & \\
+$\repof{M_{A}}$ & \\
+$\repof{M_{B}}$ & \\
+$\repof{M_{C}}$ & \\
+$\repof{M_{D}}$ & \\
+$\repof{M_{CL}}$ & \\
+$\repof{M_{LOS}}$ & \\
+\end{tabular}
+\end{center}
+
+\item Does $M_{LOS}$ ever loop, i.e. is it a decider?
+\end{itemize}
+\end{exer}
+
+\begin{discussion}
+Let's get a little weird\ldots
+\end{discussion}
+
+\begin{exer}
+Consider a machine $M_{WLOS}$ (``weird loop on self'') which behaves as follows:
+\[ M_{WLOS}(w) = \bigg\{
+\begin{array}{ll}
+\textit{loops} &  \textrm{if $M_{LOS}$ accepts $w$} \\
+\textsc{reject} & \textrm{otherwise.}
+\end{array}
+\]
+
+Fill in the following table with the machine's behavior on the indicated inputs:
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}[c]{c|c}
+input & result (\textsc{accept}/\textsc{reject}/\textit{loop}) \\\hline
+\texttt{aabb} & \\
+$\repof{M_{C}}$ & \\
+$\repof{M_{D}}$ & \\
+$\repof{M_{CL}}$ & \\
+$\repof{M_{LOS}}$ & \\
+$\repof{M_{WLOS}}$ & \\
+\end{tabular}
+\end{center}
+
+\end{exer}
+
+\begin{exer}
+Now, consider a machine $M_{AWLOS}$\footnote{``anti-(weird loop on self)''} that does the opposite of what $M_{WLOS}$ does:
+\[ M_{AWLOS}(w) = \bigg\{
+\begin{array}{ll}
+\textsc{reject} &  \textrm{if $M_{LOS}$ accepts $w$} \\
+\textit{loops} & \textrm{otherwise.}
+\end{array}
+\]
+
+Fill in the following table with the machine's behavior on the indicated inputs:
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}[c]{c|c}
+input & result (\textsc{accept}/\textsc{reject}/\textit{loop}) \\\hline
+\texttt{aabb} & \\
+$\repof{M_{C}}$ & \\
+$\repof{M_{D}}$ & \\
+$\repof{M_{CL}}$ & \\
+$\repof{M_{LOS}}$ & \\
+$\repof{M_{AWLOS}}$ & \\
+\end{tabular}
+\end{center}
+\end{exer}
+
+\begin{stmt}
+The language \textsc{CanLoop} is \emph{not} decidable.
+\end{stmt}
+
+\begin{discussion}
+The \defterm{Halting Problem} is a famous problem in the theory of computation. It is the problem of deciding, given an arbitrary description of a machine (or, computer program), whether the machine will always stop at some point and either accept or reject its input. We can define the language:
+
+\[ \textsc{Halts} = \setbuild{\repof M}{M~\textrm{is a TM that \emph{never} gets stuck in an infinite loop}} \]
+\end{discussion}
+
+\begin{stmt}
+\textsc{Halts} is not a decidable language.
+\end{stmt}
+
+\begin{discussion}
+You have now found some undecidable languages, or, equivalently, a couple of problems for which it is impossible to construct a single algorithm that always results in a correct ``yes'' or ``no'' answer. 
+You might think we have reached an appropriate \emph{halt}ing point in our explorations, but we can even go a little further\ldots
+\end{discussion}
+
+\begin{stmt}
+\textsc{Halts} is a Turing-recognizable language.
+\end{stmt}
+
+\begin{defn}[Co-Turing-recognizable]
+A language is \defterm{co-Turing-recognizable} if it is the complement of a Turing-recognizable language.
+\end{defn}
+
+\begin{thm}
+A language is decidable if and only if it is Turing-recognizable \emph{and} co-Turing-recognizable.
+\end{thm}
+
+\begin{stmt}
+\textsc{CanLoop} is \emph{not} Turing-recognizable.
+\end{stmt}
+
+
+% note: can use countability to show that there must exist lots of languages that are not Turing-recognizable
+
+
+% REGULAR_TM sipser pg. 219
+% ALL_CFG - p 225
+% EQ_TM - p 219-220 --- why would this be a useful program for an instructor in a introductory programming course?
+% look up Post Correspondence problem -- like a puzzle, undecidable
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\part{Computability}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\part{Complexity}
+%\part{Complexity}
 
 
 

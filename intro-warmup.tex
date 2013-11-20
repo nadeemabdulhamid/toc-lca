@@ -49,12 +49,13 @@ Let $w$ be a string over some alphabet $\Sigma$. What is $w\emptystring$? What i
 Suppose $x$ and $y$ are strings over an alphabet $\Sigma$. Under what circumstances is it possible to satisfy the condition $xy = yx$? 
 % (Be sure to consider more than just the trivial situation when either $x$ or $y$ is empty.)
 \end{exer}
+% when there is some string w, such that x = w^m  and y = w^n .
 
 \begin{defn}[Language]
 A \defterm{language} is any set of strings over an alphabet $\Sigma$, that is, chosen from $\setstar\Sigma$.
 \end{defn}
 
-\begin{exer}
+\begin{exer}\label{exer:strslang}
 Let $\Sigma = \setdef{a, b}.$ Give some examples of strings in, and not in, the following languages over $\Sigma$.
 \begin{enumerate}[label=(\alph*)]
 \item $L_1 = \setdef{ \emptystring, a, aa, aab }$
@@ -86,6 +87,6 @@ As a concrete example, let $\Sigma = \setdef{0, 1, 2, \ldots, 9}$ and $L_\textrm
 \end{discussion}
 
 \begin{progexer}\happymac
-Choose at least one of the languages defined in Statement~\ref{stmt:dfas}. Write a program that reads in a string and decides if the string is in the language. 
+Choose at least one of the languages defined in Statement~\ref{exer:strslang}. Write a program that reads in a string and decides if the string is in the language. 
 \end{progexer}
 

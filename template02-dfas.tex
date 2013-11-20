@@ -1,0 +1,125 @@
+\documentclass[10pt]{article}
+
+%\textwidth=7in
+%\textheight=9.5in
+%\topmargin=-1in
+%\headheight=0in
+%\headsep=.5in
+%\hoffset=-1in
+
+\input{common.tex}
+
+\title{Written Work - Regular Languages: DFAs} 	% TITLE OF THESE EXERCISES/PROOFS
+\author{Nadeem Abdul Hamid}      			% YOUR NAME HERE
+\date{\today}							% CHANGE IF YOU WANT
+
+\begin{document}
+
+\maketitle
+
+%%% NOTE: 
+%%% The site http://madebyevan.com/fsm/ allows you to graphically draw finite state automata and then export them as LaTeX or various graphics formats.
+
+
+\begin{exersoln}{73} % 73 is the number of the exercise
+\begin{center}
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (6,-7.8) circle (3);
+\draw (6,-7.8) node {$q_0$};
+\draw [black] (33.4,-7.8) circle (3);
+\draw (33.4,-7.8) node {$q_1$};
+\draw [black] (33.4,-7.8) circle (2.4);
+\draw [black] (18.8,-14.3) circle (3);
+\draw (18.8,-14.3) node {$q_2$};
+\draw [black] (8.733,-6.567) arc (111.42324:68.57676:30.025);
+\fill [black] (30.67,-6.57) -- (30.1,-5.81) -- (29.74,-6.74);
+\draw (19.7,-3.99) node [above] {$a$};
+\draw [black] (34.3,-10.65) arc (45.25384:-242.74616:2.25);
+\draw (31.71,-15.13) node [below] {$a,b$};
+\fill [black] (31.69,-10.25) -- (30.77,-10.46) -- (31.48,-11.17);
+\draw [black] (8.67,-9.16) -- (16.13,-12.94);
+\fill [black] (16.13,-12.94) -- (15.64,-12.13) -- (15.19,-13.03);
+\draw (11.41,-11.55) node [below] {$b$};
+\draw [black] (20.123,-16.98) arc (54:-234:2.25);
+\draw (18.8,-21.55) node [below] {$b$};
+\fill [black] (17.48,-16.98) -- (16.6,-17.33) -- (17.41,-17.92);
+\draw [black] (21.54,-13.08) -- (30.66,-9.02);
+\fill [black] (30.66,-9.02) -- (29.73,-8.89) -- (30.13,-9.8);
+\draw (27.03,-11.56) node [below] {$a$};
+\draw [black] (0.4,-7.8) -- (3,-7.8);
+\fill [black] (3,-7.8) -- (2.2,-7.3) -- (2.2,-8.3);
+\end{tikzpicture}
+\end{center}
+
+Write out a 5-tuple giving a formal definition for the DFA\footnote{Designed using \texttt{http://madebyevan.com/fsm/}.} above.
+
+	\answer    % precede your answers with \answer, proofs with \proof
+	Give your answer here.
+	\qed		% for coolness
+\end{exersoln}
+
+\begin{exersoln}{76}
+Describe the language recognized by the DFA of Example~72.
+\end{exersoln}
+
+\begin{exersoln}{77}
+Consider the DFA, $M = (\setdef{q_1, q_2}, \setdef{\textrm{0, 1}}, \delta, q_1, \setdef{q_2})$ with transition function $\delta$ given by
+\[\begin{array}{c|cc}
+ & \textrm{0} & \textrm{1} \\ \hline
+ q_1 & q_1 & q_2 \\
+ q_2 & q_1 & q_2
+\end{array}\]
+
+Draw a state diagram corresponding to the given DFA and describe in a single, concise English sentence the language that it recognizes.
+\end{exersoln}
+
+\begin{stmtsoln}{79}
+All of the following languages over the alphabet $\Sigma_{\ref{stmt:dfas}} = \setdef{\texttt{a}, \texttt{b}}$ are regular.
+\begin{itemize}
+\item $L_1 = \setbuild{w}{\textrm{every \texttt{a} is immediately followed by a \texttt{b}}}$
+\item $L_2 = \setbuild{w}{w~\textrm{contains an even number of \texttt{a}'s and an odd number of \texttt{b}'s}}$
+\item $L_3 = \setbuild{w}{w~\textrm{contains the substring \texttt{baa}}}$
+\item $L_4 = \setbuild{w}{w~\textrm{does not contain the substring \texttt{aab}}}$
+\item $L_5 = \setbuild{w}{w~\textrm{has length at least 3 and its third symbol is a}~\texttt{b}}$
+\item $L_6 = \setbuild{w}{w~\textrm{starts with \texttt{a} and has odd length, or starts with \texttt{b} and has even length}}$
+\item $L_7 = \setbuild{w}{\textrm{every odd position of}~w~\textrm{is an}~\texttt{a}}$
+\item $L_8 = \setdef{\emptystring, \texttt{a}}$
+\item $L_9 = \emptyset$
+\item $L_{10} = $ the set of all strings over $\Sigma_{\ref{stmt:dfas}}$ except the empty string
+\end{itemize}
+\end{stmtsoln}
+
+\begin{exersoln}{80. Vowels in alphabetical order}
+Let \[L_\alpha = \setbuild{w \in \setstar{\setdef{\texttt{a} - \texttt{z}}}}{\textrm{all five vowels}\ \texttt{a}, \texttt{e},
+			\texttt{i}, \texttt{o}, \texttt{u}, \textrm{occur in alphabetical order in}~w}\]
+So $L_\alpha$ contains words like \texttt{abstemious} and \texttt{facetious} but not \texttt{tenacious} or \texttt{tame}. Show that $L_\alpha$ is a regular language.
+\end{exersoln}
+
+\begin{exersoln}{81. Floating point numbers}
+~\\Let 
+\[L_{\mathrm{float}} = \setbuild{w}{w~\textrm{is the string representation of a floating point number}}\]
+Assume the following syntax for floating point numbers:
+\begin{itemize}
+\item A floating point number is an optional sign, followed by a decimal number, followed by an optional exponent.
+\item A decimal number may be of the form $x$ or $x.y$, where $x$ and $y$ are nonempty strings of decimal digits.
+\item An exponent beings with \texttt{E} and is followed by an optional sign and then an integer.
+\item An integer is a nonempty string of decimal digits.
+\end{itemize}
+The following strings are examples of floating point numbers:
+\[\mathrm{+3.0, 3.0, 0.3E1, 0.3E+1, -0.3E+1, -3E8, 7}\]
+Show that $L_{\mathrm{float}}$ is regular.
+\end{exersoln}
+
+
+
+
+%\begin{exersoln}{#}
+%	
+%	\answer
+%	Give your answer here.
+%\end{exersoln}
+
+
+
+\end{document}

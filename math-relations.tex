@@ -38,13 +38,13 @@ We use the notation $f : A \to B$ to mean that $f$ is a function from the set $A
 \end{defn}
 
 \begin{exer}
-Which of the following logical statements correspond(s) to the additional constraint that must hold on a function?
+Which of the following logical statements correspond(s) to the additional constraints that must hold on a function $f : A \to B$?
 \begin{enumerate}[label=(\alph*)]
 \item $\forall x \in A\ \left(
 		(\forall y, z \in B\ ((x, y) \in f \implies (x, z) \notin f) 
 		\ \land\ (\exists y \in B\ (x, y) \in f )
 		\right)$
-\item $\forall x \in A\  \left(
+\item $\forall x \in A\  \left(            % this one is ambiguous depending on how you parse the /\ with the -->
 		(\forall y, z \in B\ ((x, y) \in f \wedge (x, z) \in f \implies y = z) 
 		\ \land\ (\exists y \in B\ (x, y) \in f )
 		\right)$

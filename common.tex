@@ -1,6 +1,7 @@
 \usepackage[top=1in,left=1in,right=1in,bindingoffset=5mm,twoside]{geometry}
 
 \usepackage{amssymb}
+\usepackage{amsmath}
 \usepackage{enumitem}
 \usepackage{framed}
 \usepackage[framed]{ntheorem}
@@ -35,6 +36,10 @@
 \newtheorem{corol}[defn]{Corollary}
 
 \theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
+\newtheorem{conjecture}[defn]{Conjecture}
+
+
+\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
 \newtheorem{thmex}[defn]{Example Theorem}
 
 \theoremheaderfont{\scshape}
@@ -59,8 +64,9 @@
 \theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
 \newframedtheorem{lemma}[defn]{Lemma}
 
+\newcommand\stmtword{Proposition}
 \theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
-\newframedtheorem{stmt}[defn]{Statement}
+\newframedtheorem{stmt}[defn]{\stmtword}
 
 \theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
 \newframedtheorem{exer}[defn]{Exercise}
@@ -70,7 +76,7 @@
 
 
 \newenvironment{exersoln}[1]{\textbf{Exercise #1 Solution.}\begin{quote}}{\end{quote}}
-\newenvironment{stmtsoln}[1]{\textbf{Statement #1 Proof.}\begin{quote}}{\end{quote}}
+\newenvironment{stmtsoln}[1]{\textbf{\stmtword\ #1 Proof.}\begin{quote}}{\end{quote}}
 \newenvironment{thmsoln}[1]{\textbf{Theorem #1 Proof.}\begin{quote}}{\end{quote}}
 \newcommand\answer{\par\textbf{\emph{Answer}.\ }}
 \newcommand\proof{\par\textbf{\emph{Proof}.\ }}
@@ -86,7 +92,7 @@
 
 \newcommand\emptystring\epsilon
 \newcommand\definedas{\ \equiv\ }
-\newcommand\implies\to
+%\newcommand\implies\to
 \newcommand*{\qed}{\hfill\ensuremath{\square}}
 
 \newcommand\naturals{\mathds{N}}
@@ -104,6 +110,8 @@
 \newcommand\setstar[1]{#1^{*}}
 \newcommand\powerset[1]{\mathcal{P}(#1)}
 \newcommand\setproduct[2]{#1 \times #2}
+\newcommand\yields{\ \Rightarrow\ }
+\newcommand\derives{\ \Rightarrow^*\ }
 
 \newcommand\langof[1]{\mathcal{L}(#1)}
 
