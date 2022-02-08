@@ -106,9 +106,9 @@ Here is an state diagram\footnote{Designed using \texttt{http://madebyevan.com/f
 \end{center}
 \end{example}
 
-\begin{exer}
+\begin{exer1}
 Write out a 5-tuple giving a formal definition for the DFA of Example~\ref{example:fa1}.
-\end{exer}
+\end{exer1}
 
 \begin{defn}[DFA Computation]
 Let $M = (Q, \Sigma, \delta, q_0, F)$ be a finite automaton and let $w = a_1a_2\cdots a_n$ be a string where each $a_i$ is a member of the alphabet $\Sigma$. Then $M$ \defterm{accepts} $w$ if a sequence of states $r_0, r_1, \ldots, r_n \in Q$ exists with three conditions:
@@ -133,11 +133,11 @@ When we refer to the finite automata  defined above as being \defterm{determinis
 We say that $M$ \defterm{recognizes} a language $A$ if $A = \setbuild{w}{M \ \textrm{accepts}\ w}$.
 \end{defn}
 
-\begin{exer}
+\begin{exer1}
 Describe the language recognized by the DFA of Example~\ref{example:fa1}.
-\end{exer}
+\end{exer1}
 
-\begin{exer}
+\begin{exer2}
 Consider the DFA, $M = (\setdef{q_1, q_2}, \setdef{\textrm{0, 1}}, \delta, q_1, \setdef{q_2})$ with transition function $\delta$ given by
 \[\begin{array}{c|cc}
  & \textrm{0} & \textrm{1} \\ \hline
@@ -146,13 +146,13 @@ Consider the DFA, $M = (\setdef{q_1, q_2}, \setdef{\textrm{0, 1}}, \delta, q_1, 
 \end{array}\]
 
 Draw a state diagram corresponding to the given DFA and describe in a single, concise English sentence the language that it recognizes.
-\end{exer}
+\end{exer2}
 
 \begin{defn}[Regular language]
 A language is called a \defterm{regular language} if some finite automaton recognizes it.
 \end{defn}
 
-\begin{stmt}\label{stmt:dfas}
+\begin{stmt2}\label{stmt:dfas}
 All of the following languages over the alphabet $\Sigma_{\ref{stmt:dfas}} = \setdef{\texttt{a}, \texttt{b}}$ are regular.
 \begin{itemize}
 \item $L_1 = \setbuild{w}{\textrm{every \texttt{a} is immediately followed by a \texttt{b}}}$
@@ -166,23 +166,23 @@ All of the following languages over the alphabet $\Sigma_{\ref{stmt:dfas}} = \se
 \item $L_9 = \emptyset$
 \item $L_{10} = $ the set of all strings over $\Sigma_{\ref{stmt:dfas}}$ except the empty string
 \end{itemize}
-\end{stmt}
+\end{stmt2}
 
-\begin{exer}\label{stmt:dfas}
+\begin{exer2}\label{stmt:dfas2}
 Which languages of Exercise~\ref{exer:strslang} are regular?
-\end{exer}
+\end{exer2}
 
 \begin{discussion}
 Many DFAs contain what is called a \defterm{dead state} or \defterm{error state} -- a non-final state that, once entered, is never exited, no matter what comes later in the input. 
 \end{discussion}
 
-\begin{exer}[Vowels in alphabetical order]~\\
+\begin{exer2}[Vowels in alphabetical order]~\\
 Let \[L_\alpha = \setbuild{w \in \setstar{\setdef{\texttt{a} - \texttt{z}}}}{\textrm{all five vowels}\ \texttt{a}, \texttt{e},
 			\texttt{i}, \texttt{o}, \texttt{u}, \textrm{occur in alphabetical order in}~w}\]
 So $L_\alpha$ contains words like \texttt{abstemious} and \texttt{facetious} but not \texttt{tenacious} or \texttt{tame}. Show that $L_\alpha$ is a regular language.
-\end{exer}
+\end{exer2}
 
-\begin{exer}[Floating point numbers]\label{exer:floatingpoint}
+\begin{exer2}[Floating point numbers]\label{exer:floatingpoint}
 ~\\Let 
 \[L_{\mathrm{float}} = \setbuild{w}{w~\textrm{is the string representation of a floating point number}}\]
 Assume the following syntax for floating point numbers:
@@ -195,7 +195,7 @@ Assume the following syntax for floating point numbers:
 The following strings are examples of floating point numbers:
 \[\mathrm{+3.0, 3.0, 0.3E1, 0.3E+1, -0.3E+1, -3E8, 7}\]
 Show that $L_{\mathrm{float}}$ is regular.
-\end{exer}
+\end{exer2}
 
 % URI language (EAR p61), communication protocol (EAR p62), dispenser (p 55)
 
@@ -206,6 +206,14 @@ Develop a program that reads in a description of a DFA and then simulates its op
 % talk about minimization
 % Talk about proving machine is "correct" - (program verification; formal specs)
 
+\begin{stmt}[Optional - Additional properties of languages]\label{exer:opproprl}
+Formulate and prove a proposition of your own about DFAs and regular languages. Some possibilities might be a statement about:
+\begin{itemize}
+\item swapping the accept and non-accept states of a DFA, and the nature of the recognized languages;
+\item finite languages being regular (or not);
+\item whether minimal (in terms of the number of states) DFAs are unique for every language.
+\end{itemize}
+\end{stmt}
 % Extra propositions to contemplate:
 %   About flipping accept/non-accept states & nature of recognized languages
 %   About finite languages being regular
@@ -234,28 +242,36 @@ Let $A$ and $B$ be languages. We define the three \defterm{regular operations} a
 A set is said to be \defterm{closed} under some operation if applying that operation to any members of the set always produces an object still in the set.
 \end{defn}
 
-\begin{thm}
+\begin{thm1}
 The set of even numbers is \emph{closed under multiplication}.
-\end{thm}
+\end{thm1}
 
-\begin{thm}
+\begin{thm1}
 The set of even numbers is \emph{not closed under division}.
-\end{thm}
+\end{thm1}
 
-\begin{exer}
+\begin{exer2}
 Consider the following languages over the alphabet $\Sigma = \setdef{a, b}$:
 \[\begin{array}{l}
 L_1 = \setbuild{w}{w~\textrm{contains at least three a's}} \\
 L_2 = \setbuild{w}{w~\textrm{contains at least two b's}}
 \end{array}\]
 Show that each of $L_1$ and $L_2$ is regular and then show that their union, $\setunion{L_1}{L_2}$ is regular.
-\end{exer}
+\end{exer2}
 
-\begin{thm}
+\begin{thm3}
 The set of regular languages is closed under the union operation.
-\end{thm}
+\end{thm3}
 
-\begin{exer}
+\begin{discussion}The preceding theorem may be slightly out of reach at this point. Maybe we will revisit it later. Let's consider
+a simple, specific instance:
+\end{discussion}
+
+\begin{exer2}
+Show that $\setunion{L_3}{L_5}$ from Proposition~\ref{stmt:dfas} is regular.
+\end{exer2}
+
+\begin{exer2}
 Contemplate whether the set of regular languages is closed under the concatenation operation. 
 
 As a concrete example, consider:
@@ -264,7 +280,7 @@ L_1 = \setbuild{w}{w~\textrm{contains an odd number of a's}} \\
 L_2 = \setbuild{w}{w~\textrm{contains an odd number of b's}}
 \end{array}\]
 What does $\setconcat{L_1}{L_2}$ contain? Is $\setconcat{L_1}{L_2}$ regular?
-\end{exer}
+\end{exer2}
 
 
 
@@ -301,16 +317,16 @@ Nondeterminism is a concept that is central to the theory of computation. In a d
 \end{tikzpicture}
 \end{center}}
 
-\begin{exer}\label{exer:nfa1}
+\begin{exer1}\label{exer:nfa1}
 The following is a state diagram of a nondeterministic finite automaton (NFA). Identify at least two ways in which it differs from a deterministic finite automaton. Describe the language that it recognizes.
 \exernfaOne
-\end{exer}
+\end{exer1}    % Second-to-last letter is 'a'
 
 \begin{discussion}
 Nondeterministic finite automata may also have arrows labeled $\emptystring$. These allow computation to proceed nondeterministically choosing to either stay at the current state or follow the arrow, without consuming any input. 
 \end{discussion}
 
-\begin{exer}
+\begin{exer1}
 The alphabet of the following nondeterministic finite automaton is simply $\setdef{a}$. Describe the language that is recognized by the NFA.
 
 \begin{center}
@@ -356,11 +372,13 @@ The alphabet of the following nondeterministic finite automaton is simply $\setd
 \end{tikzpicture}
 \end{center}
 
-\end{exer}
+\end{exer1}
 
 \begin{defn}[$\epsilon$ extension]
 For any alphabet $\Sigma$, we write $\Sigma_\epsilon$ to denote $\setunion\Sigma{\setdef{\epsilon}}$.
 \end{defn}
+
+\clearpage
 
 \begin{defn}[Nondeterministic finite automaton]
 A \defterm{nondeterministic finite automaton} (\defterm{NFA}) is a 5-tuple $(Q, \Sigma, \delta, q_0, F)$ where:
@@ -374,13 +392,13 @@ A \defterm{nondeterministic finite automaton} (\defterm{NFA}) is a 5-tuple $(Q, 
 
 \end{defn}
 
-\begin{exer}
+\begin{exer1}
 Describe the domain and range of the transition function of an NFA.
-\end{exer}
+\end{exer1}
 
-\begin{exer}
+\begin{exer1}
 Provide a formal specification for the NFA of Exercise~\ref{exer:nfa1}.
-\end{exer}
+\end{exer1}
 
 \begin{defn}[NFA computation]
 Let $N = (Q, \Sigma, \delta, q_0, F)$ be an NFA and $w$ be a string over the alphabet $\Sigma$. Then, we say that $N$ \defterm{accepts} $w$ if we can write $w$ as $w = x_1 x_2 \cdots x_n$, where each $x_i \in \Sigma_\epsilon$ and there exists a sequence of states, $r_0, r_1, \ldots, r_n \in Q$ such that:
@@ -393,13 +411,14 @@ Let $N = (Q, \Sigma, \delta, q_0, F)$ be an NFA and $w$ be a string over the alp
 As with DFAs, we say that an NFA $N$ \defterm{recognizes} a language $A$ if $A = \setbuild{w}{N~\textrm{accepts}~w}$.
 \end{defn}
 
-\begin{exer}
+\begin{exer2}
 Consider again the language accepted by the following NFA:
 \exernfaOne
 Determine if it is possible to define a DFA that recognizes the same language.
-\end{exer}
+\end{exer2}
 
-\begin{exer}
+
+\begin{exer2}
 Describe the language accepted by the following NFA. Then, determine if it is possible to define a DFA that recognizes the same language.
 \begin{center}
 \begin{tikzpicture}[scale=0.2]
@@ -430,7 +449,7 @@ Describe the language accepted by the following NFA. Then, determine if it is po
 \fill [black] (38.32,-7.82) -- (39.2,-7.47) -- (38.39,-6.88);
 \end{tikzpicture}
 \end{center}
-\end{exer}
+\end{exer2}
 
 \begin{progexer}\happymac
 Develop a program that reads in a description of an NFA and produces a description of an equivalent DFA.
@@ -441,15 +460,15 @@ Develop a program that reads in a description of an NFA and then simulates its o
 \end{progexer}
 
 
-\begin{thm}
+\begin{thm3}
 Every nondeterministic finite automaton has an equivalent deterministic finite automaton.\footnote{}
-\end{thm}\footnotetext{For the purposes of this course, it will be sufficient for you to show a construction that is reasonably convincing and intuitively correct. Time permitting, we go over a proof of its correctness together in class.}
+\end{thm3}\footnotetext{For the purposes of this course, it will be sufficient for you to show a construction that is reasonably convincing and intuitively correct. Time permitting, we go over a proof of its correctness together in class.}
 
 \begin{corol}
 A language is regular if and only if some nondeterministic finite automaton recognizes it.
 \end{corol}
 
-\begin{exer}
+\begin{exer2}
 Convert the following NFAs to equivalent DFAs.
 
 \begin{tabular}{c@{\ \ \ \ \ \ \ \ \ \ \ \ \ }c}
@@ -460,6 +479,7 @@ Convert the following NFAs to equivalent DFAs.
 \draw [black] (8.5,-10.6) circle (3);
 \draw (8.5,-10.6) node {$q_0$};
 \draw [black] (23.5,-10.6) circle (3);
+\draw [black] (23.5,-10.6) circle (2.4);
 \draw (23.5,-10.6) node {$q_1$};
 \draw [black] (2.3,-10.6) -- (5.5,-10.6);
 \fill [black] (5.5,-10.6) -- (4.7,-10.1) -- (4.7,-11.1);
@@ -482,6 +502,7 @@ Convert the following NFAs to equivalent DFAs.
 \draw [black] (28.1,-9.8) circle (3);
 \draw (28.1,-9.8) node {$q_1$};
 \draw [black] (19.3,-23.2) circle (3);
+\draw [black] (19.3,-23.2) circle (2.4);
 \draw (19.3,-23.2) node {$q_2$};
 \draw [black] (4,-9.8) -- (6.9,-9.8);
 \fill [black] (6.9,-9.8) -- (6.1,-9.3) -- (6.1,-10.3);
@@ -503,23 +524,26 @@ Convert the following NFAs to equivalent DFAs.
 \end{tikzpicture}
 \end{tabular}
 
-\end{exer}
+\begin{center}(c)\end{center}
+\exernfaOne
+
+\end{exer2}
 
 \begin{discussion}
 You may have already proved the following theorem. Try proving it again, using the notion of an NFA that we have now defined. 
 \end{discussion}
 
-\begin{thm}
+\begin{thm3}
 The set of regular languages is closed under the union operation.
-\end{thm}
+\end{thm3}
 
-\begin{thm}
+\begin{thm3}
 The set of regular languages is closed under the concatenation operation.
-\end{thm}
+\end{thm3}
 
-\begin{thm}
+\begin{thm3}
 The set of regular languages is closed under the star operation.
-\end{thm}
+\end{thm3}
 
 \begin{corol}
 The set of regular languages is closed under the regular operations (Definition~\ref{def:regops}).
@@ -528,7 +552,7 @@ The set of regular languages is closed under the regular operations (Definition~
 \newcommand\charA{{\texttt{a}}}
 \newcommand\charB{{\texttt{b}}}
 
-\begin{stmt}\label{stmt:nfas}
+\begin{stmt2}\label{stmt:nfas}
 All of the following languages are regular.
 \begin{itemize}
 \item $L_1 = \setbuild{\charA^n\charB\charA^m}{n, m \geq 0, n \equiv_3 m}$
@@ -550,7 +574,7 @@ All of the following languages are regular.
 %\item $L_9 = \emptyset$
 %\item $L_{10} = $ the set of all strings over $\Sigma_{\ref{stmt:dfas}}$ except the empty string
 \end{itemize}
-\end{stmt}
+\end{stmt2}
 
 
 
@@ -569,7 +593,7 @@ Given an alphabet $\Sigma$, a \defterm{regular expression}, $R$, is defined as o
 \item ${R_1}^*$, where $R_1$ is a regular expression.
 \end{enumerate}
 
-For convenience, we may omit parentheses in an expression, in which case the order of precedence of the latter three operators is: $*$, then $\cdot$, then $+$.\footnote{i.e. $(R_1 + {R_2}^* \cdot R_3) = (R_1 + (({R_2}^*) \cdot R_3))$ } Also, for convenience, we write $R^+$ for $R^*$, $R^k$ for the concatenation of $k$ $R$'s with each other, and $R_1 R_2$ (omitting the dot) for $R_1 \cdot R_2$.
+For convenience, we may omit parentheses in an expression, in which case the order of precedence of the latter three operators is: $*$, then $\cdot$, then $+$.\footnote{i.e. $(R_1 + {R_2}^* \cdot R_3) = (R_1 + (({R_2}^*) \cdot R_3))$ } Also, for convenience, we write $R^+$ for $R \cdot R^*$, $R^k$ for the concatenation of $k$ $R$'s with each other, and $R_1 R_2$ (omitting the dot) for $R_1 \cdot R_2$.
 \end{defn}
 
 \begin{discussion}
@@ -589,7 +613,7 @@ The language represented by a regular expression, $R$, written as $\langof R$, i
 Note, the latter three map regular expressions, on the left, to regular operations on languages, on the right.
 \end{defn}
 
-\begin{exer}
+\begin{exer2}
 For each regular expression that follows, describe the language it represents as concisely as possible. Assume the language is $\Sigma = \setdef{0, 1}$. Note that we use the shorthand of $\Sigma$ inside a regular expression to represent $(0 + 1)$.
 \begin{enumerate}
 \item $0^*10^*$
@@ -603,25 +627,34 @@ For each regular expression that follows, describe the language it represents as
 \item $1^*\emptyset$
 \item $\emptyset^*$
 \end{enumerate}
-\end{exer}
+\end{exer2}
 
-\begin{exer}
+\begin{exer2}
+Develop regular expressions for the languages of \stmtword~\ref{stmt:dfas}.
+\end{exer2}
+
+
+\begin{exer1}
 Write a regular expression that represents the language 
 \[\setbuild{w\in\setstar{\setdef{a, b}}}{w~\textrm{contains an odd number of $a$'s}}.\]
-\end{exer}
+\end{exer1}
 
-\begin{exer}
+\begin{exer1}
 ~\\Let $L_{\mathrm{float}}$ be defined as in Exercise~\ref{exer:floatingpoint}:
 \[L_{\mathrm{float}} = \setbuild{w}{w~\textrm{is the string representation of a floating point number}}\]
 Let $D = \setdef{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}$. Write a regular expression, $R$, such that $\langof R = L_{\mathrm{float}}$.
-\end{exer}
+\end{exer1}
 
-\begin{lemma}
+\begin{lemma2}
 If a language is described by a regular expression, then there exists an NFA that recognizes the same language.
-\end{lemma}
+\end{lemma2}
+
+\begin{exer1}
+Provide an NFA that recognizes the same language represented by the regular expression $(a+b)^*aba$.
+\end{exer1}
 
 \begin{discussion}
-For the next lemma that you prove, consider introducing a generalized type of nondeterministic finite automaton (GNFA) in which the arrows are labeled with regular expressions (instead of single symbols). Given a DFA, it should be straightforward to convert it to such a GNFA with the additional properties that it has one single start state that has no incoming arrows, one single accept state that has no outgoing arrows, and one arrow going from every state to every other state including the state itself. Then, show how such a GNFA with $n$ number of states can be shrunk down to an equivalent GNFA with only two states (the start and accept states) and a single arrow between them, labeled with a regular expression.
+For the next lemma that you prove, consider introducing a generalized type of nondeterministic finite automaton (GNFA) in which the arrows are labeled with regular expressions (instead of single symbols). Given a DFA, it should be straightforward to convert it to such a GNFA with the additional properties that it has one single start state that has no incoming arrows, one single accept state that has no outgoing arrows, and at most one arrow going from every state to every other state including the state itself. Then, show how such a GNFA with $n$ number of states can be shrunk down to an equivalent GNFA with only two states (the start and accept states) and a single arrow between them, labeled with a regular expression.
 
 \noindent For example, the following portion of such an automaton:
 \begin{center}
@@ -663,13 +696,18 @@ might be simplified in one step to:
 
 \end{discussion}
 
-\begin{lemma}
-If a language is recognized by a DFA, then there exists a regular expression that represents the same language.
-\end{lemma}
 
-\begin{thm}
+\begin{lemma2}
+If a language is recognized by a DFA, then there exists a regular expression that represents the same language.
+\end{lemma2}
+
+\begin{exer2}
+Provide a regular expression that describes the language recognized by the DFA of Example~\ref{example:fa1}.
+\end{exer2}
+
+\begin{thm2}
 A language is regular if and only if some regular expression describes it.
-\end{thm}
+\end{thm2}
 
 \clearpage
 
@@ -681,19 +719,19 @@ Are there languages that are not regular?
 
 % can talk about countably infinite # of reg languages, but uncountably infinite number of languages on non-empty alphabet - so more languages than regular languages
 
-\begin{thm}
+\begin{thm2}
 Every finite language is regular.
-\end{thm}
+\end{thm2}
 
 \begin{defn}[Reverse of a language]
 For any language $A$, let $\stringrev{A} = \setbuild{\stringrev{w}}{w \in A}$. 
 \end{defn}
 
-\begin{thm}
+\begin{thm2}
 If $A$ is a regular language, so is $\stringrev{A}$.
-\end{thm}
+\end{thm2}
 
-\begin{exer}
+\begin{exer2}
 Let
 \[
 \Sigma_3 = \left\{ \left[\begin{array}{c}0\\0\\0\end{array}\right],
@@ -720,70 +758,70 @@ For example,
 \]
 Show that $B$ is regular. 
 \hint Working with $\stringrev B$ is easier.
-\end{exer}
+\end{exer2}
 
 \begin{discussion}
 The preceding exercise shows that DFAs are powerful enough to recognize (i.e. \emph{compute}) binary addition.
 \end{discussion}
 
-\begin{thm}
+\begin{thm2}
 Let $B_n = \setbuild{\charA^k}{k~\textrm{is a multiple of}~n}$. For every $n \geq 1$, the language $B_n$ is regular.
-\end{thm}
+\end{thm2}
 
-\begin{exer}
-Let $D = \setbuild{\charA^n \charB^n}{n \geq 0}$. Formulate a statement regarding the regularity of the language $D$ and prove it.
-\end{exer}
+\begin{exer2}
+Let $D = \setbuild{\charA^n \charB^n}{n \geq 0}$. Formulate a statement regarding the regularity of the language $D$ and justify it.
+\end{exer2}
 
 \begin{discussion}
 We now prove a general theorem that is true for every regular language. This theorem will not be particularly useful if we already know a language is regular, and it won't help us show that a particular language \emph{is} regular if we don't already know. However, it can be very useful for constructing proofs by contradiction to show that a particular language \emph{is not} regular.
 \end{discussion}
 
-\begin{lemma}
+\begin{lemma2}
 Let $M = (Q, \Sigma, \delta, q_0, F)$ be a DFA. If $M$ accepts any string of length $|Q|$ or greater, then that string must force $M$ to visit some state in $Q$ more than once (thus traversing at least one loop).
-\end{lemma}
+\end{lemma2}
 
-\begin{thm}[Pumping lemma for regular languages]
+\begin{thm3}[Pumping lemma for regular languages]
 If $A$ is a regular language, then there exists a number $p$ (called the \defterm{pumping length}) such that if $s$ is any string in $A$ of length at least $p$, then $s$ can be divided into three pieces, $s = xyz$, satisfying the following conditions:
 \begin{enumerate}
 \item $xy^iz \in A$ for all $i \geq 0$,
 \item $|y| > 0$,\footnote{} and
 \item $|xy| \leq p$.
 \end{enumerate}
-\end{thm}\footnotetext{i.e. $y \neq \emptystring$.}
+\end{thm3}\footnotetext{i.e. $y \neq \emptystring$.}
 
 \begin{discussion}
 Use the pumping lemma to prove the following by contradiction.
 \end{discussion}
 
-\begin{thm}
+\begin{thm2}
 Let $D = \setbuild{\charA^n \charB^n}{n \geq 0}$. $D$ is not regular.
-\end{thm}
+\end{thm2}
 
-\begin{thm}
+\begin{thm1}
 Let $E = \setbuild{w \in \setstar{\setdef{\charA, \charB}}}{w~\textrm{has an equal number of \charA{s} and \charB{s}}}$. $E$ is not regular.
-\end{thm}
+\end{thm1}
 
-\begin{thm}
+\begin{thm2}
 Let $G = \setbuild{\charA^n \charB^m}{n > m}$. $G$ is not regular.
-\end{thm}
+\end{thm2}
 
-\begin{thm}
-Let $BP = \setbuild{w \in \setstar{\setdef{), (}}}{\textrm{the parentheses are balanced}}$. $BP$ is not regular.
-\end{thm}
+\begin{thm1}
+Let $BP = \setbuild{w \in \setstar{\setdef{), (}}}{\textrm{the parentheses are balanced\footnote{}}}$. $BP$ is not regular.
+\end{thm1}\footnotetext{Intuitively, a string of parentheses is balanced if each left parenthesis has a matching right parenthesis and the matched pairs are properly nested.}
 
 
-\begin{thm}
+\begin{thm2}
 Let $P = \setbuild{w\stringrev{w}}{w \in \setstar{\setdef{\charA, \charB}}}$. $P$ is not regular.
-\end{thm}
+\end{thm2}
 
-\begin{thm}
+\begin{thm2}
 Let $O = \setbuild{\charA^{n^2}}{n \geq 0}$. $O$ is not regular.
-\end{thm}
+\end{thm2}
 
 
-\vspace{.3in}
+\vspace{.25in}
 \hrule 
-\vspace{.3in}
+\vspace{.25in}
 
 \begin{discussion}
 After completing a body of work, it is satisfying and helpful to put together the ideas in your mind -- to see the forest beyond the trees. Take some time to do that by considering the following questions.
@@ -825,7 +863,7 @@ $ u \yields u_1 \yields u_2 \yields \ldots \yields u_k \yields v$. Such a sequen
 The language \defterm{generated by} a context-free grammar is the set of all terminal strings that can be derived from the start variable,  $\setbuild{w \in \setstar\Sigma}{S \derives w}$. A language is a \defterm{context-free language} iff it is generated by some context-free grammar.
 \end{defn}
 
-\begin{exer}\label{exer:cfglangs}
+\begin{exer1}\label{exer:cfglangs}
 Give the language generated by each of the following grammars:
 \begin{enumerate}
 \item $G_1 = (\setdef{S, a, b}, \setdef{a, b}, R, S)$ where $R = \setdef{S \to aSb~|~\emptystring}$.
@@ -833,32 +871,32 @@ Give the language generated by each of the following grammars:
 \item $G_3 = (\setdef{S, a, b}, \setdef{a, b}, R, S)$ where $R = \setdef{S \to aSa ~|~ bSb ~|~\emptystring}$.
 %% \item $G_4 = (\setdef{S, (, )}, \setdef{(, )}, R, S)$ where $R = \setdef{S \to (S) ~|~ SS ~|~ \emptystring}$.
 \end{enumerate}
-\end{exer}
+\end{exer1}
 
-\begin{thm}
+\begin{stmt2}
 Let $L = \setbuild{\charA^n \charB^m}{n > m}$. $L$ is a context-free language.
-\end{thm}
+\end{stmt2}
 
-\begin{thm}
+\begin{stmt2}
 Let $BP = \setbuild{w \in \setstar{\setdef{), (}}}{\textrm{the parentheses are balanced}}$. $BP$ is a context-free language.
-\end{thm}
+\end{stmt2}
 
-\begin{exer}
+\begin{exer2}
 Consider Let $E = \setbuild{w \in \setstar{\setdef{\charA, \charB}}}{w~\textrm{has an equal number of \charA{s} and \charB{s}}}$. Do you think $E$ is context-free?
-\end{exer}
+\end{exer2}
 
-\begin{stmt}
+\begin{stmt3}
 Consider the language accepted by the DFA $M = (Q, \Sigma, \delta, q_0, F)$. Now construct a CFG, $G = (V, \Sigma, R, S)$ where $V = \setunion{Q}{\Sigma}$, $S = q_0$, and 
 \[ R = \setunion{\setbuild{p \to \sigma q}{\delta(p, \sigma) = q}}{\setbuild{f \to \emptystring}{f \in F}}. \]
 What language is generated by $G$? (Explain.) Formulate a conjecture regarding the relationship between regular languages and context-free languages and prove it.
-\end{stmt}
+\end{stmt3}
 
-\begin{exer}
-Pick a DFA that you have previously seen and construct a CFG that generates the same language as that accepted by the DFA.
-\end{exer}
+\begin{exer1}
+Pick a DFA that you have previously seen and construct a CFG that generates the same language as that accepted by the DFA. (The DFA for $L_1$ of \stmtword~\ref{stmt:dfas} would be a good one to try.)
+\end{exer1}
 
 \begin{discussion}
-As with regular languages, we will gloss over the issue of rigorously proving that that a grammar is correct, i.e. given a language $L$ and a grammar $G$, does $G$ actually generate exactly the strings in $L$. However, it may be instructive to attempt such a proof at least once. To prove correctness of a grammar, you need to prove two things:
+As with regular languages, we will gloss over the issue of rigorously proving that  a grammar is correct, i.e. given a language $L$ and a grammar $G$, does $G$ actually generate exactly the strings in $L$. However, it may be instructive to attempt such a proof at least once. To prove correctness of a grammar, you need to prove two things:
 \begin{enumerate}
 \item $G$ generates only strings in $L$, and
 \item Every string in $L$ is generated by $G$.
@@ -878,7 +916,7 @@ Then construct a loop invariant $I$ and show that:
 \end{itemize}
 \end{discussion}
 
-\begin{thm}[OPTIONAL]
+\begin{stmt}[OPTIONAL]
 Consider the language $D = \setbuild{\charA^n \charB^n}{n \geq 0}$. Prove that the following grammar correctly generates the language $D$: 
 \[G_1 = (\setdef{S, a, b}, \setdef{a, b}, R, S) ~\textrm{where}~ R = \setdef{S \to aSb~|~\emptystring}.\]
 \hint For the first part of the proof, use the invariant:
@@ -886,14 +924,21 @@ Consider the language $D = \setbuild{\charA^n \charB^n}{n \geq 0}$. Prove that t
  \#_a(w) = \#_b(w) ~~ \wedge ~~ w \in (\setstar{a}(\setunion{S}{\emptystring})\setstar{b})
 \]
 where $\#_a(w)$ represents the number of $a$s in $w$. 
-\end{thm}
+\end{stmt}
+
+\begin{progexer}\happymac
+Develop a program that reads in a description of a CFG and generates random strings in the corresponding language. Your program should be general enough to work with any CFG. For example, apply it to the grammars of Exercise~\ref{exer:cfgenglish} and~\ref{exer:cfgbools}, coming up.
+\end{progexer}
+
+
+
 
 \clearpage
 
 \section{Parsing and Ambiguity}
 
 \begin{discussion}
-CFGs are useful for more than just describing the set of strings in a language. They also enable analyzing the structure of strings that they derive. This is useful because we often need to assign meaning based on the structure of a particular string that a such a grammar produces -- whether the strings are sentences in a human language, or source code in a programming language.
+CFGs are useful for more than just describing the set of strings in a language. They also enable analyzing the structure of strings that they derive. This is useful because we often need to assign meaning based on the structure of a particular string that such a grammar produces -- whether the strings are sentences in a human language, or source code in a programming language.
 \end{discussion}
 
 \begin{defn}[Parse tree]
@@ -907,7 +952,7 @@ One way to capture the grammatical structure of a string is using a \defterm{par
 The concatenation of all the leaf node symbols (in order from left to right) forms the string obtained by some derivation represented by the parse tree.
 \end{defn}
 
-\begin{exer}\label{exer:cfgenglish}
+\begin{exer2}\label{exer:cfgenglish}
 Consider the following CFG for a small fragment of the English language:
 
 \[\begin{array}{r@{\ \to\ }l}
@@ -916,7 +961,7 @@ Consider the following CFG for a small fragment of the English language:
 \textit{NP} & \textit{Det}\ \textit{Nominal} \ |\ \textit{Nominal} \ |\ \textit{NP}\ \textit{PP}\\
 \textit{Nominal} &  \textit{N}  \ |\ \textit{AdjP}\ \textit{N} \\
 \textit{PP} & \textit{Prep}\ \textit{NP} \\
-\textit{AdjP} & \textit{Adj} \ |\ \textit{Adv}\ \textit{AdvP} \\
+\textit{AdjP} & \textit{Adj} \ |\ \textit{Adv}\ \textit{AdjP} \\
 \textit{N} & \textrm{boy} \ |\ \textrm{girl} \ |\ \textrm{binoculars}\\
 \textit{V} & \textrm{sees} \ |\ \textrm{likes} \\
 \textit{Adj} & \textrm{big} \ |\ \textrm{small} \ |\ \textrm{blue}\\
@@ -937,14 +982,17 @@ Also answer these questions:
 \item Is it possible to have more than one parse tree for each of the strings? 
 \item Why are parse trees more useful than derivations for understanding the structure of a string?
 \end{itemize}
-\end{exer}
+\end{exer2}
 
 \begin{defn}[Ambiguous grammar]
 A grammar $G$ is called \defterm{ambiguous} if there is at least one string in the language $G$ generates for which more than one parse tree is possible.
 \end{defn}
 
+% comment: could define left-most derivations and then ask if it's possible to have more than one *left-most* derivation for the strings in exer:cfgenglish
+
+
 \begin{exer}
-Which of the grammars in Exercise~\ref{exer:cfglangs} are ambiguous?
+Which of the grammars in Exercise~\ref{exer:cfglangs} are ambiguous? For any that are, is it possible to define a  grammar that is not ambiguous for the same language?
 \end{exer}
 
 \begin{exer}
@@ -955,7 +1003,7 @@ if a then if b then s1 else s2
 Explain the problem in terms of grammars and ambiguity. Present a snippet of rules from a grammar that would lead to a dangling else problem for this statement. Think about a programming language that you are familiar with: how is the dangling else problem resolved or handled?
 \end{exer}
 
-\begin{exer}
+\begin{exer}\label{exer:cfgbools}
 % from EAR, page 247
 ~\\Let  $L = \setbuild{w \in \setstar{\setdef{\texttt{A} - \texttt{Z}, \neg, \wedge, \vee, \implies, \left(, \right)}}}{w~\textrm{is a syntactically legal Boolean expression}}$.
 \begin{enumerate}
@@ -968,6 +1016,11 @@ Explain the problem in terms of grammars and ambiguity. Present a snippet of rul
 \[ \neg\texttt{P}\vee\texttt{R}\implies\texttt{Q}\implies\texttt{S} \]
 \end{enumerate}
 \end{exer}
+
+\begin{progexer}\happymac
+Develop a parsing program that reads in a description of a CFG and an input string and displays a parse tree (in a format you choose) of the string, if it is in the corresponding language. For this exercise, you may look up the ``recursive descent parser'' and ``top-down parsing'' articles in Wikipedia. Other than that, write the code on your own.
+\end{progexer}
+
 
 
 
@@ -1099,12 +1152,13 @@ Construct PDAs for the following languages, if possible:
 \item $\setbuild{w\stringrev{w}}{ w \in \setstar{\setdef{\texttt{a}, \texttt{b}}} }$
 \item $\setbuild{w{w}}{ w \in \setstar{\setdef{\texttt{a}, \texttt{b}}} }$
 \item $\setbuild{w \in \setstar{\setdef{\charA, \charB}}}{w~\textrm{has an equal number of \charA{s} and \charB{s}}}$
+   % ... already done in the previous exercise, but here to see if anyone paying attention
 \item $\setbuild{\texttt{a}^n \texttt{b}^n \texttt{c}^n}{ n \geq 0 }$
 \end{enumerate}
 \end{exer}
 
 \begin{discussion}
-We will state but not prove, for this course, the following theorem. Its proof consists of two directions, as usual for "if and only if" statements, both of which are proven by construction: building a CFG from a PDA and vice versa.
+We will state but not prove, for this course, the following theorem. Its proof consists of two directions, as usual for ``if and only if" statements, both of which can be proven by construction: building a CFG from a PDA and vice versa.
 \end{discussion}
 
 ~
@@ -1135,14 +1189,6 @@ The second condition essentially says that either $v$ or $y$ is not empty.
 The language $\setbuild{\texttt{a}^n \texttt{b}^n \texttt{c}^n}{ n \geq 0 }$ is \emph{not} a context-free language.
 \end{thm}
 
-\begin{progexer}\happymac
-Develop a program that reads in a description of a CFG and generates random strings in the corresponding language. Apply it to the grammar of Exercise~\ref{exer:cfgenglish}. (Make sure your program will work for any CFG in general, though, not just that one.)
-\end{progexer}
-
-\begin{progexer}\happymac
-Develop a parsing program that reads in a description of a CFG and an input string and displays a parse tree (in a format you choose) of the string, if it is in the corresponding language. For this exercise, you may look up the ``recursive descent parser'' and ``top-down parsing'' articles in Wikipedia. Other than that, write the code on your own.
-\end{progexer}
-
 
 
 
@@ -1165,10 +1211,11 @@ So far, we have studied several models of computational devices. Finite automata
 \newcommand\blanksymbol\sqcup
 \newcommand\tmL{\textrm{L}}
 \newcommand\tmR{\textrm{R}}
+\newcommand\tmS{\textrm{S}}
 
 
 \begin{defn}[Turing machine]
-A \defterm{Turing machine} (\defterm{TM}) is a 7-tuple $(Q, \Sigma, \Gamma, \delta, q_0, \qaccept,\qreject )$, where $Q, \Sigma, \Gamma$, and $F$ are all finite sets, and
+A \defterm{Turing machine} (\defterm{TM}) is a 7-tuple $(Q, \Sigma, \Gamma, \delta, q_0, \qaccept,\qreject )$, where $Q, \Sigma,$ and $\Gamma$ are all finite sets, and
 \begin{enumerate}
 \item $Q$ is the set of states,
 \item $\Sigma$ is the input alphabet, which does not contain the \defterm{blank symbol} $\blanksymbol$,
@@ -1185,7 +1232,7 @@ Conceptually, a Turing machine is a finite automaton with a read/write head posi
 \end{discussion}
 
 \begin{defn}[Turing machine configuration]
-A \defterm{configuration} of a Turing machine is a triple, $u~q~v$, of a state $q \in Q$ and two strings $u, v \in \setstar\Gamma$. The configuration $uqv$ indicates that the current state of the TM is $q$, the contents of the tape is $uv$, and the read/write head is positioned on top of the first symbol of $v$. For example, $\texttt{1101}q_5\texttt{11011}$ represents a configuration where the current state is $q_5$, the tape contents are $\texttt{110111011}$ and the read/write head is positioned on top of the fourth \texttt{1}.
+A \defterm{configuration} of a Turing machine is a triple, $u~q~v$, of a state $q \in Q$ and two strings $u, v \in \setstar\Gamma$. The configuration $uqv$ indicates that the current state of the TM is $q$, the contents of the tape is $uv$, and the read/write head is positioned on top of the first symbol of $v$. For example, $\texttt{1101}q_5\texttt{11011}$ represents a configuration where the current state is $q_5$, the tape contents are $\texttt{110111011}$, and the read/write head is positioned on top of the fourth \texttt{1}.
 \end{defn}
 
 \begin{defn}[Turing machine computation]
@@ -1218,6 +1265,9 @@ As with other types of machines we've studied, we can represent the transition f
 \end{center}
 \end{discussion}
 
+\begin{exer}
+What could cause a TM to \emph{not} accept an input?
+\end{exer}
 
 \begin{defn}[Language of a Turing machine]
 The language of a Turing machine $M$ is the collection of strings that $M$ accepts, denoted by $L(M)$. This is also referred to as the language recognized by $M$.
@@ -1291,21 +1341,26 @@ The language $\setbuild{w\texttt{\#}w}{w \in \setstar{\setdef{\texttt{a}, \textt
 The language $\setbuild{\texttt{a}^n \texttt{b}^n \texttt{c}^n}{ n \geq 0 }$ is Turing-decidable.
 \end{stmt}
 
+\begin{stmt}
+Every finite language is Turing-decidable.
+\end{stmt}
+
+
 \begin{discussion}
 At this point, you have worked with a few low-level diagrams of Turing machines -- effectively specifying states, transition functions, etc. However, our goal is not to spend time ``programming'' such machines, but to understand their use as a most general model for computation. Thus, once the capabilities of TMs are understood, it is much easier to simply give an informal prose description of how a machine works for a particular problem: how it moves it head, the ways it reads and writes data on its tape, etc. We do not have to give exact details of every state and the transition function.
 \end{discussion}
 
 \begin{stmt}
-The language $\setbuild{x_1\texttt{\#}x_2\texttt{\#}\ldots\texttt{\#}x_n}{\textrm{each}~x_i \in \setstar{\setdef{\texttt{a}, \texttt{b}}}
+The language $\setbuild{\texttt{\#}x_1\texttt{\#}x_2\texttt{\#}\ldots\texttt{\#}x_n}{\textrm{each}~x_i \in \setstar{\setdef{\texttt{a}, \texttt{b}}}
 	~\textrm{and when}~ i \neq j, x_i \neq x_j}$ is Turing-decidable. (A TM for this language would be solving what is called the \emph{element distinctness problem}.)
-\hint An occasionally useful technique with TMs is to include marked versions of tape symbols in the tape alphabet. For instance \texttt{a} and $\overset{\bullet}{\texttt{a}}$, \texttt{\#} and $\overset{\bullet}{\texttt{\#}}$, etc.
+\hint An occasionally useful technique with TMs is to include ``marked'' versions of tape symbols in the tape alphabet. For instance \texttt{a} and $\overset{\bullet}{\texttt{a}}$, \texttt{\#} and $\overset{\bullet}{\texttt{\#}}$, etc.
 \end{stmt}
 
 \section{Turing machine variants}
 
 \begin{defn}[Multitape Turing machine]
-A \defterm{multitape Turing machine} is like a normal Turing machine with more than one tape, each with its own read/write head. The first tape still contains the initial input; the rest of the tapes are initially blank. The transition function, for a machine with $k$ tapes, looks like:
-\[ \delta : Q \times \Gamma^k \longrightarrow Q \times \Gamma^k \times \setdef{\tmL, \tmR}^k \]
+A \defterm{multitape Turing machine} is like a normal Turing machine with more than one tape, each with its own read/write head that can move left, right, or stay in the same position upon every step of computation. The first tape still contains the initial input; the rest of the tapes are initially blank. The transition function, for a machine with $k$ tapes, looks like:
+\[ \delta : Q \times \Gamma^k \longrightarrow Q \times \Gamma^k \times \setdef{\tmL, \tmR, \tmS}^k \]
 \end{defn}
 
 \begin{stmt}
@@ -1371,8 +1426,8 @@ Let $A$ be the language consisting of all strings representing connected undirec
 Let $T$ be the language containing only a single string $s$, where
 \[ s = \bigg\{
 \begin{array}{ll}
-\texttt{0} &  \textrm{if it will be sunny tomorrow.} \\
-\texttt{1} & \textrm{if it will not be sunny tomorrow.}
+\texttt{0} &  \textrm{if it will be sunny all day tomorrow.} \\
+\texttt{1} & \textrm{if it will not be sunny all day tomorrow.}
 \end{array}
 \]
 Is $T$ decidable? Explain. 
@@ -1429,7 +1484,7 @@ So $M_{CL}$ would be a pretty useful machine to help us identify machines like $
 \end{discussion}
 
 
-\begin{exer}
+\begin{exer}\label{tm:canloopone}
 Now, imagine a machine $M_{L}$ which behaves as follows:
 \[ M_L(w) = \bigg\{
 \begin{array}{ll}
@@ -1564,7 +1619,8 @@ You might think we have reached an appropriate \emph{halt}ing point in our explo
 \end{discussion}
 
 \begin{stmt}
-\textsc{Halts} is a Turing-recognizable language.
+Consider the language \[\textsc{HaltsOne} = \setbuild{\repof{M, w}}{M~\textrm{halts when run on}~w}.\]
+\textsc{HaltsOne} is a Turing-recognizable language.
 \end{stmt}
 
 \begin{defn}[Co-Turing-recognizable]
@@ -1576,8 +1632,13 @@ A language is decidable if and only if it is Turing-recognizable \emph{and} co-T
 \end{thm}
 
 \begin{stmt}
-\textsc{CanLoop} is \emph{not} Turing-recognizable.
+Consider the language of the machine $M_L$ of Exercise~\ref{tm:canloopone} -- call it \textsc{CanLoopOne}. 
+\textsc{CanLoopOne} is \emph{not} Turing-recognizable.
 \end{stmt}
+
+\vspace{1in}
+\[\huge\textit{That's All Folks!}\]
+
 
 
 % note: can use countability to show that there must exist lots of languages that are not Turing-recognizable

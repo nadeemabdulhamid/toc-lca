@@ -1,3 +1,5 @@
+% !TEX root = main.tex
+
 \section{Sequences}
 
 \begin{defn}[Sequence, tuple, ordered pair]\label{defn:sequence}\label{defn:tuple}
@@ -12,14 +14,14 @@ Sets and sequences often appear as elements of other sets and sequences.
 The \defterm{power set} of a set $A$, written $\bm{\powerset{A}}$, is the set of all subsets of $A$.
 \end{defn}
 
-\begin{exer}
+\begin{exer1}
 What are the power sets of each of the following?
 \begin{itemize}
 \item $\emptyset$
 \item $\setdef{\emptyset}$
 \item $\setdef{a, b, c}$
 \end{itemize}
-\end{exer}
+\end{exer1}
 
 \begin{defn}[Cartesian product]
 The \defterm{Cartesian product} or \defterm{cross product} of two sets, $A$ and $B$, written $\bm{\setproduct{A}{B}}$, is the set of all ordered pairs where the first element is a member of $A$ and the second element is a member of $B$. We can take the Cartesian product of $k$ sets, $A_1, A_2, \ldots, A_k$, which is the set consisting of all $k$-tuples $(a_1, a_2, \ldots, a_k)$ where $a_i \in A_i$.
@@ -31,25 +33,25 @@ A^k \ =\  \overbrace{A \times A \times \cdots \times A}^k
 
 \end{defn}
 
-\begin{exer}
+\begin{exer1}
 Fill in the following definitions of power set and Cartesian product using set-builder notation.
 \begin{itemize}
 \item $\powerset{A} = \setbuild{S}{\line(1,0){250}}$
 \item $\setproduct{A}{B} = \setbuild{(a, b)}{\line(1,0){250}}$
 \end{itemize}
-\end{exer}
+\end{exer1}
 
-\begin{exer}
+\begin{exer1}
 If $A = \setdef{1, 2}$ and $B = \setdef{x ,y, z}$, what is $\setproduct{A}{\setproduct{B}{A}}$?
-\end{exer}
+\end{exer1}
 
-\begin{exer}
-Describe $\naturals^2$ in plain English. ($\naturals$ is the set of natural numbers.\footnote{The natural numbers are $\setdef{0, 1, 2, \ldots}$.}) What could it be used to model or represent?
-\end{exer}
+\begin{exer1}
+Describe $\naturals^2$ in plain English. ($\naturals$ is the set of natural numbers, i.e. $\setdef{0, 1, 2, \ldots}$.) What could it be used to model or represent?
+\end{exer1}
 
-\begin{exer}
-If $|A| = m$ and $|B| = n$, then what is $|\setproduct{A}{B}|$?
-\end{exer}
+\begin{exer1}
+If $A$ and $B$ are sets, and $|A| = m$ and $|B| = n$, then what is $|\setproduct{A}{B}|$?
+\end{exer1}
 
 \begin{progexer}\happymac
 Write a program to compute the power set of a set and also to compute the Cartesian product of any number of sets.

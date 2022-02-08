@@ -1,3 +1,5 @@
+% !TEX root = main.tex
+
 \section{String Operations}
 
 \begin{discussion}
@@ -12,7 +14,7 @@ A string $v$ is a \defterm{substring} of $w$ if and only if there are strings $x
 For any string $x$ on an alphabet $\Sigma$ and natural number $k$, the string $x^k$ is defined as:
 \begin{itemize}
 \item $x^0 = \emptystring$ \quad (the empty string)
-\item $x^{k+1} = x^k \circ x$ \quad for $i \geq 0$
+\item $x^{k+1} = x^k ~x$ \quad for $i \geq 0$
 \end{itemize}
 \end{defn}
 
@@ -29,22 +31,22 @@ Based on this definition, you may use the fact that, for any $a \in \Sigma$ and 
 \end{itemize}
 \end{defn}
 
-\begin{exer}
+\begin{exer1}
 Provide an inductive definition for the concatenation of two strings $x$ and $y$.
-\end{exer}
+\end{exer1}
 
-\begin{stmt}
+\begin{stmt2}
 For any strings $x$ and $y$ over an alphabet $\Sigma$, $\stringrev{(xy)} = \stringrev{y}\stringrev{x}$.
-\end{stmt}
+\end{stmt2}
 
-\begin{stmt}
+\begin{stmt2}
 For any string $x$ over an alphabet $\Sigma$, $\stringrev{(\stringrev{x})} = x$.
-\end{stmt}
+\end{stmt2}
 
-\begin{stmt}
+\begin{stmt2}
 For any strings $v$ and $w$ over an alphabet $\Sigma$, if $v$ is a substring of $w$, then $\stringrev v$ is a substring of $\stringrev w$.
-\end{stmt}
+\end{stmt2}
 
-\begin{stmt}
+\begin{stmt2}
 For any string $w$ and $i \geq 0$,\ \ $\stringrev{(w^i)} = (\stringrev w)^i$.
-\end{stmt}
+\end{stmt2}

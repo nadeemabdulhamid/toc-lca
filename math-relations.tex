@@ -1,3 +1,5 @@
+% !TEX root = main.tex
+
 \section{Relations and Functions}
 
 \begin{defn}[Relations]
@@ -16,9 +18,9 @@ For example, given a set of people, $N = \setdef{\textrm{Alice}, \textrm{Bob}, \
 Note that $\textit{Likes} \subseteq \setproduct N D$.
 \end{discussion}
 
-\begin{exer}
+\begin{exer1}
 Write out an adjacency matrix corresponding to the \textit{Likes} relation defined above. Also draw a directed graph that represents the same relation.
-\end{exer}
+\end{exer1}
 
 \begin{discussion}
 Relations are very general. They allow an object to be related to any number of other objects at the same time, or none at all. (See the \textit{Likes} example above.) Sometimes we want a more restricted notion, in which each object is related uniquely to a single other object.
@@ -37,23 +39,23 @@ We use the notation $f : A \to B$ to mean that $f$ is a function from the set $A
 \end{itemize}
 \end{defn}
 
-\begin{exer}
+\begin{exer2}
 Which of the following logical statements correspond(s) to the additional constraints that must hold on a function $f : A \to B$?
 \begin{enumerate}[label=(\alph*)]
-\item $\forall x \in A\ \left(
-		(\forall y, z \in B\ ((x, y) \in f \implies (x, z) \notin f) 
+\item $\forall x \in A\ \left(        % NO
+		\forall y, z \in B\ ((x, y) \in f \implies (x, z) \notin f) 
 		\ \land\ (\exists y \in B\ (x, y) \in f )
 		\right)$
-\item $\forall x \in A\  \left(            % this one is ambiguous depending on how you parse the /\ with the -->
-		(\forall y, z \in B\ ((x, y) \in f \wedge (x, z) \in f \implies y = z) 
+\item $\forall x \in A\  \left(            % this one is ambiguous depending on how you parse the /\ with the -->      % YES
+		\forall y, z \in B\ ((x, y) \in f \wedge (x, z) \in f \implies y = z) 
 		\ \land\ (\exists y \in B\ (x, y) \in f )
 		\right)$
-\item $\forall x \in A\ \exists y \in B\ 
+\item $\forall x \in A\ \exists y \in B\        % NO
 		((x, y) \in f) \ \land\  (\forall z \in B\ (x, z) \in f \ \land\ y = z )  $
-\item $\forall x \in A\ \exists y \in B\ 
+\item $\forall x \in A\ \exists y \in B\        % YES
 		((x, y) \in f) \ \land\  (\forall z \in B\  (x, z) \in f \implies y = z )  $
 \end{enumerate}
-\end{exer}
+\end{exer2}
 
 \begin{defn}[Function properties]
 A function $f : A \to B$ is said to be:
@@ -70,16 +72,16 @@ If $Q$ and $R$ are binary relations, then their \defterm{composition}, $\bm{Q \c
 The composition of two functions, $f : A \to B$ and $g : B \to C$, is a function $h : A \to C$ such that $h(a) = g(f(a))$ for each $a \in A$.
 \end{defn}
 
-\begin{exer}
-Let $R = \setdef{(a, b), (a, c), (c, d), (a, a), (b, a)}$. What is $R \circ R$, the composition of $R$ with itself? Is either $R$ or $R \circ R$ a function?
-\end{exer}
+\begin{exer1}
+Let $R = \setdef{(a, b), (a, c), (c, d), (a, a), (b, a)}$. What is $R \circ R$, the composition of $R$ with itself? Is either $R$ or $R \circ R$ a function?  (Note: $R \subseteq \setproduct A A$, where $A = \setdef{a, b, c, d}$.)
+\end{exer1}
 
-\begin{exer}
-Let $f : A \to B$ and $g : B \to C$. Let $h = f \circ g$ be their composition. (So, $h : A \to C$.) In each of the following cases state necessary and sufficient conditions on $f$ and $g$ for $h$ to be as specified.
+\begin{exer2}
+Let $f : A \to B$ and $g : B \to C$. Let $h = f \circ g$ be their composition. (So, $h : A \to C$.) In each of the following cases state \emph{necessary} and \emph{sufficient} conditions on $f$ and $g$ for $h$ to be as specified.
 \begin{enumerate}[label=(\alph*)]
 \item Onto.
 \item One-to-one.
 \item A bijection.
 \end{enumerate}
-\end{exer}
+\end{exer2}
 

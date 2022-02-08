@@ -15,7 +15,14 @@
 \usepackage{tikz}
 \usepackage{graphicx}
 
-\setlength{\parskip}{.5ex}
+
+
+
+\newcommand\onestar{$\star$}
+\newcommand\twostar{$\star\star$}
+\newcommand\threestar{$\star\star\star$}
+
+
 
 \theoremstyle{margin}
 \theorembodyfont{\normalfont}
@@ -32,10 +39,8 @@
 \theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
 \newtheorem{axiom}[defn]{Axiom}
 
-\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
 \newtheorem{corol}[defn]{Corollary}
 
-\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
 \newtheorem{conjecture}[defn]{Conjecture}
 
 
@@ -44,7 +49,6 @@
 
 \theoremheaderfont{\scshape}
 \theoremindent\parindent
-\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
 \newtheorem*{proofex}[defn]{Example Proof}
 \theoremheaderfont{\normalfont\bfseries}
 \theoremindent0cm
@@ -57,21 +61,35 @@
 \theorempreskipamount=-2em
 \theorempostskipamount=-.75em
 
-\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
 \newframedtheorem{thm}[defn]{Theorem}
-%\newtheorem{thm}[defn]{Theorem}
 
-\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
+\newframedtheorem{thm1}[defn]{\raisebox{.1em}{\onestar} Theorem}
+\newframedtheorem{thm2}[defn]{\raisebox{.1em}{\twostar} Theorem}
+\newframedtheorem{thm3}[defn]{\raisebox{.1em}{\threestar} Theorem}
+
+
 \newframedtheorem{lemma}[defn]{Lemma}
+\newframedtheorem{lemma1}[defn]{\raisebox{.1em}{\onestar} Lemma}
+\newframedtheorem{lemma2}[defn]{\raisebox{.1em}{\twostar} Lemma}
+\newframedtheorem{lemma3}[defn]{\raisebox{.1em}{\threestar} Lemma}
 
 \newcommand\stmtword{Proposition}
-\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
 \newframedtheorem{stmt}[defn]{\stmtword}
 
-\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
+\newframedtheorem{stmt1}[defn]{\raisebox{.1em}{\onestar} \stmtword}
+\newframedtheorem{stmt2}[defn]{\raisebox{.1em}{\twostar} \stmtword}
+\newframedtheorem{stmt3}[defn]{\raisebox{.1em}{\threestar} \stmtword}
+
+
 \newframedtheorem{exer}[defn]{Exercise}
 
-\theoremprework{\begin{onehalfspace}} \theorempostwork{\end{onehalfspace}}
+\newframedtheorem{exer1}[defn]{\raisebox{.1em}{\onestar} Exercise}
+
+\newframedtheorem{exer2}[defn]{\raisebox{.1em}{\twostar} Exercise}
+
+\newframedtheorem{exer3}[defn]{\raisebox{.1em}{\threestar} Exercise}
+
+
 \newframedtheorem{progexer}[defn]{Programming Exercise}
 
 
@@ -116,5 +134,3 @@
 \newcommand\langof[1]{\mathcal{L}(#1)}
 
 \newcommand\stringrev[1]{#1^{\mathcal{R}}}
-
-
