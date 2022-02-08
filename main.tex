@@ -991,31 +991,31 @@ A grammar $G$ is called \defterm{ambiguous} if there is at least one string in t
 % comment: could define left-most derivations and then ask if it's possible to have more than one *left-most* derivation for the strings in exer:cfgenglish
 
 
-\begin{exer}
+\begin{exer1}
 Which of the grammars in Exercise~\ref{exer:cfglangs} are ambiguous? For any that are, is it possible to define a  grammar that is not ambiguous for the same language?
-\end{exer}
+\end{exer1}
 
-\begin{exer}
+\begin{exer2}
 The ``dangling else problem" is a well-known problem in computer programming. Many programming languages provide some form of an ``if-then-else'' conditional structure.  Consider the statement:
 \begin{verbatim}
 if a then if b then s1 else s2
 \end{verbatim}
 Explain the problem in terms of grammars and ambiguity. Present a snippet of rules from a grammar that would lead to a dangling else problem for this statement. Think about a programming language that you are familiar with: how is the dangling else problem resolved or handled?
-\end{exer}
+\end{exer2}
 
-\begin{exer}\label{exer:cfgbools}
+\begin{exer2}\label{exer:cfgbools}
 % from EAR, page 247
 ~\\Let  $L = \setbuild{w \in \setstar{\setdef{\texttt{A} - \texttt{Z}, \neg, \wedge, \vee, \implies, \left(, \right)}}}{w~\textrm{is a syntactically legal Boolean expression}}$.
 \begin{enumerate}
 \item Show an unambiguous CFG that generates $L$ and that creates parse trees that:
 \begin{itemize}
-\item Associate left given operators of equal precedence, and
+\item Associate left given operators of equal precedence, except for $\implies$, which is right associative, and
 \item Correspond to assigning the following precedence levels to the operators (from highest to lowest): $\neg, \wedge, \vee, \implies$.
 \end{itemize}
 \item Show the parse tree that your grammar will produce for the string:
 \[ \neg\texttt{P}\vee\texttt{R}\implies\texttt{Q}\implies\texttt{S} \]
 \end{enumerate}
-\end{exer}
+\end{exer2}
 
 \begin{progexer}\happymac
 Develop a parsing program that reads in a description of a CFG and an input string and displays a parse tree (in a format you choose) of the string, if it is in the corresponding language. For this exercise, you may look up the ``recursive descent parser'' and ``top-down parsing'' articles in Wikipedia. Other than that, write the code on your own.
@@ -1077,7 +1077,7 @@ We can draw PDAs as diagrams just like NFAs, with slightly different labels on t
 This indicates that the PDA can move from state $q_1$ to $q_2$ by reading input $\alpha$, popping $s$ off the top of the stack, and pushing $t$ onto the top of the stack. Note again that any of $\alpha, s$, and $t$ may be $\emptystring$.
 \end{discussion}
 
-\begin{exer}
+\begin{exer1}
 Let $M_1 = (\setdef{s, p, f}, \setdef{a, b}, \setdef{a}, \delta, s, \setdef{s, f})$ where 
 \[\begin{array}{r@{\ =\ }l}
 \delta(s, a, \emptystring)  &  \setdef{(p, a)}  \\
@@ -1088,7 +1088,7 @@ Let $M_1 = (\setdef{s, p, f}, \setdef{a, b}, \setdef{a}, \delta, s, \setdef{s, f
 \end{array}\]
 
 Draw a diagram of this PDA and describe the language it accepts.
-\end{exer}
+\end{exer1}
 
 \begin{discussion}
 To reduce the complexity of a PDA diagram, we  use some shorthand to indicate when the machine pushes multiple things onto the top of the stack:
@@ -1128,7 +1128,7 @@ represents the expanded transitions
 
 \end{discussion}
 
-\begin{exer}
+\begin{exer1}
 Let $M_2 = (\setdef{s, p, f}, \setdef{a, b}, \setdef{a, b, c}, \delta, s, \setdef{f})$ where 
 \[\begin{array}{r@{\ =\ }l}
 \delta(s, \emptystring, \emptystring)  &  \setdef{(p, c)}  \\
@@ -1143,9 +1143,9 @@ Let $M_2 = (\setdef{s, p, f}, \setdef{a, b}, \setdef{a, b, c}, \delta, s, \setde
 \end{array}\]
 
 Draw a diagram of this PDA and describe the language it accepts.
-\end{exer}
+\end{exer1}
 
-\begin{exer}
+\begin{exer1}
 Construct PDAs for the following languages, if possible:
 \begin{enumerate}
 \item $\setbuild{w\texttt{c}\stringrev{w}}{ w \in \setstar{\setdef{\texttt{a}, \texttt{b}}} }$
@@ -1155,7 +1155,7 @@ Construct PDAs for the following languages, if possible:
    % ... already done in the previous exercise, but here to see if anyone paying attention
 \item $\setbuild{\texttt{a}^n \texttt{b}^n \texttt{c}^n}{ n \geq 0 }$
 \end{enumerate}
-\end{exer}
+\end{exer1}
 
 \begin{discussion}
 We will state but not prove, for this course, the following theorem. Its proof consists of two directions, as usual for ``if and only if" statements, both of which can be proven by construction: building a CFG from a PDA and vice versa.
@@ -1185,9 +1185,9 @@ The second condition essentially says that either $v$ or $y$ is not empty.
 
 ~
 
-\begin{thm}
+\begin{thm3}
 The language $\setbuild{\texttt{a}^n \texttt{b}^n \texttt{c}^n}{ n \geq 0 }$ is \emph{not} a context-free language.
-\end{thm}
+\end{thm3}
 
 
 
@@ -1265,9 +1265,9 @@ As with other types of machines we've studied, we can represent the transition f
 \end{center}
 \end{discussion}
 
-\begin{exer}
+\begin{exer1}
 What could cause a TM to \emph{not} accept an input?
-\end{exer}
+\end{exer1}
 
 \begin{defn}[Language of a Turing machine]
 The language of a Turing machine $M$ is the collection of strings that $M$ accepts, denoted by $L(M)$. This is also referred to as the language recognized by $M$.
@@ -1277,7 +1277,7 @@ The language of a Turing machine $M$ is the collection of strings that $M$ accep
 A language is \defterm{Turing-recognizable} if some Turing machine recognizes it.
 \end{defn}
 
-\begin{exer}
+\begin{exer1}
 Consider the Turing machine whose transition function is described by the following state diagram. (Any transitions not explicitly drawn are understood to lead to the $\qreject$ state.)
 \begin{center}
 \begin{tikzpicture}[scale=0.2]
@@ -1320,7 +1320,7 @@ Consider the Turing machine whose transition function is described by the follow
 \item In what way(s) might this machine not accept a particular input?
 \end{itemize}
 
-\end{exer}
+\end{exer1}
 
 
 \begin{defn}[Decider]
@@ -1333,28 +1333,44 @@ A language is \defterm{Turing-decidable} or simply \defterm{decidable} if some T
 Note that every Turing-decidable language is Turing-recognizable.
 \end{defn}
 
-\begin{stmt}
+\begin{stmt2}
 The language $\setbuild{w\texttt{\#}w}{w \in \setstar{\setdef{\texttt{a}, \texttt{b}}}}$ is Turing-decidable.
-\end{stmt}
+\end{stmt2}
 
-\begin{stmt}
+\begin{stmt2}
 The language $\setbuild{\texttt{a}^n \texttt{b}^n \texttt{c}^n}{ n \geq 0 }$ is Turing-decidable.
-\end{stmt}
+\end{stmt2}
 
-\begin{stmt}
+\begin{stmt2}
 Every finite language is Turing-decidable.
-\end{stmt}
+\end{stmt2}
+
+\begin{lemma}[Optional] 
+Every regular language is Turing-decidable.
+\end{lemma}
+
 
 
 \begin{discussion}
 At this point, you have worked with a few low-level diagrams of Turing machines -- effectively specifying states, transition functions, etc. However, our goal is not to spend time ``programming'' such machines, but to understand their use as a most general model for computation. Thus, once the capabilities of TMs are understood, it is much easier to simply give an informal prose description of how a machine works for a particular problem: how it moves it head, the ways it reads and writes data on its tape, etc. We do not have to give exact details of every state and the transition function.
 \end{discussion}
 
-\begin{stmt}
+\begin{stmt3}~\\
 The language $\setbuild{\texttt{\#}x_1\texttt{\#}x_2\texttt{\#}\ldots\texttt{\#}x_n}{\textrm{each}~x_i \in \setstar{\setdef{\texttt{a}, \texttt{b}}}
 	~\textrm{and when}~ i \neq j, x_i \neq x_j}$ is Turing-decidable. (A TM for this language would be solving what is called the \emph{element distinctness problem}.)
 \hint An occasionally useful technique with TMs is to include ``marked'' versions of tape symbols in the tape alphabet. For instance \texttt{a} and $\overset{\bullet}{\texttt{a}}$, \texttt{\#} and $\overset{\bullet}{\texttt{\#}}$, etc.
-\end{stmt}
+\end{stmt3}
+
+\section{Turing machines as ``computers''}
+
+\begin{exer3}
+Design Turing machines that take an ``input'' as described and produce a resulting ``output'' in the form of symbols that are 
+written on the tape by the time it is done and has ``accepted'' the input.
+\begin{itemize}
+\item Given $w \in 0 \{0, 1\}^*$, interpreted as a binary number, output $w + 1$ (in binary).
+\item Given $\#w$, where $w \in \{0, 1\}^*$, output $\#w\#\stringrev{w}$.
+\end{itemize}
+\end{exer3}
 
 \section{Turing machine variants}
 
@@ -1363,18 +1379,18 @@ A \defterm{multitape Turing machine} is like a normal Turing machine with more t
 \[ \delta : Q \times \Gamma^k \longrightarrow Q \times \Gamma^k \times \setdef{\tmL, \tmR, \tmS}^k \]
 \end{defn}
 
-\begin{stmt}
+\begin{stmt3}
 Every multitape Turing machine can be simulated as an equivalent single-tape Turing machine.
-\end{stmt}
+\end{stmt3}
 
 \begin{defn}[Nondeterministic Turing machine]
 A \defterm{nondeterministic Turing machine} can be defined in the same way as we did with NFAs and PDAs. The transition function becomes:
 \[ \delta : Q \times \Gamma \longrightarrow \powerset{Q \times \Gamma \times \setdef{\tmL, \tmR}} \]
 \end{defn}
 
-\begin{stmt}
+\begin{stmt3}
 Every nondeterministic Turing machine can be simulated as an equivalent single-tape Turing machine.
-\end{stmt}
+\end{stmt3}
 
 \begin{exer}
 Define ``algorithm.''
@@ -1384,7 +1400,6 @@ Define ``algorithm.''
 Every \emph{effectively\footnote{or, \emph{algorithm}ically, mechanically.} calculable} function can be computed by a Turing machine.
 \end{conjecture}
  
- \clearpage
  
 \newcommand\repof[1]{{\langle{#1}\rangle}}
 
@@ -1394,7 +1409,7 @@ Being comfortable enough with Turing machines to believe that they capture any a
 To facilitate describing Turing machines in this high-level manner, we also introduce the notion of encoding, or representing, objects as strings. We use the notation $\repof O$ to indicate the representation of an object $O$ as a string.
 \end{discussion}
 
-\begin{exer}
+\begin{exer2}
 Give a string representation, $\repof G$, of the following undirected graph, $G$:
 
 \begin{center}
@@ -1414,14 +1429,14 @@ Give a string representation, $\repof G$, of the following undirected graph, $G$
 \draw [black] (24.57,-22.44) -- (29.03,-15.16);
 \end{tikzpicture}
 \end{center}
-\end{exer}
+\end{exer2}
 
-\begin{exer}  %sipser pg 185
+\begin{exer1}  %sipser pg 185
 Let $A$ be the language consisting of all strings representing connected undirected graphs. A graph is \defterm{connected} if every node can be reached from every other node. Provide a high-level description of a Turing machine algorithm to decide the language
 \[ A = \setbuild{\repof G}{G~\textrm{is a connected undirected graph}} \]
-\end{exer}
+\end{exer1}
 
-\begin{exer}
+\begin{exer2}
 % sipser pg 190
 Let $T$ be the language containing only a single string $s$, where
 \[ s = \bigg\{
@@ -1431,13 +1446,13 @@ Let $T$ be the language containing only a single string $s$, where
 \end{array}
 \]
 Is $T$ decidable? Explain. 
-\end{exer}
+\end{exer2}
 
 \clearpage
 
 \section{Undecidability}
 
-\begin{exer}
+\begin{exer2}
 For each of the following, (1) is it possible to construct a machine as described, (2) what language does the machine \emph{recognize}, and (3) does the machine \emph{decide} that language?
 
 \begin{itemize}
@@ -1449,13 +1464,13 @@ For each of the following, (1) is it possible to construct a machine as describe
 
 For any of the machines that recognize but do not decide a language, is there another machine that would \emph{decide} the same language?
 
-\end{exer}
+\end{exer2}
 
-\begin{exer}
+\begin{exer2}
 Consider the language
 \[ \textsc{CanLoop} = \setbuild{\repof M}{M~\parbox[t]{4in}{\textrm{is a TM for which there exists at least one input string that causes it to infinitely loop}}} \]
 
- Suppose you had a machine $M_{CL}$ that decides the language \textsc{CanLoop}. Fill in the following table with the machine's behavior on the indicated inputs:
+ Suppose you have a machine $M_{CL}$ that decides the language \textsc{CanLoop}. Fill in the following table with the machine's behavior on the indicated inputs:
 
 \begin{center}
 \renewcommand{\arraystretch}{1.25}
@@ -1473,19 +1488,19 @@ $\repof{M_{CL}}$ & \\
 
 (The last one is asking you to think about $M_{CL}$'s behavior when applied to its own representation.)
 
-\end{exer}
+\end{exer2}
 
-\begin{stmt}
+\begin{stmt3}
 The language \textsc{CanLoop} is decidable.
-\end{stmt}
+\end{stmt3}
 
 \begin{discussion}
 So $M_{CL}$ would be a pretty useful machine to help us identify machines like $M_C$ with potentially ``bad'' behavior (infinite loops).
 \end{discussion}
 
 
-\begin{exer}\label{tm:canloopone}
-Now, imagine a machine $M_{L}$ which behaves as follows:
+\begin{exer2}\label{tm:canloopone}
+Now, suppose you have a machine $M_{L}$ which behaves as follows:
 \[ M_L(w) = \bigg\{
 \begin{array}{ll}
 \textsc{accept} &  \textrm{if $w = \repof{M', w'}$ and $M'(w')$ loops.} \\
@@ -1511,17 +1526,17 @@ $\repof{M_{CL}, M_{D}}$ & \\
 
 \item Could it conceivably be that the machine $M_{CL}$ exists, but $M_L$ doesn't? 
 \end{itemize}
-\end{exer}
+\end{exer2}
 
-\begin{stmt}
+\begin{stmt2}
 The  machine $M_L$ described above can be constructed using $M_{CL}$. (That is, assuming the machine $M_{CL}$ exists, it can be  used as a ``black box'' to build the machine $M_L$.)
 \begin{itemize}
 \item Does your constructed $M_L$ ever loop?
 \end{itemize}
 
-\end{stmt}
+\end{stmt2}
 
-\begin{exer}
+\begin{exer2}
 Consider the language
 \[ \textsc{LoopOnSelf} = \setbuild{\repof M}{M~\textrm{loops when applied to itself, i.e. $M_L(\repof{M, M}) = \textsc{accept}$}} \]
 \begin{itemize}
@@ -1544,13 +1559,13 @@ $\repof{M_{LOS}}$ & \\
 
 \item Does $M_{LOS}$ ever loop, i.e. is it a decider?
 \end{itemize}
-\end{exer}
+\end{exer2}
 
 \begin{discussion}
 Let's get a little weird\ldots
 \end{discussion}
 
-\begin{exer}
+\begin{exer3}
 Consider a machine $M_{WLOS}$ (``weird loop on self'') which behaves as follows:
 \[ M_{WLOS}(w) = \bigg\{
 \begin{array}{ll}
@@ -1573,9 +1588,9 @@ $\repof{M_{WLOS}}$ & \\
 \end{tabular}
 \end{center}
 
-\end{exer}
+\end{exer3}
 
-\begin{exer}
+\begin{exer3}
 Now, consider a machine $M_{AWLOS}$\footnote{``anti-(weird loop on self)''} that does the opposite of what $M_{WLOS}$ does:
 \[ M_{AWLOS}(w) = \bigg\{
 \begin{array}{ll}
@@ -1597,11 +1612,11 @@ $\repof{M_{LOS}}$ & \\
 $\repof{M_{AWLOS}}$ & \\
 \end{tabular}
 \end{center}
-\end{exer}
+\end{exer3}
 
-\begin{stmt}
+\begin{stmt3}
 The language \textsc{CanLoop} is \emph{not} decidable.
-\end{stmt}
+\end{stmt3}
 
 \begin{discussion}
 The \defterm{Halting Problem} is a famous problem in the theory of computation. It is the problem of deciding, given an arbitrary description of a machine (or, computer program), whether the machine will always stop at some point and either accept or reject its input. We can define the language:
@@ -1609,32 +1624,32 @@ The \defterm{Halting Problem} is a famous problem in the theory of computation. 
 \[ \textsc{Halts} = \setbuild{\repof M}{M~\textrm{is a TM that \emph{never} gets stuck in an infinite loop}} \]
 \end{discussion}
 
-\begin{stmt}
+\begin{stmt3}
 \textsc{Halts} is not a decidable language.
-\end{stmt}
+\end{stmt3}
 
 \begin{discussion}
 You have now found some undecidable languages, or, equivalently, a couple of problems for which it is impossible to construct a single algorithm that always results in a correct ``yes'' or ``no'' answer. 
 You might think we have reached an appropriate \emph{halt}ing point in our explorations, but we can even go a little further\ldots
 \end{discussion}
 
-\begin{stmt}
+\begin{stmt3}
 Consider the language \[\textsc{HaltsOne} = \setbuild{\repof{M, w}}{M~\textrm{halts when run on}~w}.\]
 \textsc{HaltsOne} is a Turing-recognizable language.
-\end{stmt}
+\end{stmt3}
 
 \begin{defn}[Co-Turing-recognizable]
 A language is \defterm{co-Turing-recognizable} if it is the complement of a Turing-recognizable language.
 \end{defn}
 
-\begin{thm}
+\begin{thm3}
 A language is decidable if and only if it is Turing-recognizable \emph{and} co-Turing-recognizable.
-\end{thm}
+\end{thm3}
 
-\begin{stmt}
+\begin{stmt3}
 Consider the language of the machine $M_L$ of Exercise~\ref{tm:canloopone} -- call it \textsc{CanLoopOne}. 
 \textsc{CanLoopOne} is \emph{not} Turing-recognizable.
-\end{stmt}
+\end{stmt3}
 
 \vspace{1in}
 \[\huge\textit{That's All Folks!}\]
